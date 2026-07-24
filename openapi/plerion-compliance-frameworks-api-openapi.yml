@@ -1,0 +1,326 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Compliance frameworks API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Compliance frameworks
+  x-displayName: Compliance Frameworks
+  description: 'Compliance Frameworks help our customers meet their regulatory and compliance obligations, and reduce compliance risk, enabling them to achieve their strategic objectives.
+
+    Plerion offers customers hundreds of prebuilt detections delivering continuous assurance against industry standards and best practices.'
+paths:
+  /v1/tenant/compliance-frameworks:
+    get:
+      operationId: listTenantComplianceFrameworks
+      tags:
+      - Compliance frameworks
+      summary: List
+      x-mint:
+        metadata:
+          title: List compliance frameworks in a tenant
+      description: Use the list compliance frameworks API to list compliance frameworks across the tenant along with the compliance posture for each framework as well as the total compliance posture of the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: custom
+        description: Filter compliance frameworks based on compliance framework type - custom or Plerion managed. The supported values are `true` or `false`.
+        schema:
+          type: string
+          example: true
+      responses:
+        '200':
+          description: Compliance Frameworks list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      frameworks:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ComplianceFrameworkSummary'
+                      totalPosture:
+                        type: number
+                        format: float
+                        example: 79.02
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/integrations/{integrationId}/compliance-frameworks/{complianceId}/download:
+    get:
+      operationId: downloadComplianceFramework
+      tags:
+      - Compliance frameworks
+      summary: Download report
+      x-mint:
+        metadata:
+          title: Download compliance framework report for an integration in a tenant
+      description: 'Use the download compliance framework API to receive a pre-signed URL to download a compliance framework summary report for an integration within the tenant. This URL will be valid for 1 hour. To download the report, use `curl` or any other tool of your choice. '
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: integrationId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: UUID of the integration to get.
+        example: c46aa3ee-3d40-4b98-b8ea-e51ed2bf1234
+      - in: path
+        name: complianceId
+        schema:
+          type: string
+        required: true
+        description: ID of the Compliance Framework to get. This can be retrieved using the List Compliance Frameworks API.
+        example: CIS-AWSFB-v140
+      responses:
+        '200':
+          description: Pre-signed URL to download a Compliance Framework Summary Report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          description: Not authorized to access compliance framework report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Forbidden
+        '404':
+          description: Compliance framework report not found for requested IntegrationId and ComplianceId
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/integrations/{integrationId}/frameworks/{complianceFrameworkId}/reports:
+    post:
+      operationId: requestComplianceFrameworkReport
+      tags:
+      - Compliance frameworks
+      summary: Request a framework report
+      x-mint:
+        metadata:
+          title: Request a compliance framework report for an integration
+      description: 'Starts the generation of a compliance framework report for the specified integration.
+
+        Once requested, poll using the download report endpoint.'
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: path
+        name: integrationId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: UUID of the integration.
+        example: 004a3706-ff2e-463c-a20b-133994dbfc2e
+      - in: path
+        name: complianceFrameworkId
+        schema:
+          type: string
+        required: true
+        description: Framework ID (see list compliance frameworks).
+        example: CIS-AWSFB-V150
+      responses:
+        '200':
+          description: Queue the creation of the report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - OK
+                      message:
+                        type: string
+                        enum:
+                        - Report generation has been initiated
+                        - Report is being generated
+                        - Report was queued less than 5 minutes ago, please wait
+                required:
+                - data
+        '403':
+          description: Not authorized to request this report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Forbidden
+        '404':
+          description: Integration or compliance framework not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+components:
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    ComplianceFrameworkSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: CIS-AWSFB-v140
+        name:
+          type: string
+          example: CIS Amazon Web Services Foundations Benchmark
+        passedFindings:
+          type: number
+          example: 832
+        posture:
+          type: number
+          format: float
+          example: 82.13
+        version:
+          type: string
+          example: v1.4.0
+        totalFindings:
+          type: number
+          example: 1013
+        isCustom:
+          type: boolean
+          example: false
+        description:
+          type: string
+          example: CIS Amazon Elastic Kubernetes Service (EKS) Benchmark v1.0.1 - 08-31-2020
+        providers:
+          type: array
+          items:
+            type: string
+          example:
+          - AWS
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2022-08-16T01:37:30Z'
+        lastModifiedDate:
+          type: string
+          format: date
+          example: '2022-08-16'
+        type:
+          type: string
+          example: compliance_framework
+        link:
+          type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

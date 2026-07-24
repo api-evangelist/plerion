@@ -1,0 +1,454 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Findings API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Findings
+  x-displayName: Findings
+  description: 'Findings are the results of the Plerion Detection Engine (PDE) Detection reporting a finding and rating the severity of the finding as it relates to best practices or a relevant compliance standard.
+
+    Plerion Findings enable customers to reduce the risk to their environments by continuously highlighting areas for improvement.'
+paths:
+  /v1/tenant/findings:
+    get:
+      operationId: listTenantFindings
+      tags:
+      - Findings
+      summary: List
+      x-mint:
+        metadata:
+          title: List findings in a tenant
+      description: 'Use the list findings API to filter findings across the tenant with many
+
+        options from Provider, Service, Detection, Severity, Integration, etc. By
+
+        default all `PASSED` and `FAILED` findings are returned. To list
+
+        only failed findings filter by `statuses=FAILED`
+
+
+        Date range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:
+
+        - `firstObservedAtStart` alone: Includes findings with a first observed time from the specified date to the present.
+
+        - `firstObservedAtEnd` alone: Includes findings with a first observed time up to the specified date.
+
+        - Both provided: Includes findings with a first observed time within the specified date range.
+
+
+        Date strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).'
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: ids
+        description: Filter findings based on Plerion Resource Names (prn) or ids. Accepts a comma-separated list of ids.
+        schema:
+          type: string
+          example: id1,id2
+      - in: query
+        name: detectionIds
+        description: Filter findings based on Plerion Detection IDs. Accepts a comma-separated list of detection ids.
+        schema:
+          type: string
+          example: PLERION-AWS-1,PLERION-AWS-2
+      - in: query
+        name: regions
+        description: Filter findings based on Provider regions. Accepts a comma-separated list of regions.
+        schema:
+          type: string
+          example: us-east-1,us-west-2
+      - in: query
+        name: assetIds
+        description: Filter findings based on Asset Plerion Resource Names (prn) or asset ids. Accepts a comma-separated list of asset ids.
+        schema:
+          type: string
+          example: assetId1,assetId2
+      - in: query
+        name: integrationIds
+        description: Filter findings based on Plerion integration ids. Accepts a comma-separated list of integration ids.
+        schema:
+          type: string
+          example: integration1,integration2
+      - in: query
+        name: assetGroupIds
+        description: Filter findings based on asset group ids. Accepts a comma-separated list of asset group ids.
+        schema:
+          type: string
+          example: assetGroupId1,assetGroupId2
+      - in: query
+        name: environmentIds
+        description: 'Filter findings on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.
+
+
+          **Supported environment names:**
+
+          - `production` - Production environment
+
+          - `non-production` - Non-production environment'
+        schema:
+          type: string
+          example: production,550e8400-e29b-41d4-a716-446655440000
+      - in: query
+        name: severityLevels
+        description: Filter findings based on severity levels. Accepts a comma-separated list of severity levels.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          example: CRITICAL,HIGH
+      - in: query
+        name: statuses
+        description: Filter findings based on statuses. Accepts a comma-separated list of statuses.
+        schema:
+          type: string
+          enum:
+          - PASSED
+          - FAILED
+          example: FAILED
+      - in: query
+        name: slaStatuses
+        description: 'Filter findings based on SLA status. Only applies to FAILED findings that are tracked against an SLA. Accepts a comma-separated list of SLA statuses: breached (past the resolution deadline), nearBreach (inside the warning window but not yet breached), and withinSla (still ahead of the warning window).'
+        schema:
+          type: string
+          enum:
+          - breached
+          - nearBreach
+          - withinSla
+          example: breached,nearBreach
+      - in: query
+        name: resourceTypes
+        description: Filter findings based on provider resource types. Accepts a comma-separated list of resource types.
+        schema:
+          type: string
+          example: AWS::S3::Bucket,AWS::Lambda::Function
+      - in: query
+        name: providers
+        description: Filter findings based on provider. Accepts a comma-separated list of providers.
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - GCP
+          - Kubernetes
+          example: AWS,GCP
+      - in: query
+        name: services
+        description: 'Filter findings based on cloud provider services. Accepts a comma-separated list of service names. Each service can be specified either by its name alone (e.g., `S3`, `Lambda`, `EC2`) or prefixed with its provider in the format `Provider::Service` (e.g., `AWS::S3`, `GCP::Compute`, `Azure::VirtualMachine`).
+
+          '
+        schema:
+          type: string
+          example: AWS::S3,GCP::Compute,Azure::VirtualMachine
+      - in: query
+        name: isExempted
+        description: Filter findings based on whether the finding is exempted. Accepts `true` or `false`.
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: firstObservedAtStart
+        description: "Start of the date range for filtering findings based on the first observed time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include findings from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: firstObservedAtEnd
+        description: "End of the date range for filtering findings based on the first observed time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include findings up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: sortBy
+        description: Order the list by supported field
+        schema:
+          type: string
+          enum:
+          - status
+          - provider
+          - resourceType
+          - service
+          - detectionId
+          - firstObservedAt
+          - lastObservedAt
+          - severityLevel
+          - resourceFullName
+          - assetId
+          - region
+          - integrationId
+          example: provider
+      - in: query
+        name: sortOrder
+        description: The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          example: ASC
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          example: 100
+          maximum: 1000
+      - in: query
+        name: cursor
+        description: Get the next batch of findings. Used for pagination. When cursor is provided, the response will not include total count.
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      responses:
+        '200':
+          description: Findings list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Finding'
+                  meta:
+                    type: object
+                    properties:
+                      cursor:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+                      perPage:
+                        type: integer
+                        example: 10
+                      total:
+                        type: integer
+                        description: Total number of findings available for the given filter
+                        example: 42
+                      page:
+                        type: integer
+                        example: 1
+                      hasNextPage:
+                        type: boolean
+                        example: true
+                      hasPreviousPage:
+                        type: boolean
+                        example: false
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  schemas:
+    Finding:
+      type: object
+      properties:
+        schemaVersion:
+          type: string
+          example: '2022-06-09'
+        id:
+          type: string
+          example: prn:findings:458511a1-9bc2-4fce-97a0-0e3139588e6e:plerion-aws-16:arn:aws:iam::1111222233334444:policy/test-policy
+        organizationId:
+          type: string
+          example: dc16d897-7f52-4b73-be57-96c7c9a853da
+        tenantId:
+          type: string
+          example: 42749bc1-c99b-4c2c-a081-a6cda9370081
+        integrationId:
+          type: string
+          example: 458511a1-9bc2-4fce-97a0-0e3139588e6e
+        provider:
+          type: string
+          example: AWS
+        executionId:
+          type: string
+          example: 1675576960384
+        assetId:
+          type: string
+          example: prn:assets:458511a1-9bc2-4fce-97a0-0e3139588e6e:aws:iam:policy:us-east-1:arn:aws:iam::1111222233334444:policy/test-policy
+        providerAccountId:
+          type: string
+          example: 1111222233334444
+        resourceType:
+          type: string
+          example: AWS::IAM::Policy
+        detectionId:
+          type: string
+          example: PLERION-AWS-16
+        status:
+          type: string
+          example: FAILED
+        severityLevel:
+          type: string
+          example: HIGH
+        message:
+          type: string
+          example: Policy allows full administrative privileges is attached
+        firstObservedAt:
+          type: string
+          example: '2023-02-04T06:02:40.594Z'
+        createdAt:
+          type: string
+          example: '2023-02-04T06:07:09.092Z'
+        lastObservedAt:
+          type: string
+          example: '2023-02-05T06:02:40.384Z'
+        updatedAt:
+          type: string
+          example: '2023-02-05T06:07:02.959Z'
+        slaDueAt:
+          type:
+          - string
+          - 'null'
+          description: SLA resolution deadline. Null if the finding is not tracked against an SLA.
+          example: '2023-02-11T06:02:40.594Z'
+        slaWarnAt:
+          type:
+          - string
+          - 'null'
+          description: Start of the SLA warning window. Null if the finding is not tracked against an SLA.
+          example: '2023-02-09T06:02:40.594Z'
+        slaId:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the SLA the finding matched. Null if the finding is not tracked against an SLA.
+          example: 8f2c1b9a-4d3e-4a6b-9c8d-1e2f3a4b5c6d
+        parameters:
+          type: array
+          items:
+            type: string
+          format: nullable
+        tags:
+          type: array
+          items:
+            type: string
+          format: nullable
+        fullResourceName:
+          type: string
+          example: arn:aws:iam::1111222233334444:policy/test-policy
+        resourceId:
+          type: string
+          example: test-policy
+        providerFullResourceName:
+          type: string
+          example: arn:aws:iam::1111222233334444:policy/test-policy
+        region:
+          type: string
+          example: us-east-1
+        service:
+          type: string
+          example: IAM
+        likelihood:
+          type: string
+          example: 3
+        impact:
+          type: string
+          example: 5
+        calculatedSeverity:
+          type: string
+          example: 2
+        modifiedSeverityLevel:
+          type: string
+          format: nullable
+          example: CRITICAL
+        attackPaths:
+          type: object
+          format: nullable
+        isExempted:
+          type: boolean
+          example: false
+        meta:
+          type: object
+        resourceTags:
+          type: array
+          format: nullable
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+                example: Public
+              Value:
+                type: string
+                example: true
+        resourceURL:
+          type: string
+          example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

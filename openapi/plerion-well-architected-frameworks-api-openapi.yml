@@ -1,0 +1,357 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Well-Architected frameworks API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Well-Architected frameworks
+  x-displayName: Well-Architected Frameworks
+  description: The AWS Well-Architected Framework helps customers design secure, high-performing, resilient, and efficient  cloud infrastructure.  Plerion continuously assesses your environment against the AWS Well-Architected pillars,  aligning your architecture with AWS best practices and accelerating improvement.
+paths:
+  /v1/tenant/well-architected-frameworks:
+    get:
+      operationId: listTenantWellArchitectedFrameworks
+      tags:
+      - Well-Architected frameworks
+      summary: List
+      x-mint:
+        metadata:
+          title: List well-architected frameworks in a tenant
+      description: Returns all AWS Well-Architected Frameworks for the tenant, along with individual framework postures and the tenant’s overall Well-Architected posture.
+      security:
+      - APIKey: []
+      responses:
+        '200':
+          description: Well-Architected Frameworks list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      frameworks:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/WellArchitectedFrameworkSummary'
+                      totalPosture:
+                        type: number
+                        format: float
+                        example: 39.2
+              examples:
+                example1:
+                  summary: Sample Well-Architected Frameworks Response
+                  value:
+                    data:
+                      frameworks:
+                      - id: AWS-WA-FRAMEWORK
+                        name: AWS Well Architected
+                        passedFindings: 15631
+                        posture: 43.26
+                        totalFindings: 36132
+                        isCustom: false
+                        providers:
+                          id: AWS-WA-FRAMEWORK
+                          name: AWS Well Architected
+                          description: ''
+                          type: well_architected_lens
+                          version: '2021-11-01'
+                          enabled: true
+                          link: ''
+                          config: aws-wa-framework.json
+                          releaseDate: '2022-03-21T14:43:37Z'
+                          lastModifiedDate: '2022-03-11'
+                          providers:
+                          - AWS
+                      - id: AWS-FTR-LENS
+                        name: FTR Lens
+                        passedFindings: 920
+                        posture: 35.15
+                        totalFindings: 2617
+                        isCustom: false
+                        providers:
+                          id: AWS-FTR-LENS
+                          name: FTR Lens
+                          description: ''
+                          type: well_architected_lens
+                          version: '2021-11-01'
+                          enabled: true
+                          link: ''
+                          config: aws-ftr-lens.json
+                          releaseDate: '2022-06-19T09:15:01Z'
+                          lastModifiedDate: '2022-06-19'
+                          providers:
+                          - AWS
+                      totalPosture: 39.2
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/integrations/{integrationId}/well-architected-frameworks/{wellArchitectedFrameworkId}/download:
+    get:
+      operationId: downloadWellArchitectedFramework
+      tags:
+      - Well-Architected frameworks
+      summary: Download report
+      x-mint:
+        metadata:
+          title: Download a well-architected framework report for an integration in a tenant
+      description: 'Use the download well-architected framework API to obtain a pre-signed URL for downloading a well-architected framework summary report for an integration within the tenant. This URL will be valid for 1 hour. To download the report, use `curl` or any other tool of your choice. '
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: integrationId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: UUID of the integration to get.
+        example: c46aa3ee-3d40-4b98-b8ea-e51ed2bf1234
+      - in: path
+        name: wellArchitectedFrameworkId
+        schema:
+          type: string
+        required: true
+        description: ID of the Well-Architected framework to get. This can be retrieved using the List Well-Architected frameworks API.
+        example: AWS-FTR-LENS
+      responses:
+        '200':
+          description: Pre-signed URL to download a Well-Architected framework summary report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          description: Not authorized to access well-architected framework report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Forbidden
+        '404':
+          description: Well-architected framework report not found for requested IntegrationId and wellArchitectedFrameworkId
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/integrations/{integrationId}/frameworks/{wellArchitectedFrameworkId}/reports:
+    post:
+      operationId: requestWellArchitectedFrameworkReport
+      tags:
+      - Well-Architected frameworks
+      summary: Request framework report
+      x-mint:
+        metadata:
+          title: Request a Well-Architected framework report for an integration
+      description: 'Starts the generation of a Well-Architected framework report for the specified integration.
+
+        Once requested, poll using the download report endpoint.'
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: path
+        name: integrationId
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: UUID of the integration.
+        example: 004a3706-ff2e-463c-a20b-133994dbfc2e
+      - in: path
+        name: wellArchitectedFrameworkId
+        schema:
+          type: string
+        required: true
+        description: Framework ID (see list Well-Architected frameworks).
+        example: AWS-WA-FRAMEWORK
+      responses:
+        '200':
+          description: Queue the creation of the report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - OK
+                      message:
+                        type: string
+                        enum:
+                        - Report generation has been initiated
+                        - Report is being generated
+                        - Report was queued less than 5 minutes ago, please wait
+                required:
+                - data
+        '403':
+          description: Not authorized to request this report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Forbidden
+        '404':
+          description: Integration or compliance framework not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+components:
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    WellArchitectedFrameworkSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: AWS-WAF-v1
+        name:
+          type: string
+          example: AWS Well-Architected Framework
+        passedFindings:
+          type: number
+          example: 832
+        posture:
+          type: number
+          format: float
+          example: 82.13
+        version:
+          type: string
+          example: v1.0.0
+        totalFindings:
+          type: number
+          example: 1013
+        isCustom:
+          type: boolean
+          example: false
+        description:
+          type: string
+          example: AWS Well-Architected Framework provides a consistent approach for customers and partners to evaluate architectures and implement scalable designs.
+        providers:
+          type: array
+          items:
+            type: string
+          example:
+          - AWS
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2022-08-16T01:37:30Z'
+        lastModifiedDate:
+          type: string
+          format: date
+          example: '2022-08-16'
+        type:
+          type: string
+          example: well_architected_framework
+        link:
+          type: string
+          example: https://docs.aws.amazon.com/wellarchitected/latest/framework/
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

@@ -1,0 +1,1201 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Code security API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Code security
+paths:
+  /v1/tenant/shiftleft/iac/scan:
+    post:
+      operationId: postIaCScan
+      tags:
+      - Code security
+      summary: Upload IaC
+      x-mint:
+        metadata:
+          title: Upload Infrastructure as Code for Scanning
+      description: "Use Plerion Code security IaC to scan for security vulnerabilities and compliance issues.\n\nUse the following command to upload your IaC files to the Plerion Code security IaC scanning queue:\n\n```bash\nexport PLERION_API_KEY=YOUR_API_KEY\ncurl --request POST \\\n  --location 'https://au.api.plerion.com/v1/tenant/shiftleft/iac/scan?artifactName=YOUR-ARTIFACT-NAME.zip' \\\n  --header \"Authorization: Bearer $PLERION_API_KEY\" \\\n  --header 'Content-Type: application/zip' \\\n  --data-binary '@/Users/example.user/examples-iac/terraform.zip'\n```\nReplace `YOUR_API_KEY` with your actual API key and `/Users/example.user/examples-iac/terraform.zip` with the actual path to your zip file.\n\nAfter receiving a 202 message, retrieve the scanId and proceed to check the results by repeatedly polling [the findings endpoint](/api-reference/code-security/list-findings) with exponential backoff until the data field is not empty.\n\n**This endpoint supports the following public cloud platforms and IaC templates:**\n\n1. Amazon Web Services (AWS)\n2. Microsoft Azure\n3. Google Cloud Platform (GCP)\n4. Kubernetes manifests\n5. Helm charts\n6. Dockerfile definitions\n7. Terraform configurations\n8. Bicep configurations\n9.  Azure Resource Manager (ARM) templates\n10.  CloudFormation templates\n\n**Please note that this API endpoint has following limitations:**\n\n1. Maximum file size that can be uploaded is **4.4MB.**\n\n**To work around these limitations, please consider the following:**\n\n1. Split your IaC zip archive into smaller zip files and upload them individually.\n2. If you are unable to work within these limitations, please contact support for assistance.\n\nNote: If you encounter the error code \"x422Z\" while using cURL, it's possible that the error is related to missing the \"@\" symbol when specifying the file path in the --data or --data-binary option. To resolve this error, you should double-check that you have included the \"@\" symbol before the file path when uploading files with cURL."
+      requestBody:
+        required: true
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        required: true
+        name: Content-Type
+        description: application/zip
+        schema:
+          type: string
+      - in: query
+        required: true
+        name: artifactName
+        description: Name of the artifact being scanned (e.g. my-iac.zip)
+        schema:
+          type: string
+          example: my-iac.zip
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                  meta:
+                    type: object
+                    properties:
+                      organizationId:
+                        type: string
+                      tenantId:
+                        type: string
+                      scanId:
+                        type: string
+                      artifactName:
+                        type: string
+              examples:
+                example-0:
+                  summary: Accepted
+                  description: File accepted for scan.
+                  value:
+                    data: File uploaded successfully
+                    meta:
+                      organizationId: ec17a309-6b0a-4911-8d1d-8a5aa0ac4742
+                      tenantId: 7934cf6d-fb34-4bda-adde-173a1fa30d9c
+                      scanId: 6ddde0c3-690a-aeb3-b237-9724b3e4403c
+                      artifactName: my-iac.zip
+                example-1:
+                  summary: Already Scanned
+                  description: File already scanned.
+                  value:
+                    data: The item you are attempting to scan has already been scanned
+                    meta:
+                      organizationId: ec17a309-6b0a-4911-8d1d-8a5aa0ac4742
+                      tenantId: 7934cf6d-fb34-4bda-adde-173a1fa30d9c
+                      scanId: 6ddde0c3-690a-aeb3-b237-9724b3e4403c
+                      artifactName: my-iac.zip
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-0:
+                  summary: Forbidden
+                  description: 'Description: The user does not have the authentication to access the resource.'
+                  value:
+                    message: Forbidden
+        '413':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-0:
+                  summary: Request Entity Too Large
+                  description: 'Description: Upload file size exceeds the maximum limit of 4.4MB.'
+                  value:
+                    message: Request Entity Too Large
+        '415':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+              examples:
+                example-0:
+                  summary: x415C
+                  description: 'Description: Unsupported File Type.'
+                  value:
+                    errors:
+                    - code: x415C
+                      message: Unsupported File Type. The file you are trying to upload contains content type headers that are not supported by our system.
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: x422D
+                        message:
+                          type: string
+                          example: 'The uploaded file is corrupted and cannot be processed. Please ensure that the file is not damaged or truncated and try again. Reason: <error message>.'
+              examples:
+                example-0:
+                  summary: x422D
+                  description: 'Description: The uploaded file is corrupted and cannot be processed.'
+                  value:
+                    errors:
+                    - code: x422D
+                      message: 'The uploaded file is corrupted and cannot be processed. Please ensure that the file is not damaged or truncated and try again. Reason: File is empty.'
+                example-1:
+                  summary: x422Z
+                  description: 'Description: The uploaded file does not have a zip extension.'
+                  value:
+                    errors:
+                    - code: x422Z
+                      message: The uploaded file does not have a zip extension. Please ensure that you are uploading a file in zip format and try again.
+                example-2:
+                  summary: x422B
+                  description: 'Description: The uploaded file has invalid signature and cannot be processed.'
+                  value:
+                    errors:
+                    - code: x422B
+                      message: The uploaded file is invalid and cannot be processed. Please ensure that the file is not damaged and/or that the correct content type header is used, then try uploading again.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+              examples:
+                example-0:
+                  summary: x500F
+                  description: 'Description: Some error occurred while scanning the input file.'
+                  value:
+                    errors:
+                    - code: x500F
+                      message: We're sorry, but there was an error processing your request. We were unable to scan the input file. Please try again later or contact our support team for further assistance.
+                example-1:
+                  summary: InternalServerError
+                  description: 'Description: The server encountered an unexpected error while processing the request. Please reach out to our support team for further assistance.'
+                  value:
+                    errors:
+                    - code: InternalServerError
+                      message: Internal Server Error
+  /v1/tenant/shiftleft/iac/scans:
+    get:
+      operationId: listIaCScansByTenant
+      tags:
+      - Code security
+      summary: List scans
+      x-mint:
+        metadata:
+          title: List IaC Scans in a tenant
+      description: Retrieve all the scans for the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: ids
+        description: Filter scans based on ids. Accepts a comma-separated list of ids.
+        schema:
+          type: string
+          example:
+          - uuid1,uuid2,uuid3
+      - in: query
+        name: artifactNames
+        description: Filter scans based on artifact name. Accepts a comma-separated list of artifact names.
+        schema:
+          type: string
+          example: my-iac.zip,my-iac2.zip
+      - in: query
+        name: statuses
+        description: Filter scans based on status. Accepts a comma-separated list of statuses.
+        schema:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+          example: SUCCESS
+      - in: query
+        name: sortBy
+        description: Sort results by the specified field.
+        schema:
+          type: string
+          enum:
+          - id
+          - createdAt
+          - updatedAt
+          - artifactName
+          - status
+          example: createdAt
+      - in: query
+        name: sortOrder
+        description: Sort order for the results.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          example: asc
+      - in: query
+        name: page
+        description: Page number for the results. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 1
+      - in: query
+        name: perPage
+        description: Number of results per page. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 10
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        createdAt:
+                          type: string
+                          example: '2023-02-04T06:07:09.092Z'
+                        updatedAt:
+                          type: string
+                          example: '2023-02-05T06:07:02.959Z'
+                        organizationId:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        tenantId:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        summary:
+                          type: object
+                          properties:
+                            startedAt:
+                              type: number
+                              example: 1683284776221
+                            stoppedAt:
+                              type: number
+                              example: 1683284776221
+                            totalFileSize:
+                              type: number
+                              example: 12345678
+                            totalFindings:
+                              type: number
+                              example: 12345678
+                            totalResources:
+                              type: number
+                              example: 12345678
+                            totalParsingErrors:
+                              type: number
+                              example: 12345678
+                            totalFailedFindings:
+                              type: number
+                              example: 12345678
+                            totalPassedFindings:
+                              type: number
+                              example: 12345678
+                            totalSkippedFindings:
+                              type: number
+                              example: 12345678
+                            totalVulnerabilities:
+                              type: number
+                              example: 12345678
+                        artifactName:
+                          type: string
+                          example: test-artifact.zip
+                        status:
+                          type: string
+                          example: SUCCESS
+                        types:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - helm
+                          - terraform
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      perPage:
+                        type: number
+                      total:
+                        type: number
+                      hasNextPage:
+                        type: boolean
+                      hasPreviousPage:
+                        type: boolean
+              examples:
+                example-0:
+                  summary: Found
+                  description: Response when scans are found
+                  value:
+                    data:
+                    - id: c056d03d-3f7a-4232-ace0-45403fe28340
+                      createdAt: '2023-05-05T11:06:19.859Z'
+                      updatedAt: '2023-05-05T11:06:19.859Z'
+                      organizationId: ec17a309-6b0a-4911-8d1d-8a5aa0ac4742
+                      tenantId: 7934cf6d-fb34-4bda-adde-173a1fa30d9c
+                      summary:
+                        startedAt: 1683284776221
+                        stoppedAt: 1683284779523
+                        totalFileSize: 15187
+                        totalFindings: 232
+                        totalResources: 65
+                        totalParsingErrors: 0
+                        totalFailedFindings: 131
+                        totalPassedFindings: 101
+                        totalSkippedFindings: 0
+                        totalVulnerabilities: 123
+                      artifactName: artifact.zip
+                      status: SUCCESS
+                      types:
+                      - terraform
+                      - dockerfile
+                    - id: 702de801-5f54-4bab-a504-0990f7b56830
+                      createdAt: '2023-05-05T11:06:19.500Z'
+                      updatedAt: '2023-05-05T11:06:19.500Z'
+                      organizationId: ec17a309-6b0a-4911-8d1d-8a5aa0ac4742
+                      tenantId: 7934cf6d-fb34-4bda-adde-173a1fa30d9c
+                      summary:
+                        startedAt: 1683284775925
+                        stoppedAt: 1683284779187
+                        totalFileSize: 15187
+                        totalFindings: 232
+                        totalResources: 65
+                        totalParsingErrors: 0
+                        totalFailedFindings: 131
+                        totalPassedFindings: 101
+                        totalSkippedFindings: 0
+                      artifactName: artifact.zip
+                      status: SUCCESS
+                      types:
+                      - terraform
+                      - dockerfile
+                    meta:
+                      page: 1
+                      perPage: 10
+                      total: 74964
+                      hasNextPage: true
+                      hasPreviousPage: false
+                example-1:
+                  summary: Not Found
+                  description: Response when scans are not found
+                  value:
+                    data: []
+                    meta:
+                      page: 1
+                      perPage: 10
+                      total: 0
+                      hasNextPage: false
+                      hasPreviousPage: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: 'sortBy must be one of the following: id, createdAt, updatedAt, artifactName, status'
+              examples:
+                example-0:
+                  summary: Invalid sortBy
+                  description: Response when sortBy is invalid
+                  value:
+                    errors:
+                    - message: 'sortBy must be one of the following: id, createdAt, updatedAt, artifactName, status'
+                example-1:
+                  summary: Invalid page
+                  description: Response when page is invalid
+                  value:
+                    errors:
+                    - message: page must be a positive integer
+                example-2:
+                  summary: Invalid perPage
+                  description: Response when perPage is invalid
+                  value:
+                    errors:
+                    - message: perPage must be a positive integer less than or equal to 1000
+                example-3:
+                  summary: sortOrder requires sortBy
+                  description: Response when sortBy is not provided to use sortOrder
+                  value:
+                    errors:
+                    - message: sortBy must be provided to use sortOrder
+                example-4:
+                  summary: Invalid sortOrder
+                  description: Response when sortOrder is invalid
+                  value:
+                    errors:
+                    - message: sortOrder must be either asc or desc (case insensitive)
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/shiftleft/iac/scans/{scanId}/findings:
+    get:
+      operationId: getIaCFindingsByScanId
+      tags:
+      - Code security
+      summary: List findings
+      x-mint:
+        metadata:
+          title: List IaC Findings by scanId
+      description: Retrieve all the findings for a scanId
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: scanId
+        description: Scan ID
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: ids
+        description: Filter findings based on ids. Accepts a comma-separated list of ids.
+        schema:
+          type: string
+          example:
+          - uuid1,uuid2,uuid3
+      - in: query
+        name: results
+        description: Filter findings based on result. Accepts a comma-separated list of result.
+        schema:
+          type: string
+          example:
+          - PASSED,FAILED
+      - in: query
+        name: detectionIds
+        description: Filter findings based on detection id. Accepts a comma-separated list of detection id.
+        schema:
+          type: string
+          example: PLERION-AWS-1,PLERION-AWS-2
+      - in: query
+        name: types
+        description: Filter findings based on type. Accepts a comma-separated list of type.
+        schema:
+          type: string
+          example: helm,kubernetes
+      - in: query
+        name: files
+        description: Filter findings based on file. Accepts a comma-separated list of file.
+        schema:
+          type: string
+          example: file1,file2
+      - in: query
+        name: severityLevels
+        description: Filter findings based on severity. Accepts a comma-separated list of severity.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          example: CRITICAL,HIGH
+      - in: query
+        name: sortBy
+        description: Sort results by the specified field.
+        schema:
+          type: string
+          enum:
+          - id
+          - createdAt
+          - updatedAt
+          - artifactName
+          - status
+          example: createdAt
+      - in: query
+        name: sortOrder
+        description: Sort order for the results.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          example: asc
+      - in: query
+        name: page
+        description: Page number for the results. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 1
+      - in: query
+        name: perPage
+        description: Number of results per page. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 10
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        createdAt:
+                          type: string
+                          example: '2023-02-04T06:07:09.092Z'
+                        updatedAt:
+                          type: string
+                          example: '2023-02-05T06:07:02.959Z'
+                        organizationId:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        tenantId:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        scanId:
+                          type: string
+                          example: 12345678-86af-4fba-afc6-c0cf87654321
+                        detectionID:
+                          type: string
+                          example: PLERION-AWS-1
+                        detectionTitle:
+                          type: string
+                          example: Ensure that IAM policies that allow full "*-*" actions are not created
+                        type:
+                          type: string
+                          example: helm
+                        result:
+                          type: string
+                          example: FAILED
+                        evaluatedKeys:
+                          type: array
+                          items:
+                            type: string
+                            example: aws_iam_policy_document
+                        codeBlock:
+                          type: array
+                          items:
+                            type: array
+                            items:
+                            - type: string
+                              example: aws_iam_policy_document
+                            - type: number
+                              example: 1
+                        file:
+                          type: string
+                          example: main.tf
+                        repositoryPath:
+                          type: string
+                          example: /repo/work/terraform-aws-eks/terraform-aws-eks/main.tf
+                        lineRange:
+                          type: array
+                          items:
+                            type: number
+                            example: 1
+                        resource:
+                          type: string
+                          example: aws_iam_policy_document
+                        resourceTags:
+                          type: object
+                          example:
+                          - key: Name
+                            value: test
+                        severityLevel:
+                          type: string
+                          example: CRITICAL
+                        dashboardURL:
+                          type: string
+                          example: https://au.api.plerion.com/shift-left/scans/0b58bd81-c66c-6fc5-72f4-10c070660219/finding/9a81ab1b-7120-4d47-84dd-4614aef50bee
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      perPage:
+                        type: number
+                      total:
+                        type: number
+                      hasNextPage:
+                        type: boolean
+                      hasPreviousPage:
+                        type: boolean
+              examples:
+                example-0:
+                  summary: Found
+                  description: Response when findings are found
+                  value:
+                    data:
+                    - id: 3b79e265-090c-48e7-bbaa-fa96c4317530
+                      createdAt: '2023-05-08T04:31:30.785Z'
+                      updatedAt: '2023-05-08T04:31:30.785Z'
+                      tenantId: 7934cf6d-fb34-4bda-adde-173a1fa30d9c
+                      organizationId: ec17a309-6b0a-4911-8d1d-8a5aa0ac4742
+                      scanId: 6ddde0c3-690a-aeb3-b237-9724b3e4403c
+                      detectionId: PLERION-K8S-108
+                      detectionTitle: Ensure that the --allow-privileged argument is set to false
+                      type: helm
+                      result: FAILED
+                      evaluatedKeys: []
+                      codeBlock:
+                      - - 3
+                        - 'apiVersion: apps/v1
+
+                          '
+                      - - 4
+                        - 'kind: DaemonSet
+
+                          '
+                      - - 5
+                        - 'metadata:
+
+                          '
+                      - - 6
+                        - '  name: release-prometheus-exporter
+
+                          '
+                      - - 7
+                        - '  namespace: default
+
+                          '
+                      - - 8
+                        - '  labels:
+
+                          '
+                      - - 9
+                        - '    app: prometheus-exporter
+
+                          '
+                      - - 10
+                        - '    heritage: Helm
+
+                          '
+                      - - 11
+                        - '    release: prometheus-exporter
+
+                          '
+                      - - 12
+                        - '    chart: prometheus-exporter-9.1.4
+
+                          '
+                      - - 13
+                        - '    jobLabel: prometheus-exporter
+
+                          '
+                      file: /prometheus-exporter/templates/daemonset.yaml
+                      repositoryPath: /prometheus-exporter/templates/daemonset.yaml
+                      lineRange:
+                      - 3
+                      - 94
+                      resource: DaemonSet.default.release-name-prometheus-exporter
+                      resourceTags: null
+                      severityLevel: LOW
+                      dashboardURL: https://au.api.plerion.com/shift-left/scans/6ddde0c3-690a-aeb3-b237-9724b3e4403c/finding/3b79e265-090c-48e7-bbaa-fa96c4317530
+                    meta:
+                      page: 1
+                      perPage: 10
+                      total: 3225
+                      hasNextPage: true
+                      hasPreviousPage: false
+                example-1:
+                  summary: Not Found
+                  description: Response when findings are not found
+                  value:
+                    data: []
+                    meta:
+                      page: 1
+                      perPage: 10
+                      total: 0
+                      hasNextPage: false
+                      hasPreviousPage: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: 'sortBy must be one of the following: id, createdAt, updatedAt, artifactName, status'
+              examples:
+                example-0:
+                  summary: Invalid sortBy
+                  description: Response when sortBy is invalid
+                  value:
+                    errors:
+                    - message: 'sortBy must be one of the following: id, detectionId, type, result, file, severityLevel, createdAt, updatedAt'
+                example-1:
+                  summary: Invalid page
+                  description: Response when page is invalid
+                  value:
+                    errors:
+                    - message: page must be a positive integer
+                example-2:
+                  summary: Invalid perPage
+                  description: Response when perPage is invalid
+                  value:
+                    errors:
+                    - message: perPage must be a positive integer less than or equal to 1000
+                example-3:
+                  summary: sortOrder requires sortBy
+                  description: Response when sortBy is not provided to use sortOrder
+                  value:
+                    errors:
+                    - message: sortBy must be provided to use sortOrder
+                example-4:
+                  summary: Invalid sortOrder
+                  description: Response when sortOrder is invalid
+                  value:
+                    errors:
+                    - message: sortOrder must be either asc or desc (case insensitive)
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/shiftleft/iac/scans/{scanId}/vulnerabilities:
+    get:
+      operationId: getIaCVulnerabilitiesByScanId
+      tags:
+      - Code security
+      summary: List Vulnerabilities
+      x-mint:
+        metadata:
+          title: List IaC Vulnerabilities by scanId
+      description: Retrieve all the Vulnerabilities for a scanId
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: scanId
+        description: Scan ID
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: ids
+        description: Filter vulnerabilities based on ids. Accepts a comma-separated list of ids.
+        schema:
+          type: string
+          example:
+          - uuid1,uuid2,uuid3
+      - in: query
+        name: vulnerabilityIds
+        description: Filter vulnerabilities based on vulnerability id. Accepts a comma-separated list of vulnerability id.
+        schema:
+          type: string
+          example: CVE-2022-22965,CVE-2022-22966,CVE-2022-22967
+      - in: query
+        name: severitySources
+        description: Filter vulnerabilities based on severitySource. Accepts a comma-separated list of severitySource.
+        schema:
+          type: string
+          example: nvd,github,debian
+      - in: query
+        name: files
+        description: Filter vulnerabilities based on file. Accepts a comma-separated list of file.
+        schema:
+          type: string
+          example: file1,file2
+      - in: query
+        name: hasKevs
+        description: Filter vulnerabilities based on hasKev. Accepts a comma-separated list of boolean value.
+        schema:
+          type: boolean
+          example: true,false
+      - in: query
+        name: hasExploits
+        description: Filter vulnerabilities based on hasExploit. Accepts a comma-separated list of boolean value.
+        schema:
+          type: boolean
+          example: true,false
+      - in: query
+        name: severityLevels
+        description: Filter vulnerabilities based on severity. Accepts a comma-separated list of severity.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          example: CRITICAL,HIGH
+      - in: query
+        name: sortBy
+        description: Sort results by the specified field.
+        schema:
+          type: string
+          enum:
+          - id
+          - vulnerabilityId
+          - severityLevel
+          - severitySource
+          - hasKev
+          - hasExploit
+          - file
+          - createdAt
+          - updatedAt
+          example: createdAt
+      - in: query
+        name: sortOrder
+        description: Sort order for the results.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          example: asc
+      - in: query
+        name: page
+        description: Page number for the results. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 1
+      - in: query
+        name: perPage
+        description: Number of results per page. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 10
+      responses:
+        '200':
+          description: Successful response with the list of vulnerabilities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: '1'
+                        createdAt:
+                          type: string
+                          example: '2023-06-30T06:07:18.797Z'
+                        updatedAt:
+                          type: string
+                          example: '2023-06-30T06:07:18.797Z'
+                        tenantId:
+                          type: string
+                          example: tenant-123
+                        organizationId:
+                          type: string
+                          example: org-456
+                        vulnerabilityId:
+                          type: string
+                          example: CVE-2023-12345
+                        description:
+                          type: string
+                          example: This is a sample vulnerability description.
+                        severityLevel:
+                          type: string
+                          example: HIGH
+                        title:
+                          type: string
+                          example: Sample Vulnerability Title
+                        primaryUrl:
+                          type: string
+                          example: https://example.com/cve/CVE-2023-12345
+                        packages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: sample-package
+                              type:
+                                type: string
+                                example: npm
+                              fixedVersion:
+                                type: string
+                                example: 1.0.1
+                              installedVersion:
+                                type: string
+                                example: 1.0.0
+                        publishedDate:
+                          type: string
+                          example: '2023-06-15'
+                        cwes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              name:
+                                type: string
+                                example: CWE-123
+                              cweId:
+                                type: string
+                                example: CWE-123
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/cwe/CWE-123
+                              description:
+                                type: string
+                                example: This is a sample CWE description.
+                        hasKev:
+                          type: boolean
+                          example: true
+                        hasExploit:
+                          type: boolean
+                          example: false
+                        knownExploit:
+                          oneOf:
+                          - type: 'null'
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              title:
+                                type: string
+                                example: Sample Exploit Title
+                              description:
+                                type: string
+                                example: This is a sample exploit description.
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/exploit/CVE-2023-12345
+                            example:
+                              cveID: CVE-2022-22965
+                              notes: ''
+                              dueDate: '2022-04-25'
+                              product: Spring Framework
+                              dateAdded: '2022-04-04'
+                              vendorProject: VMware
+                              requiredAction: Apply updates per vendor instructions.
+                              shortDescription: Spring MVC or Spring WebFlux application running on JDK 9+ may be vulnerable to remote code execution (RCE) via data binding.
+                              vulnerabilityName: Spring Framework JDK 9+ Remote Code Execution Vulnerability
+                        exploits:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              title:
+                                type: string
+                                example: Sample Exploit Title
+                              description:
+                                type: string
+                                example: This is a sample exploit description.
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/exploit/CVE-2023-12345
+                        severityLevelValue:
+                          type: integer
+                          example: 4
+                        file:
+                          type: string
+                          example: /node/CVE-2023-12345/package-lock.json
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      perPage:
+                        type: number
+                      total:
+                        type: number
+                      hasNextPage:
+                        type: boolean
+                      hasPreviousPage:
+                        type: boolean
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: 'sortBy must be one of the following: id, vulnerabilityId, severityLevel, severitySource, hasKev, hasExploit, file, createdAt, updatedAt'
+              examples:
+                example-0:
+                  summary: Invalid sortBy
+                  description: Response when sortBy is invalid
+                  value:
+                    errors:
+                    - message: 'sortBy must be one of the following: id, vulnerabilityId, severityLevel, severitySource, hasKev, hasExploit, file, createdAt, updatedAt'
+                example-1:
+                  summary: Invalid page
+                  description: Response when page is invalid
+                  value:
+                    errors:
+                    - message: page must be a positive integer
+                example-2:
+                  summary: Invalid perPage
+                  description: Response when perPage is invalid
+                  value:
+                    errors:
+                    - message: perPage must be a positive integer less than or equal to 1000
+                example-3:
+                  summary: sortOrder requires sortBy
+                  description: Response when sortBy is not provided to use sortOrder
+                  value:
+                    errors:
+                    - message: sortBy must be provided to use sortOrder
+                example-4:
+                  summary: Invalid sortOrder
+                  description: Response when sortOrder is invalid
+                  value:
+                    errors:
+                    - message: sortOrder must be either asc or desc (case insensitive)
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+components:
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

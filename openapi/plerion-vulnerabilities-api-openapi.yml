@@ -1,0 +1,1137 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Vulnerabilities API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Vulnerabilities
+paths:
+  /v1/tenant/vulnerabilities:
+    get:
+      operationId: listTenantVulnerabilities
+      tags:
+      - Vulnerabilities
+      summary: List
+      x-mint:
+        metadata:
+          title: List Vulnerabilities in a tenant
+      description: 'Use the list vulnerabilities API to filter vulnerabilities across the tenant with many options
+
+        from Organization, Tenant, Integration, Asset, Severity, etc. By default all vulnerabilities
+
+        are returned.
+
+
+        Date range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:
+
+        - `firstObservedAtStart` alone: Includes vulnerabilities observed from the specified date to the present.
+
+        - `firstObservedAtEnd` alone: Includes vulnerabilities observed up to the specified date.
+
+        - Both provided: Includes vulnerabilities observed within the specified date range.
+
+
+        Date strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).'
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: vulnerabilityIds
+        description: Filter vulnerabilities on vulnerability ids. Accepts a comma-separated list with a maximum length of 100
+        schema:
+          type: string
+          example: CVE-2022-22965,CVE-2022-22966,CVE-2022-22967
+      - in: query
+        name: assetIds
+        description: Filter vulnerabilities on asset ids. Accepts a comma-separated list with a maximum length of 10
+        schema:
+          type: string
+          example:
+          - prn:assets:a,prn:assets:b
+      - in: query
+        name: providers
+        description: Filter vulnerabilities based on provider. Accepts a comma-separated list of providers.
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - GCP
+          - Kubernetes
+          example: AWS,GCP
+      - in: query
+        name: executionIds
+        description: Filter vulnerabilities on execution ids. Accepts a comma-separated list with a maximum length of 10
+        schema:
+          type: string
+          example: 1678607803935,1778607801234
+      - in: query
+        name: integrationIds
+        description: Filter vulnerabilities on integration ids. Accepts a comma-separated list with a maximum length of 10
+        schema:
+          type: string
+          example: UUID1,UUID2
+      - in: query
+        name: assetGroupIds
+        description: Filter vulnerabilities on asset group ids. Accepts a comma-separated list of asset group ids.
+        schema:
+          type: string
+          example: UUID1,UUID2
+      - in: query
+        name: environmentIds
+        description: 'Filter vulnerabilities on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.
+
+
+          **Supported environment names:**
+
+          - `production` - Production environment
+
+          - `non-production` - Non-production environment'
+        schema:
+          type: string
+          example: production,550e8400-e29b-41d4-a716-446655440000
+      - in: query
+        name: packageName
+        description: Filter vulnerabilities on a package name.
+        schema:
+          type: string
+          example: lodash
+      - in: query
+        name: regions
+        description: Filter vulnerabilities on asset regions.
+        schema:
+          type: string
+          example: us-east-1,us-west-2
+      - in: query
+        name: targetName
+        description: Filter vulnerabilities on a target name. For ECS Task Definitions this will be `{TaskDefinition}:{revision} > {containerImage}`
+        schema:
+          type: string
+          example: EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl
+      - in: query
+        name: targetType
+        description: Filter vulnerabilities on a target type.
+        schema:
+          type: string
+          example: targetType
+      - in: query
+        name: targetClass
+        description: Filter vulnerabilities on a target class.
+        schema:
+          type: string
+          example: lang-pkgs,os-pkgs
+      - in: query
+        name: hasKev
+        description: Filter vulnerabilities on hasKev. Accepts `true` or `false`.
+        schema:
+          type: boolean
+          example: true
+      - in: query
+        name: isExempted
+        description: Filter vulnerabilities based on exemptions. Returns exempted vulnerabilities if set true. Accepts `true` or `false`.
+        schema:
+          type: boolean
+          example: true
+          default: false
+      - in: query
+        name: isExploitable
+        description: Filter vulnerabilities based on exploitability under the Common Vulnerability Scoring System (CVSS). Accepts `true` or `false`.
+        schema:
+          type: boolean
+          example: true
+      - in: query
+        name: hasExploit
+        description: Filter vulnerabilities on hasExploit. Accepts `true` or `false`.
+        schema:
+          type: boolean
+          example: true
+      - in: query
+        name: hasVendorFix
+        description: Filter vulnerabilities where the affected packages have a fixed version. Is true if any affected package has a fixed version. Accepts `true` or `false`.
+        schema:
+          type: boolean
+          example: true
+      - in: query
+        name: severityLevels
+        description: Filter vulnerabilities on severity. Accepts a comma-separated list.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          - INFORMATIONAL
+          - UNKNOWN
+          example: CRITICAL,HIGH
+      - in: query
+        name: firstObservedAtStart
+        description: "Start of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include vulnerabilities observed from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: firstObservedAtEnd
+        description: "End of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include vulnerabilities observed up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: sortBy
+        description: Sort results by the specified field.
+        schema:
+          type: string
+          enum:
+          - hasKev
+          - hasExploit
+          - lastObservedAt
+          - firstObservedAt
+          - severityLevelValue
+          example: hasExploit
+      - in: query
+        name: sortOrder
+        description: Sort order for the results.
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          example: ASC
+      - in: query
+        name: page
+        description: Page number for the results. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 10
+          default: 1
+          minimum: 1
+      - in: query
+        name: perPage
+        description: Number of results per page. Accepts a positive integer.
+        schema:
+          type: integer
+          example: 50
+          default: 100
+          maximum: 2000
+      - in: query
+        name: cursor
+        description: Get the next batch of vulnerabilities. Used for pagination. When cursor is provided, the response will not include total count.
+        schema:
+          type: string
+      - in: query
+        name: includeTotal
+        description: Include the total count of available vulnerabilities. Defaults to true. Set to false to improve response times for large datasets.
+        schema:
+          type: boolean
+          default: true
+          example: true
+      responses:
+        '200':
+          description: Successful response with the list of vulnerabilities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        schemaVersion:
+                          type: string
+                          example: '2022-06-09'
+                        assetId:
+                          type: string
+                          example: prn:assets:a
+                        organizationId:
+                          type: string
+                          example: 98ca8825-a65a-4b50-a6f0-4851c406aedc
+                        tenantId:
+                          type: string
+                          example: 98ca8825-a65a-4b50-a6f0-4851c406aedc
+                        integrationId:
+                          type: string
+                          example: 98ca8825-a65a-4b50-a6f0-4851c406aedc
+                        vulnerabilityId:
+                          type: string
+                          example: CVE-2022-22965
+                        provider:
+                          type: string
+                          example: AWS
+                        assetType:
+                          type: string
+                          example: AWS::EC2::Instance
+                        description:
+                          type: string
+                          example: A flaw was found in shadow-utils.
+                        severityLevel:
+                          type: string
+                          example: HIGH
+                        firstObservedAt:
+                          type: string
+                          example: '2023-10-27T04:54:37.830Z'
+                        lastObservedAt:
+                          type: string
+                          example: '2023-10-27T04:54:37.830Z'
+                        publishedDate:
+                          type: string
+                          example: '2023-10-27T04:54:37.830Z'
+                        executionId:
+                          type: string
+                          example: '1678607803935'
+                        title:
+                          type: string
+                          example: Sample Vulnerability Title
+                        targetName:
+                          type: string
+                          example: EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl
+                        severitySource:
+                          type: string
+                          example: redhat
+                        primaryUrl:
+                          type: string
+                          example: https://nvd.nist.gov/vuln/detail/CVE-2022-22965
+                        packages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              packageName:
+                                type: string
+                                example: sample-package
+                              targetName:
+                                type: string
+                                example: EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl
+                              targetType:
+                                type: string
+                                example: sample-target-type
+                              targetPath:
+                                type: string
+                                example: ip-172-31-29-14.ap-southeast-2.compute.internal
+                              targetClass:
+                                type: string
+                                example: os-pkgs
+                              fixedVersion:
+                                type: string
+                                example: 1.0.1
+                              installedVersion:
+                                type: string
+                                example: 1.0.0
+                        cwes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              name:
+                                type: string
+                                example: CWE-123
+                              cweId:
+                                type: string
+                                example: CWE-123
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/cwe/CWE-123
+                              description:
+                                type: string
+                                example: This is a sample CWE description.
+                        hasKev:
+                          type: boolean
+                          example: true
+                        hasExploit:
+                          type: boolean
+                          example: false
+                        hasVendorFix:
+                          type: boolean
+                          example: true
+                        knownExploit:
+                          oneOf:
+                          - type: 'null'
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              title:
+                                type: string
+                                example: Sample Exploit Title
+                              description:
+                                type: string
+                                example: This is a sample exploit description.
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/exploit/CVE-2023-12345
+                            example:
+                              cveID: CVE-2022-22965
+                              notes: ''
+                              dueDate: '2022-04-25'
+                              product: Spring Framework
+                              dateAdded: '2022-04-04'
+                              vendorProject: VMware
+                              requiredAction: Apply updates per vendor instructions.
+                              shortDescription: Spring MVC or Spring WebFlux application running on JDK 9+ may be vulnerable to remote code execution (RCE) via data binding.
+                              vulnerabilityName: Spring Framework JDK 9+ Remote Code Execution Vulnerability
+                        exploits:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: '1'
+                              title:
+                                type: string
+                                example: Sample Exploit Title
+                              description:
+                                type: string
+                                example: This is a sample exploit description.
+                              source:
+                                type: string
+                                example: MITRE
+                              sourceUrl:
+                                type: string
+                                example: https://example.com/exploit/CVE-2023-12345
+                        exemptions:
+                          oneOf:
+                          - type: 'null'
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                exemptionId:
+                                  type: string
+                                  format: uuid
+                                  example: e26380da-946e-496e-bebe-9774dae93ed5
+                                exemption:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                    reason:
+                                      type: string
+                                      enum:
+                                      - ACCEPTED_RISK
+                                      - COMPENSATING_CONTROL
+                                      - NO_VENDOR_FIX
+                                      - NOT_IN_USE
+                                      - OTHER_REASONS
+                                    rules:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          exemptionType:
+                                            type: string
+                                            enum:
+                                            - ASSET_VULNERABILITY
+                                            - BULK_EXEMPTION
+                                          vulnerabilityId:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: string
+                                          vulnerabilityIds:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: array
+                                              items:
+                                                type: string
+                                          assetIds:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: array
+                                              items:
+                                                type: string
+                                          assetRegions:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: array
+                                              items:
+                                                type: string
+                                          assetGroupIds:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: array
+                                              items:
+                                                type: string
+                                                format: uuid
+                                          assetTags:
+                                            oneOf:
+                                            - type: 'null'
+                                            - type: array
+                                              items:
+                                                type: object
+                                                properties:
+                                                  key:
+                                                    type: string
+                                                  value:
+                                                    type: string
+                                          noVendorFix:
+                                            type: boolean
+                                            format: nullable
+                                            example: true
+                                    createdAt:
+                                      type: string
+                                    updatedAt:
+                                      type: string
+                          example:
+                          - exemptionId: e26380da-946e-496e-bebe-9774dae93ed5
+                            exemption:
+                              name: exemption-rule-001
+                              reason: ACCEPTED_RISK
+                              createdAt: '2025-06-05T04:54:49.495Z'
+                              updatedAt: '2025-06-05T04:54:49.495Z'
+                              rules:
+                              - exemptionType: ASSET_VULNERABILITY
+                                vulnerabilityId: CVE-2025-12345
+                                vulnerabilityIds:
+                                - CVE-2025-12345
+                                assetIds:
+                                - prn:assets:c00720a1-c167-4fbf-87ea-b6172949b62d:aws:ec2:instance:ap-southeast-2:i-02dd74c78250f9f1a
+                                assetGroupIds:
+                                - e26380da-946e-496e-bebe-9774dae93ed5
+                                assetRegions:
+                                - ap-southeast-2
+                                assetTags:
+                                - key: Owner
+                                  value: TeamOne
+                                noVendorFix: false
+                        severityLevelValue:
+                          type: integer
+                          example: 4
+                  meta:
+                    type: object
+                    properties:
+                      perPage:
+                        type: number
+                      cursor:
+                        type: string
+                        description: Cursor for fetching the next page of results
+                      page:
+                        type: number
+                        description: Present only when includeTotal is true and cursor is not provided
+                      total:
+                        type: number
+                        description: Total number of vulnerabilities. Present only if includeTotal is set to true
+                      hasNextPage:
+                        type: boolean
+                        description: Present only when includeTotal is true and cursor is not provided
+                      hasPreviousPage:
+                        type: boolean
+                        description: Present only when includeTotal is true and cursor is not provided
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: Expected string to be a number, got abc123
+              examples:
+                example-0:
+                  summary: Invalid sortBy
+                  description: Response when sortBy is invalid
+                  value:
+                    errors:
+                    - message: 'sortBy must be one of the following: id, vulnerabilityId, severityLevel, severitySource, hasKev, hasExploit, file, createdAt, updatedAt'
+                example-1:
+                  summary: Invalid page
+                  description: Response when page is invalid
+                  value:
+                    errors:
+                    - message: page must be a positive integer
+                example-2:
+                  summary: Invalid perPage
+                  description: Response when perPage is invalid
+                  value:
+                    errors:
+                    - message: perPage must be a positive integer less than or equal to 1000
+                example-3:
+                  summary: sortOrder requires sortBy
+                  description: Response when sortBy is not provided to use sortOrder
+                  value:
+                    errors:
+                    - message: sortBy must be provided to use sortOrder
+                example-4:
+                  summary: Invalid sortOrder
+                  description: Response when sortOrder is invalid
+                  value:
+                    errors:
+                    - message: sortOrder must be either asc or desc (case insensitive)
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/profiles/{profileId}/vulnerability/exemptions:
+    post:
+      operationId: createVulnerabilityExemptionInProfile
+      tags:
+      - Vulnerabilities
+      summary: Create a vulnerability exemption in a profile
+      description: Creates an exemption definition scoped to the given profile. Use it to suppress specific vulnerabilities.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: profileId
+        description: Profile ID (UUID) or the literal string "default" for the default profile.
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - auditNote
+              - reason
+              - rules
+              properties:
+                name:
+                  type: string
+                auditNote:
+                  type: string
+                  minLength: 1
+                  maxLength: 250
+                reason:
+                  type: string
+                  enum:
+                  - ACCEPTED_RISK
+                  - COMPENSATING_CONTROL
+                  - NO_VENDOR_FIX
+                  - NOT_IN_USE
+                  - OTHER_REASONS
+                conditions:
+                  type: object
+                  anyOf:
+                  - required:
+                    - vulnerabilityIds
+                  - required:
+                    - assetGroupIds
+                  - required:
+                    - assetIds
+                  - required:
+                    - assetRegions
+                  - required:
+                    - assetTags
+                  properties:
+                    vulnerabilityIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 1000
+                      items:
+                        type: string
+                        minLength: 1
+                    assetGroupIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 200
+                      items:
+                        type: string
+                        minLength: 1
+                    assetIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 1000
+                      items:
+                        type: string
+                        minLength: 1
+                    assetRegions:
+                      type: array
+                      minItems: 1
+                      maxItems: 10
+                      items:
+                        type: string
+                        minLength: 1
+                    assetTags:
+                      type: array
+                      minItems: 1
+                      maxItems: 10
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                            minLength: 1
+                    noVendorFix:
+                      type: boolean
+                    hasKev:
+                      type: boolean
+                    hasExploit:
+                      type: boolean
+      responses:
+        '201':
+          description: Exemption created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VulnerabilityExemption'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+    get:
+      operationId: listVulnerabilityExemptionsInProfile
+      tags:
+      - Vulnerabilities
+      summary: List vulnerability exemptions in a profile
+      description: Lists all vulnerability exemptions scoped to the given profile with pagination support.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: path
+        name: profileId
+        description: Profile ID (UUID) or the literal string "default" for the default profile.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: limit
+        description: Maximum number of exemptions to return per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+          example: 10
+      - in: query
+        name: cursor
+        description: Cursor for pagination. Get the next batch of exemptions.
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      responses:
+        '200':
+          description: Exemptions list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VulnerabilityExemption'
+                  meta:
+                    type: object
+                    properties:
+                      hasNext:
+                        type: boolean
+                        example: true
+                      nextCursor:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+                      total:
+                        type: integer
+                        description: Total number of exemptions available
+                        example: 42
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/tenant/profiles/{profileId}/vulnerability/exemptions/{id}:
+    get:
+      operationId: getVulnerabilityExemption
+      tags:
+      - Vulnerabilities
+      summary: Get a vulnerability exemption by ID
+      description: Retrieves a specific vulnerability exemption by its ID.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: path
+        name: id
+        description: Exemption ID (UUID)
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: profileId
+        description: Profile ID (UUID) or the literal string "default" for the default profile.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Exemption retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VulnerabilityExemption'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Exemption not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      operationId: deleteVulnerabilityExemption
+      tags:
+      - Vulnerabilities
+      summary: Delete a vulnerability exemption by ID
+      description: Deletes a specific vulnerability exemption by its ID.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: path
+        name: id
+        description: Exemption ID (UUID)
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: profileId
+        description: Profile ID (UUID) or the literal string "default" for the default profile.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Exemption deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Exemption deleted
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Exemption not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+        '500':
+          $ref: '#/components/responses/500'
+    patch:
+      operationId: updateVulnerabilityExemption
+      tags:
+      - Vulnerabilities
+      summary: Update a vulnerability exemption by ID
+      description: Updates a specific vulnerability exemption by its ID. All fields are optional for partial updates.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: id
+        description: Exemption ID (UUID)
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: profileId
+        description: Profile ID (UUID) or the literal string "default" for the default profile.
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                auditNote:
+                  type: string
+                  minLength: 1
+                  maxLength: 250
+                reason:
+                  type: string
+                  enum:
+                  - ACCEPTED_RISK
+                  - COMPENSATING_CONTROL
+                  - NO_VENDOR_FIX
+                  - NOT_IN_USE
+                  - OTHER_REASONS
+                conditions:
+                  type: object
+                  anyOf:
+                  - required:
+                    - vulnerabilityIds
+                  - required:
+                    - assetGroupIds
+                  - required:
+                    - assetIds
+                  - required:
+                    - assetRegions
+                  - required:
+                    - assetTags
+                  properties:
+                    vulnerabilityIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 1000
+                      items:
+                        type: string
+                        minLength: 1
+                    assetGroupIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 200
+                      items:
+                        type: string
+                        minLength: 1
+                    assetIds:
+                      type: array
+                      minItems: 1
+                      maxItems: 1000
+                      items:
+                        type: string
+                        minLength: 1
+                    assetRegions:
+                      type: array
+                      minItems: 1
+                      maxItems: 10
+                      items:
+                        type: string
+                        minLength: 1
+                    assetTags:
+                      type: array
+                      minItems: 1
+                      maxItems: 10
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                            minLength: 1
+                    noVendorFix:
+                      type: boolean
+                    hasKev:
+                      type: boolean
+                    hasExploit:
+                      type: boolean
+      responses:
+        '200':
+          description: Exemption updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VulnerabilityExemption'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Exemption not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    VulnerabilityExemption:
+      type: object
+      properties:
+        exemptionId:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        profileId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          example: Critical Patch Exemption
+        auditNote:
+          type: string
+          example: Accepted risk due to compensating controls.
+        reason:
+          type: string
+          example: COMPENSATING_CONTROL
+        conditions:
+          type: object
+          anyOf:
+          - required:
+            - vulnerabilityIds
+          - required:
+            - assetGroupIds
+          - required:
+            - assetIds
+          - required:
+            - assetRegions
+          - required:
+            - assetTags
+          properties:
+            vulnerabilityIds:
+              type: array
+              items:
+                type: string
+                example: CVE-2023-12345
+            assetGroupIds:
+              type: array
+              items:
+                type: string
+                example: asset-group-123
+            assetIds:
+              type: array
+              items:
+                type: string
+                example: prn:assets:afeb4e5f-0370-4b43-8e37-7e4efc719358:aws:ec2:instance:ap-southeast-2:i-085a328dba59f229b
+            assetRegions:
+              type: array
+              items:
+                type: string
+                example: us-east-1
+            assetTags:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    example: environment
+                  value:
+                    type: string
+                    example: production
+            noVendorFix:
+              type: boolean
+              example: true
+            hasKev:
+              type: boolean
+              example: true
+            hasExploit:
+              type: boolean
+              example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-10-01T12:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-10-02T14:30:00Z'
+        createdBy:
+          type: string
+          example: user@example.com
+        updatedBy:
+          type: string
+          example: user@example.com
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

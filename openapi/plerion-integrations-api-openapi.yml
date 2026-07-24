@@ -1,0 +1,415 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Integrations API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Integrations
+  x-displayName: Integrations
+  description: 'Integrations enable customers to connect their own cloud environments to the Plerion platform.
+
+    Integrations allow for the collection of data from the integrated environment, e.g. Connecting Plerion to your cloud service provider will facilitate Plerion to collect, analyze, and prioritize the most significant risks across your cloud operating environments.'
+paths:
+  /v1/tenant/integrations:
+    get:
+      operationId: listTenantIntegrations
+      tags:
+      - Integrations
+      summary: List inbound integrations
+      x-mint:
+        metadata:
+          title: List inbound integrations in a tenant
+      description: Use the list integrations API to list all inbound integrations that have been added across the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          example: 2
+      - in: query
+        name: cursor
+        description: Cursor to get next batch of result. Used for pagination
+        schema:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: dGhhbmt5b3UtZm9yLWRlY29kaW5nLWhhdmUtYS1nb29kLWRheTop
+      - in: query
+        name: includeTotal
+        description: Include the total count of available integrations
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Integrations list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      oneOf:
+                      - title: AWS Integration Response
+                        $ref: '#/components/schemas/AWSIntegration'
+                      - title: Azure Integration Response
+                        $ref: '#/components/schemas/AzureIntegration'
+                      - title: GCP Integration Response
+                        $ref: '#/components/schemas/GCPIntegration'
+                      - title: Other Integration Response
+                        $ref: '#/components/schemas/OtherIntegration'
+                  meta:
+                    type: object
+                    properties:
+                      perPage:
+                        type: integer
+                        example: 1
+                      cursor:
+                        type: string
+                        example: ODcwMWUxOWYtYzg2OC00Mjc3LWE5ZTQtZWE5MWEzZTg1MGUz
+                      total:
+                        type: integer
+                        description: Total number of integrations available for the given filter. This will be present only if includeTotal is set to true
+                        example: 42
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+components:
+  schemas:
+    AzureIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Azure Production Subscription
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: Azure
+        type:
+          type: string
+          enum:
+          - AzureAccount
+          - AzureActiveDirectory
+          - AzureSubscription
+          description: Type of integration.
+          example: AzureSubscription
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        azureSubscriptionId:
+          type: string
+          description: Azure Subscription ID. Only returned for Azure integrations.
+          example: 12345678-1234-5678-1234-567812345678
+        azureDirectoryId:
+          type: string
+          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
+          example: 87654321-4321-8765-4321-876543218765
+    GCPIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: GCP Production Project
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: GCP
+        type:
+          type: string
+          enum:
+          - GCPProject
+          description: Type of integration.
+          example: GCPProject
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        gcpProjectId:
+          type: string
+          description: GCP Project ID. Only returned for GCP integrations.
+          example: my-gcp-project
+    OtherIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Kubernetes Cluster
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: Kubernetes
+        type:
+          type: string
+          enum:
+          - Kubernetes
+          - CASM
+          description: Type of integration.
+          example: Kubernetes
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    AWSIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: AWS Production Account
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          enum:
+          - AWSAccount
+          - CdrAws
+          description: Type of integration.
+          example: AWSAccount
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        awsAccountId:
+          type: string
+          description: AWS account ID. Only returned for AWS integrations.
+          example: '123456789012'
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

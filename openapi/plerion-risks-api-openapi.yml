@@ -1,0 +1,755 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Risks API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Risks
+  x-displayName: Risks
+  description: In a cloud environment there are usually many hundreds or thousands of misconfigurations, but which of those pose a clear and present danger of a breach? That’s what the Plerion risk is about.
+paths:
+  /v1/tenant/risks:
+    get:
+      operationId: listTenantRisks
+      tags:
+      - Risks
+      summary: List
+      x-mint:
+        metadata:
+          title: List risks in a tenant
+      description: Use the list risks API to retrieve and filter risks across the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: query
+        name: ids
+        schema:
+          type: string
+        description: Filter by risk IDs. Accepts a comma-separated list.
+        example: id1,id2
+      - in: query
+        name: fields
+        schema:
+          type: string
+        description: 'Select specific risk fields to include in the response. Only applies to risk properties. Accepts a comma-separated list of risk fields. Example fields: id, name, severityLevel, score'
+        example: id,name,severityLevel
+      - in: query
+        name: riskTypeIds
+        schema:
+          type: string
+        description: Filter by risk type IDs. Accepts a comma-separated list.
+        example: PLERION-RISK-1,PLERION-RISK-2
+      - in: query
+        name: environmentIds
+        description: 'Filter risks on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.
+
+
+          **Supported environment names:**
+
+          - `production` - Production environment
+
+          - `non-production` - Non-production environment'
+        schema:
+          type: string
+          example: production,550e8400-e29b-41d4-a716-446655440000
+      - in: query
+        name: integrationIds
+        schema:
+          type: string
+        description: Filter by integration IDs. Accepts a comma-separated list.
+        example: integration1,integration2
+      - in: query
+        name: primaryAssetIds
+        schema:
+          type: string
+        description: Filter by primary asset IDs. Accepts a comma-separated list.
+        example: asset1,asset2
+      - in: query
+        name: severityLevels
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+        description: Filter by severity levels. Accepts a comma-separated list.
+        example: CRITICAL,HIGH,MEDIUM,LOW
+      - in: query
+        name: lifecycleStates
+        schema:
+          type: string
+          enum:
+          - DISMISSED_ACCEPTED
+          - DISMISSED_NOT_A_RISK
+          - OPEN
+        description: Filter by lifecycle states. Accepts a comma-separated list.
+        example: DISMISSED_ACCEPTED,DISMISSED_NOT_A_RISK,OPEN
+      - in: query
+        name: resourceTypes
+        schema:
+          type: string
+        description: Filter by resource types. Accepts a comma-separated list.
+        example: AWS::S3::Bucket,AWS::Lambda::Function
+      - in: query
+        name: discoveredAtStart
+        schema:
+          type: string
+          format: date-time
+        description: 'Start of the date range for filtering risks based on the discovered date.  Specify the start of the range using a valid ISO 8601 date-time string.  If `discoveredAtStart` is provided and `discoveredAtEnd` is omitted,  results will include risks from this date to the present. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)'
+        example: '2025-02-01T18:09:07Z'
+      - in: query
+        name: discoveredAtEnd
+        schema:
+          type: string
+          format: date-time
+        description: 'End of the date range for filtering risks based on the discovered date. Specify the end of the range using a valid ISO 8601 date-time string.  If `discoveredAtEnd` is provided and `discoveredAtStart` is omitted,  results will include risks up to this date. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)'
+        example: '2025-02-08T18:09:07Z'
+      - in: query
+        name: include
+        description: 'This parameter is for loading relationships in the risk response. Available options: - `primaryAsset`: includes the complete primary asset object for each risk - `integration`: includes the complete integration object for each risk'
+        schema:
+          type: string
+          example: primaryAsset,integration
+      - in: query
+        name: sortBy
+        description: Order the list by supported field. Can accept `discoveredAt` or `score`. The default is `discoveredAt`.
+        schema:
+          type: string
+          enum:
+          - discoveredAt
+          - score
+          example: score
+      - in: query
+        name: sortOrder
+        description: The sort order of the list. Can accept `asc` or `desc`. The default is `desc`.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          example: desc
+      - in: query
+        name: cursor
+        description: Get the next batch of risks. Used for pagination.
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      - in: query
+        name: perPage
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 100
+        description: Number of items per page
+        example: 50
+      responses:
+        '200':
+          description: Risks list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                      - $ref: '#/components/schemas/Risk'
+                      - type: object
+                        properties:
+                          primaryAsset:
+                            $ref: '#/components/schemas/Asset'
+                          integration:
+                            $ref: '#/components/schemas/Integration'
+                  meta:
+                    type: object
+                    properties:
+                      perPage:
+                        type: integer
+                        example: 100
+                      total:
+                        type: integer
+                        example: 200
+                      cursor:
+                        type: integer
+                        example: 100
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  schemas:
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
+    Integration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Integration 001
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          enum:
+          - AWSAccount
+          - AzureAccount
+          - AzureActiveDirectory
+          - AzureSubscription
+          - GCPProject
+          - CdrAws
+          - Kubernetes
+          - CASM
+          description: Type of integration.
+          example: AWSAccount
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        awsAccountId:
+          type: string
+          description: AWS account ID. Only returned for AWS integrations.
+          example: '123456789012'
+        azureSubscriptionId:
+          type: string
+          description: Azure Subscription ID. Only returned for Azure integrations.
+          example: 12345678-1234-5678-1234-567812345678
+        azureDirectoryId:
+          type: string
+          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
+          example: 87654321-4321-8765-4321-876543218765
+        gcpProjectId:
+          type: string
+          description: GCP Project ID. Only returned for GCP integrations.
+          example: my-gcp-project
+    Asset:
+      type: object
+      properties:
+        schemaVersion:
+          type: string
+          example: '2022-06-09'
+        id:
+          type: string
+          example: prn:assets:afeb4e5f-0370-4b43-8e37-7e4efc719358:aws:ec2:instance:ap-southeast-2:i-085a328dba59f229b
+        organizationId:
+          type: string
+          example: dc16d897-7f52-4b73-be57-96c7c9a853da
+        tenantId:
+          type: string
+          example: 42749bc1-c99b-4c2c-a081-a6cda9370081
+        integrationId:
+          type: string
+          example: 458511a1-9bc2-4fce-97a0-0e3139588e6e
+        executionId:
+          type: string
+          example: 1675576960384
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          example: AWS::EC2::Instance
+        name:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: i-085a328dba59f229b
+        createdAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-04T06:07:09.092Z'
+        firstObservedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-04T06:02:40.594Z'
+        lastObservedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-05T06:02:40.384Z'
+        updatedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-05T06:07:02.959Z'
+        tags:
+          oneOf:
+          - type: array
+            items:
+              type: object
+              properties:
+                Key:
+                  type: string
+                  description: Name of the Tag's Key
+                  example: Department
+                Value:
+                  type: string
+                  description: Value of the Tag's Key
+                  example: Finance
+          - type: 'null'
+        isPubliclyExposed:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isVulnerable:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        numberOfLowVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 85
+        numberOfMediumVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 60
+        numberOfHighVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 15
+        numberOfCriticalVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 5
+        vulnerabilityScore:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 9
+        hasKev:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasExploit:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isExploitable:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isInVpc:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        lastScanId:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 1679594910265
+        lastScannedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-03-23T18:17:20.003Z'
+        imageId:
+          oneOf:
+          - type: string
+          - type: 'null'
+        platform:
+          oneOf:
+          - type: string
+          - type: 'null'
+        hasAdminPrivileges:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasOverlyPermissivePrivileges:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasAuthorizer:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasTracingEnabled:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        policy:
+          oneOf:
+          - type: object
+            $ref: '#/components/schemas/DynamicObject'
+          - type: 'null'
+        numberOfLowSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 3
+        numberOfMediumSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 1
+        numberOfHighSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 0
+        numberOfCriticalSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 2
+        lowSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        mediumSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        highSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        criticalSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        operatingSystem:
+          oneOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/OperatingSystem'
+          - type: 'null'
+        riskScore:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 9.36
+        operationalState:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: 'The operational state of the resource. Present only for resource types that support operational state.
+
+            Supported resource types: AWS EC2 Instance.
+
+            '
+          example: active
+        region:
+          type: string
+          example: us-east-1
+        service:
+          type: string
+          example: AWS::EC2
+        resourceId:
+          type: string
+          example: i-085a328dba59f229b
+        resourceName:
+          type: string
+          example: test-instance
+        resourceTags:
+          oneOf:
+          - type: array
+            items:
+              type: object
+              properties:
+                Key:
+                  type: string
+                  example: Public
+                Value:
+                  type: string
+                  example: true
+          - type: 'null'
+        resourceType:
+          type: string
+          example: AWS::EC2::Instance
+        fullResourceName:
+          type: string
+          example: arn:aws:iam::1111222233334444:policy/test-policy
+        providerAccountId:
+          type: string
+          example: 123456789012
+        resourceURL:
+          type: string
+          example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    OperatingSystem:
+      type: object
+      properties:
+        architecture:
+          type: string
+          description: The architecture of the operating system.
+          example: x86_64
+        name:
+          type: string
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
+          type: string
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
+          type: string
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
+          type: string
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
+          type: string
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
+          type: string
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
+          type: string
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    Risk:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the risk
+        riskTypeId:
+          type: string
+          description: ID of the risk type
+        organizationId:
+          type: string
+          description: ID of the organization
+        tenantId:
+          type: string
+          description: ID of the tenant
+        integrationId:
+          type: string
+          description: ID of the integration that the risk is a part of
+        description:
+          type: string
+          description: Description of the risk
+        primaryAssetId:
+          type: string
+          description: ID of the primary asset affected by the risk
+        region:
+          type:
+          - string
+          - 'null'
+          description: AWS/Azure/GCP region of the primary asset affected by the risk (e.g., ap-southeast-2), null when unknown
+        resolutions:
+          type: array
+          description: List of possible resolutions for the risk
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+                description: Unique key for the resolution
+              type:
+                type: string
+                description: Type of resolution
+              title:
+                type: string
+                description: Title of the resolution
+        score:
+          type: number
+          description: Overall risk score
+          format: float
+          minimum: 0
+          maximum: 10
+        likelihood:
+          type: number
+          description: Likelihood score of the risk
+          format: float
+          minimum: 0
+          maximum: 10
+        impact:
+          type: number
+          description: Impact score of the risk
+          format: float
+          minimum: 0
+          maximum: 10
+        severityLevel:
+          type: string
+          description: Severity level of the risk
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+        factors:
+          type: array
+          description: Contributing factors to the risk
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+                description: Unique key for the factor
+              meta:
+                type: object
+                description: Additional metadata for the factor
+              title:
+                type: string
+                description: Title of the factor
+              value:
+                type: number
+                description: Numerical value of the factor
+              verificationState:
+                type: string
+                description: Current verification state
+              description:
+                type: string
+                description: Detailed description of the factor
+        meta:
+          type: object
+          additionalProperties: false
+          description: Additional metadata about the risk
+          properties:
+            assetName:
+              type: string
+              description: Name of the associated asset
+            resourceType:
+              type: string
+              description: Type of the resource
+            fullResourceName:
+              type: string
+              description: Full resource name/path
+        discoveredAt:
+          type: string
+          description: Timestamp when the risk was discovered
+          format: date-time
+        lifecycleState:
+          type: string
+          description: Current state in the risk lifecycle
+          enum:
+          - DISMISSED_ACCEPTED
+          - DISMISSED_NOT_A_RISK
+          - OPEN
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

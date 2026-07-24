@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Alerts
+  x-displayName: Alerts
+  description: "The Plerion Risk Score (PRS) Engine has calculated Alerts that are the highest priority items based on the available information across Identity, Configuration, and Vulnerability Management. \nAlerts offer the highest value CONTEXT from across the Plerion Platform. Alerts are accompanied by a narrative to guide customers on the overall risk and the recommended remediation steps to take to improve, reduce, or eradicate the identified risk."
+paths:
+  /v1/tenant/alerts:
+    get:
+      operationId: listTenantAlerts
+      tags:
+      - Alerts
+      summary: List
+      x-mint:
+        metadata:
+          title: List alerts in a tenant
+      description: Use the list alerts API to get alerts for the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: ids
+        description: Filter alerts based on ID of the alert [Plerion Resource Names (prn)]. Accepts a comma-separated list of ids.
+        schema:
+          type: string
+          example: id1,id2
+      - in: query
+        name: workflowIds
+        description: Filter alerts based on Plerion Workflow IDs. Accepts a comma-separated list of workflow ids.
+        schema:
+          type: string
+          example: workflow1,workflow2
+      - in: query
+        name: integrationIds
+        description: Filter alerts based on Plerion integration ids. Accepts a comma-separated list of integration ids.
+        schema:
+          type: string
+          example: integration1,integration2
+      - in: query
+        name: assetGroupIds
+        description: Filter alerts based on asset group ids. Accepts a comma-separated list of asset group ids.
+        schema:
+          type: string
+          example: assetGroupId1,assetGroupId2
+      - in: query
+        name: statuses
+        description: Filter alerts based on statuses. Accepts a comma-separated list of statuses.
+        schema:
+          type: string
+          enum:
+          - OPEN
+          - RESOLVED
+          example: OPEN
+      - in: query
+        name: resourceTypes
+        description: Filter alerts based on provider resource types. Accepts a comma-separated list of resource types.
+        schema:
+          type: string
+          example: AWS::S3::Bucket,AWS::Lambda::Function
+      - in: query
+        name: providers
+        description: Filter alerts based on provider. Accepts a comma-separated list of providers.
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - GCP
+          - Kubernetes
+          example: AWS,GCP
+      - in: query
+        name: alertTypes
+        description: Filter alerts based on alert type. Accepts a comma-separated list of type.
+        schema:
+          type: string
+          enum:
+          - ASSET
+          - FINDING
+          example: ASSET
+      - in: query
+        name: flagged
+        description: Filter alerts based on flag status. Accepts a single value. The supported values are `true` or `false`.
+        schema:
+          type: string
+          example: false
+      - in: query
+        name: acknowledged
+        description: Filter alerts based on acknowledge status. Accepts a single value. The supported values are `true` or `false`.
+        schema:
+          type: string
+          example: false
+      - in: query
+        name: sortBy
+        description: Order the list by supported field
+        schema:
+          type: string
+          enum:
+          - riskScore
+          - discoveredDate
+          example: riskScore
+      - in: query
+        name: sortOrder
+        description: The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`.
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          example: ASC
+      - in: query
+        name: cursor
+        description: Get the next batch of alerts. Used for pagination.
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          example: 100
+          maximum: 1000
+      responses:
+        '200':
+          description: Alerts list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Alerts'
+                  meta:
+                    type: object
+                    properties:
+                      cursor:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+                      perPage:
+                        type: integer
+                        example: 10
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  schemas:
+    Alerts:
+      type: object
+      properties:
+        id:
+          type: string
+          example: prn:assets:12345678-fd05-414f-a367-b1ea84d345f1:aws:s3:bucket:ap-southeast-2:bucket-acl
+        tenantId:
+          type: string
+          example: 42749bc1-c99b-4c2c-a081-a6cda9370081
+        integrationId:
+          type: string
+          example: 458511a1-9bc2-4fce-97a0-0e3139588e6e
+        status:
+          type: string
+          example: OPEN
+        flagged:
+          type: boolean
+          example: false
+        acknowledged:
+          type: boolean
+          example: false
+        workflowId:
+          type: string
+          example: 451ba59f-8599-4bf4-81f6-618df7f79301
+        title:
+          type: string
+          example: Asset with risk score greater than or equal to 9
+        createdAt:
+          type: string
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          example: '2023-02-05T06:07:02.959Z'
+        summary:
+          type: array
+          description: Array of string containing summary of rules
+          items:
+            type: string
+          example:
+          - Publicly Exposed
+        alertType:
+          type: string
+          description: Specifies whether or not an alert is related to an asset. The value is returned as `ASSET` if an alert is associated with an asset and `FINDINGS` if no asset is associated with the alert.
+          example: ASSET
+        riskScore:
+          type: number
+          maximum: 9.99
+          example: 6.38
+          description: 'The Plerion Risk Score (PRS) is a key indicator to highlight and prioritize the importance of risks Plerion identifies.</br>
+
+            The PRS is calculated by Plerion''s risk calculation engine that carries out the risk calculation task resulting in a unique risk score for each linked asset on the Plerion Protection Platform.'
+        discoveredDate:
+          type: string
+          format: timestamp
+          example: 1677911631914
+        lastScannedAtTimestamp:
+          type: string
+          format: timestamp
+          example: 1677911631914
+        rulesChangedAtTimestamp:
+          type: string
+          format: timestamp
+          example: 1677911631914
+        closedAtTimestamp:
+          type: string
+          format: timestamp
+          example: 1677911631914
+        meta:
+          type: object
+          properties:
+            region:
+              type: string
+              example: ap-southeast-2
+            service:
+              type: string
+              example: AWS::EC2
+            provider:
+              type: string
+              example: AWS
+            resourceId:
+              type: string
+              example: https://ap-southeast-2.console.aws.amazon.com/ec2/home?region=ap-southeast-2#ImageDetails:imageId=ami-24234234234
+            resourceName:
+              type: string
+            resourceType:
+              type: string
+              example: AWS::EC2::AMI
+            firstObservedAt:
+              type: string
+              example: '2025-02-10T10:26:55.842Z'
+            providerAccountId:
+              type: string
+              example: 123456789012
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

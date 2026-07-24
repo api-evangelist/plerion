@@ -1,0 +1,306 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Audit logs API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Audit logs
+  x-displayName: Audit Logs
+  description: 'Audit logs provide a comprehensive trail of user activities and system operations within a tenant.
+
+    These logs capture important events such as user logins, API calls, configuration changes, and other security-relevant activities. Audit logs help with compliance, security monitoring, and troubleshooting.'
+paths:
+  /v1/tenant/audit-logs:
+    get:
+      operationId: listTenantAuditLogs
+      tags:
+      - Audit logs
+      summary: List
+      x-mint:
+        metadata:
+          title: List audit logs in a tenant
+      description: 'Use the list audit logs API to retrieve audit trail information for a tenant with filtering options.
+
+        By default, all audit logs are returned with a page size of 100. You can filter by date range, user, and operation type.
+
+
+        Date range filtering is supported using the `operationTimeStart` and `operationTimeEnd` parameters:
+
+        - `operationTimeStart` alone: Includes audit logs from the specified date to the present.
+
+        - `operationTimeEnd` alone: Includes audit logs up to the specified date.
+
+        - Both provided: Includes audit logs within the specified date range.
+
+
+        Date strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).'
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: operationTimeStart
+        description: "Start of the date range for filtering audit logs based on operation time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `operationTimeStart` is provided and `operationTimeEnd` is omitted, \nresults will include audit logs from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: operationTimeEnd
+        description: "End of the date range for filtering audit logs based on operation time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `operationTimeEnd` is provided and `operationTimeStart` is omitted, \nresults will include audit logs up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: userId
+        description: Filter audit logs based on operator user ID.
+        schema:
+          type: string
+          example: b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b
+      - in: query
+        name: operation
+        description: Filter audit logs based on operation type.
+        schema:
+          type: string
+          enum:
+          - ConfiguredServiceAccountRegion
+          - CreatePleriApiKey
+          - CreatedApiKey
+          - CreatedAssetGroup
+          - CreatedClickUpOutboundIntegration
+          - CreatedCustomReport
+          - CreatedDetectionSetting
+          - CreatedDrataOutboundIntegration
+          - CreatedEmailOutboundIntegration
+          - CreatedFramework
+          - CreatedIntegration
+          - CreatedJiraOutboundIntegration
+          - CreatedJiraSecurityOutboundIntegration
+          - CreatedNotificationRule
+          - CreatedOutboundIntegration
+          - CreatedPagerDutyOutboundIntegration
+          - CreatedPartnerSSO
+          - CreatedSQSOutboundIntegration
+          - CreatedSecurityHubOutboundIntegration
+          - CreatedSentinelOutboundIntegration
+          - CreatedServiceAccount
+          - CreatedServiceNowOutboundIntegration
+          - CreatedSlackOutboundIntegration
+          - CreatedTeamsOutboundIntegration
+          - CreatedVantaOutboundIntegration
+          - CreatedWebhookOutboundIntegration
+          - CreatedWellArchitectedWorkload
+          - CreatedWidget
+          - CreatedWorkflow
+          - DeleteIntegrationStarted
+          - DeleteTenantInternalStarted
+          - DeleteTenantStarted
+          - DeletedAssetGroup
+          - DeletedCustomReport
+          - DeletedDetectionSetting
+          - DeletedFramework
+          - DeletedNotification
+          - DeletedOutboundIntegration
+          - DeletedPartnerSSO
+          - DeletedRiskNotificationPreference
+          - DeletedServiceAccount
+          - DeletedServiceAccountRegion
+          - DeletedWidget
+          - DeletedWorkflow
+          - DownloadedComplianceSummary
+          - FlaggedAlert
+          - LoggedInPartnerSSO
+          - RevokedApiKey
+          - ScheduleCustomReport
+          - SendRiskToOutboundIntegration
+          - SuppressedFinding
+          - TriggeredScan
+          - UpdateAlertAcknowledgement
+          - UpdatedAlert
+          - UpdatedApiKey
+          - UpdatedAssetGroup
+          - UpdatedClickUpOutboundIntegration
+          - UpdatedCustomReport
+          - UpdatedDetectionSetting
+          - UpdatedDetectionSettingAssignment
+          - UpdatedEmailOutboundIntegration
+          - UpdatedFramework
+          - UpdatedIntegration
+          - UpdatedIntegrationDetectionConfigs
+          - UpdatedJiraOutboundIntegration
+          - UpdatedJiraSecurityOutboundIntegration
+          - UpdatedNotification
+          - UpdatedOutboundIntegration
+          - UpdatedPagerDutyOutboundIntegration
+          - UpdatedPartnerSSO
+          - UpdatedPassword
+          - UpdatedRiskLifecycle
+          - UpdatedRiskNotificationPreference
+          - UpdatedSQSOutboundIntegration
+          - UpdatedSecurityHubOutboundIntegration
+          - UpdatedSentinelOutboundIntegration
+          - UpdatedServiceAccount
+          - UpdatedServiceAccountRegion
+          - UpdatedServiceNowOutboundIntegration
+          - UpdatedSlackOutboundIntegration
+          - UpdatedTeamsOutboundIntegration
+          - UpdatedVantaOutboundIntegration
+          - UpdatedWebhookOutboundIntegration
+          - UpdatedWellArchitectedWorkload
+          - UpdatedWidget
+          - UpdatedWorkflow
+          - UserLoggedOut
+          - UserLogin
+          - UserSSOLogin
+          - VerifiedMFA
+          - WellArchitectedDeletedWorkload
+          example: UserLogin
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          default: 100
+          example: 100
+          maximum: 1000
+      - in: query
+        name: cursor
+        description: Get the next batch of audit logs. Used for pagination. When cursor is provided, the response will not include total count.
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      responses:
+        '200':
+          description: Audit logs list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AuditLog'
+                  meta:
+                    type: object
+                    properties:
+                      cursor:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+                      perPage:
+                        type: integer
+                        example: 10
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  schemas:
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: string
+          example: audit-log-12345
+        organizationId:
+          type: string
+          example: dc16d897-7f52-4b73-be57-96c7c9a853da
+        tenantId:
+          type: string
+          example: 42749bc1-c99b-4c2c-a081-a6cda9370081
+        operation:
+          type: string
+          example: UserLogin
+        operationTime:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:02:40.594Z'
+        operatorUserId:
+          type: string
+          example: b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b
+        operatorEmail:
+          type: string
+          format: email
+          example: user@example.com
+        userAgent:
+          type: string
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+        ip:
+          type: string
+          example: 192.168.1.1
+        location:
+          type: object
+          additionalProperties: true
+          example:
+            country: United States
+            city: New York
+            region: NY
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

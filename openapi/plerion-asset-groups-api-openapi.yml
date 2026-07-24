@@ -1,0 +1,572 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Asset groups API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Asset groups
+  x-displayName: Asset Groups
+  description: Asset Group is classifying assets into specific group based on the different criteria such as integration, asset tag, resource type and resource name.  This helps users to manage, organize, and analyze their assets more efficiently.  User can group assets based on the teams, projects, business units, environments, tech stack etc.
+paths:
+  /v1/tenant/asset-groups:
+    get:
+      operationId: listTenantAssetGroups
+      tags:
+      - Asset groups
+      summary: List
+      x-mint:
+        metadata:
+          title: List asset groups in a tenant
+      description: Retrieve a list of asset groups within the tenant. By default, 20 asset groups are returned per request.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: name
+        description: Filter asset groups by name
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      - in: query
+        name: cursor
+        description: Get the next batch of asset groups. Used for pagination
+        schema:
+          type: string
+          example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          example: 10
+          maximum: 1000
+      - in: query
+        name: includeTotal
+        description: Include the total count of available asset groups
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Asset Groups list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssetGroup'
+                  meta:
+                    type: object
+                    properties:
+                      cursor:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+                      total:
+                        type: integer
+                        description: Total number of asset groups available for the given filter. This will be present only if includeTotal is set to true
+                        example: 42
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+    post:
+      operationId: createAssetGroups
+      tags:
+      - Asset groups
+      summary: Create
+      x-mint:
+        metadata:
+          title: Create asset group in a tenant
+      description: Create a new asset group within the tenant. You can create an asset group using filters available in Plerion or by using your existing AWS resource group.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - rules
+              additionalProperties: false
+              example:
+                name: string
+                rules:
+                - - type: integration
+                    value:
+                    - 8f3be88c-0f3d-4ec0-a4ab-2699c993fbff
+                  - type: region
+                    value:
+                    - ap-south-1
+                    - us-east-1
+                  - type: AWSResourceGroup
+                    value:
+                    - f4e967fd-1475-4d11-901c-89e1df5e5784
+                  - type: resourceType
+                    value:
+                    - AWS::Lambda::Function
+                    - AWS::S3::Bucket
+                  - type: tag
+                    key: stage
+                    operator: equals
+                    value: dev
+                  - type: tag
+                    key: stage
+                    operator: contains
+                    value: qa
+                  - type: resourceName
+                    value: foundation
+                    operator: endsWith
+                  - type: resourceName
+                    value: dev
+                    operator: startsWith
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                rules:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: resourceType
+                          enum:
+                          - resourceType
+                          - region
+                          - resourceName
+                          - tag
+                          - integration
+                          - AWSResourceGroup
+                        value:
+                          oneOf:
+                          - type: array
+                            items:
+                              type: string
+                              example: AWS::Lambda::Function
+                          - type: object
+                            required:
+                            - operator
+                            - value
+                            properties:
+                              operator:
+                                type: string
+                                enum:
+                                - startsWith
+                                - endsWith
+                                - contains
+                                - equals
+                                - any
+                              value:
+                                type: string
+                          - type: object
+                            required:
+                            - operator
+                            - key
+                            properties:
+                              key:
+                                type: string
+                              operator:
+                                type: string
+                                enum:
+                                - startsWith
+                                - endsWith
+                                - contains
+                                - equals
+                                - any
+                              value:
+                                type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/responses/500'
+  /v1/tenant/asset-groups/{assetGroupId}:
+    get:
+      operationId: getSingleAssetGroup
+      tags:
+      - Asset groups
+      summary: Get
+      x-mint:
+        metadata:
+          title: Get specific asset group in a tenant
+      description: Retrieve a specific asset group by its ID within a tenant. This endpoint allows you to get detailed information about a particular asset group.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: assetGroupId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetGroupDetail'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    patch:
+      operationId: updateAssetGroups
+      tags:
+      - Asset groups
+      summary: Update
+      x-mint:
+        metadata:
+          title: Update specific asset group in a tenant
+      description: Update a specific asset group by its ID within a tenant. This endpoint allows you to update the name and rules of a particular asset group.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: assetGroupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              example:
+                name: string
+                rules:
+                - - type: integration
+                    value:
+                    - 8f3be88c-0f3d-4ec0-a4ab-2699c993fbff
+                  - type: AWSResourceGroup
+                    value:
+                    - f4e967fd-1475-4d11-901c-89e1df5e5784
+                  - type: region
+                    value:
+                    - ap-south-1
+                    - us-east-1
+                  - type: resourceType
+                    value:
+                    - AWS::Lambda::Function
+                    - AWS::S3::Bucket
+                  - type: tag
+                    key: stage
+                    operator: equals
+                    value: dev
+                  - type: tag
+                    key: stage
+                    operator: contains
+                    value: qa
+                  - type: resourceName
+                    value: foundation
+                    operator: endsWith
+                  - type: resourceName
+                    value: dev
+                    operator: startsWith
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                rules:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: resourceType
+                          enum:
+                          - resourceType
+                          - region
+                          - resourceName
+                          - tag
+                          - integration
+                          - AWSResourceGroup
+                        value:
+                          oneOf:
+                          - type: array
+                            items:
+                              type: string
+                              example: AWS::Lambda::Function
+                          - type: object
+                            required:
+                            - operator
+                            - value
+                            properties:
+                              operator:
+                                type: string
+                                enum:
+                                - startsWith
+                                - endsWith
+                                - contains
+                                - equals
+                                - any
+                              value:
+                                type: string
+                          - type: object
+                            required:
+                            - operator
+                            - key
+                            properties:
+                              key:
+                                type: string
+                              operator:
+                                type: string
+                                enum:
+                                - startsWith
+                                - endsWith
+                                - contains
+                                - equals
+                                - any
+                              value:
+                                type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Not found
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      operationId: deleteAssetGroups
+      tags:
+      - Asset groups
+      summary: Delete
+      x-mint:
+        metadata:
+          title: Delete specific asset group in a tenant
+      description: Delete a specific asset group by its ID within a tenant. This endpoint allows you to remove a particular asset group from the tenant.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: assetGroupId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Not found
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  schemas:
+    AssetGroupDetail:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
+        organizationId:
+          type: string
+          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
+        assetGroupId:
+          type: string
+          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
+        riskScore:
+          type: number
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:23.388Z'
+        name:
+          type: string
+          example: Asset group name
+        rules:
+          type: array
+          items:
+            type: array
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: resourceType
+                  enum:
+                  - resourceType
+                  - resourceName
+                  - tag
+                  - integration
+                  - AWSResourceGroup
+                value:
+                  type: array
+                  items:
+                    type: string
+        totalAssets:
+          type: number
+          example: 7
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:46.308Z'
+        status:
+          type: string
+          enum:
+          - completed
+          - syncInProgress
+          example: completed
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    AssetGroup:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
+        organizationId:
+          type: string
+          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
+        assetGroupId:
+          type: string
+          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
+        riskScore:
+          type: number
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:23.388Z'
+        name:
+          type: string
+          example: Asset group name
+        totalAssets:
+          type: number
+          example: 7
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:46.308Z'
+        status:
+          type: string
+          enum:
+          - completed
+          - syncInProgress
+          example: completed
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

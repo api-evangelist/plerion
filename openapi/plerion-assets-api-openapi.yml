@@ -1,0 +1,814 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Assets API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Assets
+  x-displayName: Assets
+  description: 'Plerion Assets form the basis upon which all Plerion contextual security is reported.
+
+
+    Every unique cloud resource on which Plerion collects information is classified as a single asset on the Plerion platform.
+
+
+    A detailed asset view combines various sources of security, compliance, and risk-related metrics to empower customers to make high-impact decisions when evaluating a single asset in relation to their overall cloud environments.'
+paths:
+  /v1/tenant/assets:
+    get:
+      operationId: listTenantAssets
+      tags:
+      - Assets
+      summary: List
+      x-mint:
+        metadata:
+          title: List assets in a tenant
+      description: Use the list assets API to filter assets across the tenant with many options from Provider, Service, Severity, Integration, etc. By default all assets are returned.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: ids
+        description: Filter assets based on Asset IDs. Accepts a comma-separated list.
+        schema:
+          type: string
+          example: id1,id2
+      - in: query
+        name: executionIds
+        description: Filter assets based on Integration Execution IDs. Accepts a comma-separated list.
+        schema:
+          type: string
+          example: 1678607803935,1778607801234
+      - in: query
+        name: regions
+        description: Filter assets based on Provider regions. Accepts a comma-separated list of regions.
+        schema:
+          type: string
+          example: us-east-1,us-west-2
+      - in: query
+        name: integrationIds
+        description: Filter assets based on Plerion Integration IDs. Accepts a comma-separated list.
+        schema:
+          type: string
+          example: integration1,integration2
+      - in: query
+        name: assetGroupIds
+        description: Filter assets based on asset group ids. Accepts a comma-separated list of asset group ids.
+        schema:
+          type: string
+          example: assetGroupId1,assetGroupId2
+      - in: query
+        name: environmentIds
+        description: 'Filter assets based on environment IDs. This parameter accepts both environment IDs (UUIDs) and environment names.
+
+
+          **Supported environment names:**
+
+          - `production` - Production environment
+
+          - `non-production` - Non-production environment
+
+
+          You can provide either environment IDs, environment names, or a combination of both.'
+        schema:
+          type: string
+          example: production,550e8400-e29b-41d4-a716-446655440000
+      - in: query
+        name: severityLevels
+        description: Filter assets based on vulnerability severity levels. Accepts a comma-separated list of severity levels.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          example: CRITICAL,HIGH
+      - in: query
+        name: secretsLevels
+        description: Filter assets based on exposed secrets severity levels. Accepts a comma-separated list of severity levels.
+        schema:
+          type: string
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+          example: CRITICAL,HIGH
+      - in: query
+        name: resourceTypes
+        description: Filter assets based on provider resource types. Accepts a comma-separated list of resource types.
+        schema:
+          type: string
+          example: AWS::S3::Bucket,AWS::Lambda::Function
+      - in: query
+        name: providers
+        description: Filter assets based on provider. Accepts a comma-separated list of providers.
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - GCP
+          - Kubernetes
+          example: AWS,GCP
+      - in: query
+        name: services
+        description: 'Filter assets based on cloud provider services. Accepts a comma-separated list of service names. Each service can be specified either by its name alone (e.g., `S3`, `Lambda`, `EC2`) or prefixed with its provider in the format `Provider::Service` (e.g., `AWS::S3`, `GCP::Compute`, `Azure::VirtualMachine`).
+
+          '
+        schema:
+          type: string
+          example: AWS::S3,GCP::Compute,Azure::VirtualMachine
+      - in: query
+        name: firstObservedAtStart
+        description: "Start of the date range for filtering assets based on the first observed time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include assets from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: firstObservedAtEnd
+        description: "End of the date range for filtering assets based on the first observed time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include assets up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+        schema:
+          type: string
+          format: date-time
+          example: '2023-02-01T18:09:07Z'
+      - in: query
+        name: hasAdminPrivileges
+        description: Filter assets based on whether the asset has Admin Privileges. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: hasOverlyPermissivePrivileges
+        description: Filter assets based on whether the asset has Overly Permissive Privileges. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: isSusceptibleToPrivilegeEscalation
+        description: Filter assets based on whether the asset is susceptible to privilege escalation. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: hasKev
+        description: Filter assets based on whether the asset has any unresolved vulnerability that is found on the CISA's Known Exploited Vulnerabilities Catalog. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: hasExploit
+        description: Filter assets based on whether the asset has any unresolved vulnerability that is referenced on the MITRE Exploit-DB reference map. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: isExploitable
+        description: Filter assets based on whether the asset has any unresolved vulnerability that has a CVSS v3 exploitability score greater than 1. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: isPubliclyExposed
+        description: Filter assets based on whether the asset is Publicly Accessible. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: isVulnerable
+        description: Filter assets based on whether the asset has any unresolved vulnerability regardless of severity, source, or status. The supported values are `true` or `false`
+        schema:
+          type: string
+          format: boolean
+          example: true
+      - in: query
+        name: query
+        description: Filter assets based on the Asset's name matching the provided value
+        schema:
+          type: string
+          example: test-asset-name
+      - in: query
+        name: metadata
+        description: Filter assets based on the asset's metadata matching the provided value. The search performs a case-insensitive substring match against all metadata keys and values, including nested fields.
+        schema:
+          type: string
+          example: t2.micro
+      - in: query
+        name: riskScoreGte
+        description: Filter assets based on the risk score calculated by Plerion for the asset. The supported values are numbers from 0 to 10.
+        schema:
+          type: string
+          format: number
+          example: 5
+      - in: query
+        name: operationalStates
+        description: "Filter assets based on their operational state. Accepts a comma-separated list of operational states.\n\nSupported values:\n  - `active` — running workloads\n  - `inactive` — not running workloads\n\nSupported resource types:\n  - AWS EC2 Instance — `active` indicates the instance is in a `running` state; `inactive` indicates it is `stopped` or `terminated`.\n\nWhen this filter is applied, only assets belonging to resource types that support operational state are returned.\n"
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+          example: active
+      - in: query
+        name: sortBy
+        description: Order the list by supported field
+        schema:
+          type: string
+          enum:
+          - id
+          - executionId
+          - integrationId
+          - resourceType
+          - service
+          - region
+          - name
+          - provider
+          - firstObservedAt
+          - lastObservedAt
+          - riskScore
+          - vulnerabilityScore
+          - numberOfLowVulnerabilities
+          - numberOfMediumVulnerabilities
+          - numberOfHighVulnerabilities
+          - numberOfCriticalVulnerabilities
+          example: executionId
+      - in: query
+        name: sortOrder
+        description: The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          example: ASC
+      - in: query
+        name: page
+        description: Get the next batch of assets. Used for pagination
+        schema:
+          type: number
+          minimum: 1
+          example: 2
+      - in: query
+        name: perPage
+        description: Specify the batch size of the list. Used for pagination
+        schema:
+          type: number
+          example: 100
+          maximum: 1000
+      responses:
+        '200':
+          description: Assets list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Asset'
+                  meta:
+                    $ref: '#/components/schemas/ListMeta'
+  /v1/tenant/assets/{assetId}:
+    get:
+      operationId: getTenantAsset
+      tags:
+      - Assets
+      summary: Get
+      x-mint:
+        metadata:
+          title: Get specific asset in a tenant
+      description: Retrieve a specific asset by its ID within a tenant. This endpoint allows you to get detailed information about a particular asset, including optional raw data if requested.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The PRN (asset ID) to retrieve
+        schema:
+          type: string
+      - in: query
+        name: include
+        description: Comma-separated list of additional data to include in the response. Use 'rawData' to include the raw asset data.
+        schema:
+          type: string
+          example: rawData
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                    - $ref: '#/components/schemas/Asset'
+                    - type: object
+                      properties:
+                        rawData:
+                          type: object
+                          description: The raw data for the asset from the provider
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: No asset found with id
+        '500':
+          $ref: '#/components/responses/500'
+  /v1/tenant/assets/{assetId}/sbom:
+    get:
+      operationId: getAssetSbom
+      tags:
+      - Assets
+      summary: Get SBOM
+      x-mint:
+        metadata:
+          title: Get SBOM for a specific asset
+      description: Retrieve the Software Bill of Materials (SBOM) for a specific asset identified by its ID within a tenant. This endpoint returns a URL that allows you to download the SBOM file.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: path
+        name: assetId
+        required: true
+        description: The asset ID to retrieve the SBOM for
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        description: A temporary URL to download the SBOM file
+                        example: https://your-bucket.s3.amazonaws.com/path/to/sbom.json?X-Amz-Algorithm=AWS4-HMAC-SHA256...
+                  meta:
+                    type: object
+                    properties:
+                      fileSizeInBytes:
+                        type: integer
+                        description: The size of the SBOM file in bytes
+                        example: 2621440
+                      expiresInSeconds:
+                        type: integer
+                        description: The number of seconds until the presigned URL expires
+                        example: 3600
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: SBOM not found
+                required:
+                - message
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  schemas:
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
+    Asset:
+      type: object
+      properties:
+        schemaVersion:
+          type: string
+          example: '2022-06-09'
+        id:
+          type: string
+          example: prn:assets:afeb4e5f-0370-4b43-8e37-7e4efc719358:aws:ec2:instance:ap-southeast-2:i-085a328dba59f229b
+        organizationId:
+          type: string
+          example: dc16d897-7f52-4b73-be57-96c7c9a853da
+        tenantId:
+          type: string
+          example: 42749bc1-c99b-4c2c-a081-a6cda9370081
+        integrationId:
+          type: string
+          example: 458511a1-9bc2-4fce-97a0-0e3139588e6e
+        executionId:
+          type: string
+          example: 1675576960384
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          example: AWS::EC2::Instance
+        name:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: i-085a328dba59f229b
+        createdAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-04T06:07:09.092Z'
+        firstObservedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-04T06:02:40.594Z'
+        lastObservedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-05T06:02:40.384Z'
+        updatedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-02-05T06:07:02.959Z'
+        tags:
+          oneOf:
+          - type: array
+            items:
+              type: object
+              properties:
+                Key:
+                  type: string
+                  description: Name of the Tag's Key
+                  example: Department
+                Value:
+                  type: string
+                  description: Value of the Tag's Key
+                  example: Finance
+          - type: 'null'
+        isPubliclyExposed:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isVulnerable:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        numberOfLowVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 85
+        numberOfMediumVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 60
+        numberOfHighVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 15
+        numberOfCriticalVulnerabilities:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 5
+        vulnerabilityScore:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 9
+        hasKev:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasExploit:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isExploitable:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        isInVpc:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        lastScanId:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 1679594910265
+        lastScannedAt:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: '2023-03-23T18:17:20.003Z'
+        imageId:
+          oneOf:
+          - type: string
+          - type: 'null'
+        platform:
+          oneOf:
+          - type: string
+          - type: 'null'
+        hasAdminPrivileges:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasOverlyPermissivePrivileges:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasAuthorizer:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        hasTracingEnabled:
+          oneOf:
+          - type: boolean
+          - type: 'null'
+          example: false
+        policy:
+          oneOf:
+          - type: object
+            $ref: '#/components/schemas/DynamicObject'
+          - type: 'null'
+        numberOfLowSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 3
+        numberOfMediumSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 1
+        numberOfHighSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 0
+        numberOfCriticalSecrets:
+          oneOf:
+          - type: number
+          - type: 'null'
+          example: 2
+        lowSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        mediumSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        highSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        criticalSecrets:
+          oneOf:
+          - $ref: '#/components/schemas/DynamicObjectArray'
+          - type: 'null'
+        operatingSystem:
+          oneOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/OperatingSystem'
+          - type: 'null'
+        riskScore:
+          oneOf:
+          - type: string
+          - type: 'null'
+          example: 9.36
+        operationalState:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: 'The operational state of the resource. Present only for resource types that support operational state.
+
+            Supported resource types: AWS EC2 Instance.
+
+            '
+          example: active
+        region:
+          type: string
+          example: us-east-1
+        service:
+          type: string
+          example: AWS::EC2
+        resourceId:
+          type: string
+          example: i-085a328dba59f229b
+        resourceName:
+          type: string
+          example: test-instance
+        resourceTags:
+          oneOf:
+          - type: array
+            items:
+              type: object
+              properties:
+                Key:
+                  type: string
+                  example: Public
+                Value:
+                  type: string
+                  example: true
+          - type: 'null'
+        resourceType:
+          type: string
+          example: AWS::EC2::Instance
+        fullResourceName:
+          type: string
+          example: arn:aws:iam::1111222233334444:policy/test-policy
+        providerAccountId:
+          type: string
+          example: 123456789012
+        resourceURL:
+          type: string
+          example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    OperatingSystem:
+      type: object
+      properties:
+        architecture:
+          type: string
+          description: The architecture of the operating system.
+          example: x86_64
+        name:
+          type: string
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
+          type: string
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
+          type: string
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
+          type: string
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
+          type: string
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
+          type: string
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
+          type: string
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    ListMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 100
+        total:
+          type: integer
+          example: 200
+        hasNextPage:
+          type: boolean
+          example: true
+        hasPreviousPage:
+          type: boolean
+          example: false
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Forbidden
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts Tenant API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: Tenant
+  x-displayName: Tenant
+  description: 'The Plerion platform caters for multi-tenancy.
+
+    Multi-tenancy within the Plerion platform delivers isolation for the integrations supported by Plerion. Each Tenancy (Tenant) allows for multiple inbound or outbound integrations, like integrating with Cloud Service Providers (AWS, Azure, GCP), and their corresponding Audit log service (AWS: CloudTrail, Azure: AuditLog, GCP: Cloud Audit Log).'
+paths:
+  /v1/tenant:
+    get:
+      operationId: getTenantDetails
+      tags:
+      - Tenant
+      summary: Get
+      x-mint:
+        metadata:
+          title: Get tenant details
+      description: Use the get tenant details API to retrieve information about the tenant including tenant ID, organization ID, name, creation date, last updated date, and current risk score.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Tenant Details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TenantDetails'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          description: Tenant Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tenant not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+  /v1/tenant/usage:
+    get:
+      operationId: getTenantUsage
+      tags:
+      - Tenant
+      summary: Usage
+      x-mint:
+        metadata:
+          title: Get the usage details of tenant
+      description: Use the get tenant usage API to get the usage details of the tenant. The API retrieves the total consumed Plerion units for the tenant for the specified period and additional information regarding whether the limit has been exceeded.
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: header
+        name: Content-Type
+        description: application/json
+        schema:
+          type: string
+      - in: query
+        name: date
+        description: Specify the date to get usage for the billing interval that falls on that date. If you don't include a date parameter, the API will default to using the current date. Accepts date time in the format `yyyy-MM-dd`, for example `2023-03-12`.
+        schema:
+          type: string
+          format: date
+          example: '2022-02-01'
+      responses:
+        '200':
+          description: Tenant Usage Details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/TenantUsage'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+components:
+  schemas:
+    TenantDetails:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+          description: Unique identifier for the tenant
+          example: a30ae34a-506a-43e1-af64-0bef06ed2086
+        organizationId:
+          type: string
+          format: uuid
+          description: Unique identifier for the organization
+          example: e9a9475a-1390-429c-b621-6fc4aab69ddb
+        name:
+          type: string
+          description: Name of the tenant
+          example: Plerion Demo
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp of the tenant
+          example: '2023-04-03T01:24:21.875Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp of the tenant
+          example: '2025-03-16T11:10:12.820Z'
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the tenant (if available)
+          example: 8.19
+    TenantUsage:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+          description: Start date of time period.
+          example: '2022-01-18T08:37:30Z'
+        endDate:
+          type: string
+          format: date-time
+          description: End date of time period.
+          example: '2022-01-18T08:37:30Z'
+        consumedPlerionUnits:
+          type: number
+          description: Total Consumed Plerion units by the tenant.
+          example: 89057
+        tenantCap:
+          type: number
+          description: Maximum number of Plerion units allocated to the tenant.
+          example: 600000
+        remainingPlerionUnits:
+          type: number
+          description: Remaining Plerion units by the tenant.
+          example: 558911
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"

@@ -1,0 +1,188 @@
+openapi: 3.1.0
+info:
+  title: Plerion API Documentation Alerts AWS integration API
+  version: v1
+  termsOfService: https://www.plerion.com/terms-and-conditions
+  contact:
+    name: Plerion Pty Ltd
+    url: https://www.plerion.com/contact-us
+    email: support@plerion.com
+  license:
+    name: Plerion Use License
+    url: https://www.plerion.com/terms-and-conditions
+  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+servers:
+- url: https://{region}.api.plerion.com
+  description: Production API server - Select your preferred region
+  variables:
+    region:
+      default: au
+      enum:
+      - au
+      - sg1
+      - in1
+      - us1
+tags:
+- name: AWS integration
+  x-displayName: AWS Integration
+  description: "In order to connect your AWS account to Plerion or update existing account, you will need, <ol>\n  <li> <b>CloudFormation Template URL</b>. Retrieve the template from <a href=\"#tag/AWS-Integration/operation/getCloudformationTemplate\">Get CloudFormation template</a></li>\n  <li> <b>External Id</b> of the tenant. Retrieve the External Id from <a href=\"#tag/AWS-Integration/operation/getExternalId\">Get the external id of the tenant</a></li>\n  <li> <b>Plerion AWS Account Id</b>. The value will always be <code>588158338731</code></li>\n  <li> <b>Temporary Auth Token</b>. Token to be passed to CloudFormation template that auto registers the AWS integration. Retrieve the temporary auth token from <a href=\"#tag/AWS-Integration/operation/createTemporaryToken\">Generate temporary token for creating AWS integration</a></li>\n  <li> <b>Plerion API URL</b>. The value will always be <code>au.api.plerion.com</code></li>\n  <li> Select <b>Capabilities</b>. Select CSPM for CSPM only capability or ALL for both CSPM and CWPP capability.</li>\n  <li> Select <b>KMSKeyAccessMode</b>. When CWPP is enabled, you can choose the KMS Key access mode to facilitate Plerion's access to keys for decrypting volumes, images, and lambda code. In the <b>ALL_KEYS</b> mode, Plerion is granted access to all KMS keys in the account. However, you have the option to restrict access to certain keys by applying the \"PlerionAccess: Denied\" tag. Alternatively, the <b>SELECTED_KEYS</b> mode allows Plerion access solely to the KMS keys that have been tagged with \"PlerionAccess: Granted\".</li>\n</ol> Passing the parameters to the CloudFormation template will create a new AWS integration or update existing integration. <br/><br/>\n<h3><b>Quick Start</b></h3>\nFollow the guide to create a new AWS integration or update existing integration using <code>curl</code> command.  <br/> <b>Note:</b> Replace {$PLERION_API_KEY} with your API key. <br/><br/>\n<h4> <b>Create a new AWS Integration</b></h4>\n<pre>\n  export PLERION_API_URL=au.api.plerion.com\n  export PLERION_API_KEY={$PLERION_API_KEY}\n  export PLERION_AWS_ACCOUNT_ID=588158338731\n  # Fetch the template URL\n  export TEMPLATE_URL=$(curl -s GET  \"https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.templateURL')\n  # Generate the temporary auth token\n  export TEMP_AUTH_TOKEN=$(curl -s -X POST  \"https://$PLERION_API_URL/v1/tenant/integrations/token\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.token')\n  # Fetch the external ID\n  export EXTERNAL_ID=$(curl -s -X GET  \"https://$PLERION_API_URL/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.externalId')\n  # Create the stack\n  export PLERION_STACK_NAME=plerion-aws-integration\n  aws cloudformation create-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities CAPABILITY_NAMED_IAM \\\n    --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \\\n      ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \\\n      ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \\\n      ParameterKey=Capabilities,ParameterValue=ALL \\\n      ParameterKey=KMSKeyAccessMode,ParameterValue=\"ALL_KEYS\" \\\n      ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL\n  # Wait for the stack to complete\n  aws cloudformation wait stack-create-complete --stack-name $PLERION_STACK_NAME\n</pre> <br/><br/> <h4> <b>Update an existing AWS Integration</b></h4>\n<pre>\n  export PLERION_API_URL=au.api.plerion.com\n  export PLERION_API_KEY={$PLERION_API_KEY}\n  export PLERION_AWS_ACCOUNT_ID=588158338731\n  # Fetch the template URL\n  export TEMPLATE_URL=$(curl -s GET  \"https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.templateURL')\n  # Generate the temporary auth token\n  export TEMP_AUTH_TOKEN=$(curl -s -X POST  \"https://$PLERION_API_URL/v1/tenant/integrations/token\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.token')\n  # Fetch the external ID\n  export EXTERNAL_ID=$(curl -s -X GET  \"https://$PLERION_API_URL/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.externalId')\n  # Update an existing stack\n  export PLERION_STACK_NAME=plerion-aws-integration\n  aws cloudformation update-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities CAPABILITY_NAMED_IAM \\\n    --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \\\n      ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \\\n      ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \\\n      ParameterKey=Capabilities,ParameterValue=ALL \\\n      ParameterKey=KMSKeyAccessMode,ParameterValue=\"ALL_KEYS\" \\\n      ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL\n  # Wait for the stack to complete\n  aws cloudformation wait stack-update-complete --stack-name $PLERION_STACK_NAME\n</pre>"
+paths:
+  /v1/tenant/external-id:
+    get:
+      tags:
+      - AWS integration
+      operationId: getExternalId
+      summary: Get external id
+      x-mint:
+        metadata:
+          title: Get the external ID of the tenant
+      description: 'Use the API to get the external ID of the tenant. The external ID is fixed for a tenant and used for cross-account access to AWS role. Read more about <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html#external-id-purpose">External Id purpose</a>.
+
+        ```bash
+
+        curl "https://au.api.plerion.com/v1/tenant/external-id" -H "Authorization: Bearer $PLERION_API_KEY"
+
+        ```'
+      security:
+      - APIKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ExternalId'
+        '403':
+          $ref: '#/components/responses/403'
+  /v1/tenant/integrations/token:
+    post:
+      tags:
+      - AWS integration
+      operationId: createTemporaryToken
+      summary: Generate temporary token
+      x-mint:
+        metadata:
+          title: Generate temporary token for creating AWS integration
+      description: "Use the API to generate a temporary token required for creating AWS integration using CloudFormation template provided by Plerion.\n```bash\n  curl -X POST https://au.api.plerion.com/v1/tenant/integrations/token -H \"Authorization: Bearer $PLERION_API_KEY\"\n```"
+      security:
+      - APIKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TemporaryAuthToken'
+        '403':
+          $ref: '#/components/responses/403'
+  /v1/tenant/cloudformation-templates:
+    get:
+      operationId: getCloudformationTemplate
+      tags:
+      - AWS integration
+      summary: Get CloudFormation template
+      description: "Use the API to get the CloudFormation template required for creating / updating AWS integrations in Plerion. \n```bash\n  curl https://au.api.plerion.com/v1/tenant/cloudformation-templates?type=AWSAccount -H \"Authorization: Bearer $PLERION_API_KEY\"\n```"
+      security:
+      - APIKey: []
+      parameters:
+      - $ref: '#/components/parameters/paramAuthHeader'
+      - in: query
+        name: type
+        description: The type of integration for which the CloudFormation template is required
+        schema:
+          type: string
+          enum:
+          - AWSAccount
+          example: AWSAccount
+      responses:
+        '200':
+          description: CloudFormation Template
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      templateURL:
+                        type: string
+                        example: https://pl-ap-southeast-2-prod-static-policy-bucket.s3.ap-southeast-2.amazonaws.com/templates/aws-account-automated/v12/cloudformation.yaml
+                      templateVersion:
+                        type: string
+                        example: v12
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Forbidden
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    ExternalId:
+      type: object
+      properties:
+        externalId:
+          type: string
+    TemporaryAuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+  securitySchemes:
+    APIKey:
+      type: http
+      scheme: bearer
+      bearerFormat: apiKey
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
