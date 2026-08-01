@@ -1,0 +1,22 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/plerion-openapi-original.yml
+notes: >-
+  Versioning and lifecycle posture. The API is versioned in the URI path (v1) and Plerion
+  maintains a dated product changelog. No dedicated deprecation policy page, Sunset/Deprecation
+  header support (RFC 8594), SLA page, or public branded status page was confirmed at capture
+  time (plerion.statuspage.io resolves to the generic unclaimed Statuspage placeholder, so no
+  StatusPage pointer is emitted). No operations are marked deprecated in the OpenAPI.
+versioning:
+  scheme: uri-path
+  current: v1
+changelog:
+  url: https://docs.plerion.com/changelog
+  see: changelog/plerion-changelog.yml
+deprecation:
+  policy_url: null
+  sunset_header: false
+sla:
+  url: null
+status_page: null
+deprecated_operations: []

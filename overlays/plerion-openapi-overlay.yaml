@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Plerion API
+  version: 1.0.0
+extends: openapi/plerion-openapi-original.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-07-20'
+      x-apievangelist-provider: plerion
+      x-apievangelist-artifacts:
+        authentication: authentication/plerion-authentication.yml
+        conventions: conventions/plerion-conventions.yml
+        errors: errors/plerion-problem-types.yml
+        lifecycle: lifecycle/plerion-lifecycle.yml
+        data-model: data-model/plerion-data-model.yml
+        mcp: mcp/plerion-mcp.yml
+  - target: $.info
+    update:
+      x-apievangelist-auth:
+        model: http-bearer (Tenant API Key)
+        docs: https://docs.plerion.com/api-reference/index
+  - target: $.info
+    update:
+      x-apievangelist-pagination:
+        style: cursor
+        params: [cursor, perPage]
+        response: [cursor, perPage, hasNextPage]

@@ -1,0 +1,36 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/plerion-openapi-original.yml
+docs: https://docs.plerion.com/api-reference
+format: json
+notes: >-
+  Derived from the OpenAPI 4xx/5xx responses. Plerion returns JSON error bodies with
+  application/json (not application/problem+json / RFC 9457). A documented 429 (rate limiting)
+  is described in prose but not enumerated as a modelled response object in the spec.
+envelope: application/json
+problems:
+  - status: 400
+    title: Bad Request
+    meaning: The request was malformed or missing required parameters.
+  - status: 403
+    title: Forbidden
+    meaning: The API key is missing, invalid, or lacks access to the requested tenant resource.
+  - status: 404
+    title: Tenant Not Found
+    meaning: The referenced tenant (or resource) does not exist.
+  - status: 413
+    title: Request Entity Too Large
+    meaning: Upload file size exceeds the maximum limit (e.g. IaC scan uploads).
+    source_operation: openapi/plerion-openapi-original.yml#postIaCScan
+  - status: 415
+    title: Unsupported Media Type
+    meaning: The request Content-Type is not supported by the endpoint.
+  - status: 422
+    title: Unprocessable Entity
+    meaning: Validation failed (e.g. perPage must be a positive integer <= the maximum).
+  - status: 429
+    title: Too Many Requests
+    meaning: Rate limit exceeded for the tenant during the allotted time period.
+  - status: 500
+    title: Internal Server Error
+    meaning: An unexpected error occurred on the Plerion side.

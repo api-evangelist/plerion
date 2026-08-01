@@ -1,0 +1,17 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.plerion.com/cli-reference/installation
+notes: >-
+  Plerion distributes a first-party command-line binary (Rust) via GitHub Releases and an
+  install script. No first-party language client SDK (npm / PyPI / Maven / NuGet / Go / RubyGems /
+  crates.io published package) was found at capture time; the documented integration path is
+  the REST API (curl / Bearer API key) plus the CLI. If Plerion later publishes language SDKs,
+  add them here and emit an SDKs pointer.
+packages:
+  - language: rust
+    registry: github-releases
+    name: plerion-cli
+    url: https://github.com/plerionhq/plerion-cli
+    install: curl -fsSL https://raw.githubusercontent.com/plerionhq/plerion-cli/main/install.sh | sh
+    official: true
+    kind: cli

@@ -1,0 +1,92 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/plerion-openapi-original.yml
+notes: >-
+  Entity-relationship graph derived from the Plerion tenant API operations and path structure.
+  Everything is scoped under a single Tenant. Relationships reflect id-reference fields and
+  nested resource paths in the OpenAPI.
+entities:
+  - name: Tenant
+    description: The top-level account scope; every resource belongs to a tenant.
+    operations: [getTenantDetails, getTenantUsage, getExternalId]
+  - name: Integration
+    description: A connected cloud/source account (AWS, Azure, GCP, Kubernetes, code repos).
+    operations: [listTenantIntegrations, createTemporaryToken, getCloudformationTemplate]
+  - name: Asset
+    description: A discovered cloud resource within the tenant.
+    operations: [listTenantAssets, getTenantAsset, getAssetSbom]
+  - name: AssetGroup
+    description: A user-defined grouping of assets by filter or AWS resource group.
+    operations: [listTenantAssetGroups, createAssetGroups, getSingleAssetGroup, updateAssetGroups, deleteAssetGroups]
+  - name: Finding
+    description: A security posture finding (PASSED/FAILED) against an asset.
+    operations: [listTenantFindings]
+  - name: Alert
+    description: A risk-based alert delivered to configured destinations.
+    operations: [listTenantAlerts]
+  - name: Risk
+    description: A prioritized security risk identified across the tenant.
+    operations: [listTenantRisks]
+  - name: Vulnerability
+    description: A software vulnerability detected across cloud workloads.
+    operations: [listTenantVulnerabilities]
+  - name: VulnerabilityExemption
+    description: A profile-scoped suppression of specific vulnerabilities.
+    operations: [createVulnerabilityExemptionInProfile, listVulnerabilityExemptionsInProfile, getVulnerabilityExemption, updateVulnerabilityExemption, deleteVulnerabilityExemption]
+  - name: IaCScan
+    description: An infrastructure-as-code security scan and its findings/vulnerabilities.
+    operations: [postIaCScan, listIaCScansByTenant, getIaCFindingsByScanId, getIaCVulnerabilitiesByScanId]
+  - name: ComplianceFramework
+    description: A regulatory/standard framework posture and its reports.
+    operations: [listTenantComplianceFrameworks, requestComplianceFrameworkReport, downloadComplianceFramework]
+  - name: WellArchitectedFramework
+    description: An AWS Well-Architected framework posture and its reports.
+    operations: [listTenantWellArchitectedFrameworks, requestWellArchitectedFrameworkReport, downloadWellArchitectedFramework]
+  - name: AuditLog
+    description: Audit trail of tenant operations.
+    operations: [listTenantAuditLogs]
+relationships:
+  - from: Integration
+    type: belongs_to
+    to: Tenant
+    via: tenant
+  - from: Asset
+    type: belongs_to
+    to: Tenant
+    via: tenant
+  - from: Asset
+    type: belongs_to
+    to: Integration
+    via: integration
+  - from: AssetGroup
+    type: has_many
+    to: Asset
+    via: rules
+  - from: Finding
+    type: belongs_to
+    to: Asset
+    via: assetId
+  - from: Vulnerability
+    type: belongs_to
+    to: Asset
+    via: assetId
+  - from: VulnerabilityExemption
+    type: belongs_to
+    to: Vulnerability
+    via: profileId
+  - from: IaCScan
+    type: has_many
+    to: Finding
+    via: scanId
+  - from: IaCScan
+    type: has_many
+    to: Vulnerability
+    via: scanId
+  - from: ComplianceFramework
+    type: belongs_to
+    to: Integration
+    via: integrationId
+  - from: WellArchitectedFramework
+    type: belongs_to
+    to: Integration
+    via: integrationId

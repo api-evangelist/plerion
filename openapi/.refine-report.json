@@ -1,0 +1,40 @@
+{
+  "provider": "plerion",
+  "sources": [
+    "plerion-alerts-api-openapi.yml",
+    "plerion-asset-groups-api-openapi.yml",
+    "plerion-assets-api-openapi.yml",
+    "plerion-audit-logs-api-openapi.yml",
+    "plerion-aws-integration-api-openapi.yml",
+    "plerion-code-security-api-openapi.yml",
+    "plerion-compliance-frameworks-api-openapi.yml",
+    "plerion-findings-api-openapi.yml",
+    "plerion-integrations-api-openapi.yml",
+    "plerion-risks-api-openapi.yml",
+    "plerion-tenant-api-openapi.yml",
+    "plerion-vulnerabilities-api-openapi.yml",
+    "plerion-well-architected-frameworks-api-openapi.yml"
+  ],
+  "outputs": [
+    "plerion-alerts-api-openapi.yml",
+    "plerion-asset-groups-api-openapi.yml",
+    "plerion-assets-api-openapi.yml",
+    "plerion-audit-logs-api-openapi.yml",
+    "plerion-aws-integration-api-openapi.yml",
+    "plerion-code-security-api-openapi.yml",
+    "plerion-compliance-frameworks-api-openapi.yml",
+    "plerion-findings-api-openapi.yml",
+    "plerion-integrations-api-openapi.yml",
+    "plerion-risks-api-openapi.yml",
+    "plerion-tenant-api-openapi.yml",
+    "plerion-vulnerabilities-api-openapi.yml",
+    "plerion-well-architected-frameworks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [
+    "plerion-vulnerabilities-api-openapi.yml: dangling $ref: #/components/schemas/NotFoundErrorResponse"
+  ],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

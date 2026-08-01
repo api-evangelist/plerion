@@ -1,0 +1,15 @@
+generated: '2026-07-20'
+method: searched
+probe: true
+url: https://trust.plerion.com/
+platform: Vanta
+certifications: []
+notes: >-
+  Plerion operates a Vanta-powered Trust Center at trust.plerion.com (HTTP 200). The page is
+  client-side rendered, so specific named certifications (e.g. SOC 2, ISO 27001) could not be
+  enumerated from the raw response at capture time and are intentionally left empty rather than
+  asserted. Revisit to enumerate published attestations. No `Compliance` pointer is emitted
+  because no specific certification could be verified.
+evidence:
+  - source: https://trust.plerion.com/
+    keywords: [trust center, vanta]

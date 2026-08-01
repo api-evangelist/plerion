@@ -1,0 +1,16 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/plerion-openapi-original.yml
+skills:
+  - file: plerion-triage-findings.md
+    name: Triage Plerion security findings
+    api: openapi/plerion-openapi-original.yml
+    operations: [getTenantDetails, listTenantFindings, listTenantRisks, listTenantAlerts]
+  - file: plerion-scan-iac.md
+    name: Scan Infrastructure-as-Code with Plerion
+    api: openapi/plerion-openapi-original.yml
+    operations: [postIaCScan, listIaCScansByTenant, getIaCFindingsByScanId, getIaCVulnerabilitiesByScanId]
+  - file: plerion-compliance-report.md
+    name: Pull a Plerion compliance framework report
+    api: openapi/plerion-openapi-original.yml
+    operations: [listTenantComplianceFrameworks, requestComplianceFrameworkReport, downloadComplianceFramework]

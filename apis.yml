@@ -1,9 +1,29 @@
 aid: plerion
 name: Plerion
-description: 'Plerion is a company surfaced as a portfolio company of prosus-ventures and added to the
-  API Evangelist network as a stub for enrichment. Sector: security. This profile is a lead awaiting the
-  enrichment pipeline.'
+description: >-
+  Plerion is an AI-powered cloud security platform that gives teams unified visibility and
+  automated remediation across cloud, code, and AI. It covers Cloud Security Posture Management
+  (CSPM) for AWS, Azure, GCP, and Kubernetes; Cloud Workload Protection (CWPP) with vulnerability
+  and SBOM scanning; Code Security (IaC and SCA scanning for GitHub, GitLab, and Bitbucket); AI
+  Security Posture Management (AI-SPM) for Bedrock, OpenAI, and Anthropic deployments; attack-path
+  analysis, entitlements analysis, resource access grants, and compliance tracking against
+  frameworks like ISO 27001, SOC 2, CIS, and ISMS-P. Plerion exposes a tenant-scoped REST API
+  (Bearer API key, regional hosts) plus a cross-platform CLI so teams can query findings, assets,
+  risks, vulnerabilities, and compliance posture programmatically.
 url: https://raw.githubusercontent.com/api-evangelist/plerion/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://www.plerion.com/favicon.ico
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -12,11 +32,407 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
 - Security
-apis: []
+- Cloud Security
+- CSPM
+- Cloud Workload Protection
+- Vulnerability Management
+- Compliance
+- AI Security
+- DevSecOps
+- API
+apis:
+- aid: plerion:plerion-alerts-api
+  name: Plerion Alerts API
+  description: "The Plerion Risk Score (PRS) Engine has calculated Alerts that are the highest priority\
+    \ items based on the available information across Identity, Configuration, and Vulnerability Management.\
+    \ \nAlerts offer the highest value CONTEXT from across the Plerion Platform. Alerts are accompanied\
+    \ by a narrative to guide customers on the overall risk and the recommended remediation steps to take\
+    \ to improve, reduce, or eradicate the identified risk."
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Alerts
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-alerts-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-asset-groups-api
+  name: Plerion Asset groups API
+  description: >-
+    Asset Group is classifying assets into specific group based on the different criteria such as integration,
+    asset tag, resource type and resource name.  This helps users to manage, organize, and analyze their
+    assets more efficiently.  User can group assets based on the teams, projects, business units, environments,
+    tech stack etc.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Asset groups
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-asset-groups-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-assets-api
+  name: Plerion Assets API
+  description: >-
+    Plerion Assets form the basis upon which all Plerion contextual security is reported.
+
+
+    Every unique cloud resource on which Plerion collects information is classified as a single asset
+    on the Plerion platform.
+
+
+    A detailed asset view combines various sources of security, compliance, and risk-related metrics to
+    empower customers to make high-impact decisions when evaluating a single asset in relation to their
+    overall cloud environments.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-assets-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-audit-logs-api
+  name: Plerion Audit logs API
+  description: >-
+    Audit logs provide a comprehensive trail of user activities and system operations within a tenant.
+
+    These logs capture important events such as user logins, API calls, configuration changes, and other
+    security-relevant activities. Audit logs help with compliance, security monitoring, and troubleshooting.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Audit logs
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-audit-logs-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-aws-integration-api
+  name: Plerion AWS integration API
+  description: >-
+    In order to connect your AWS account to Plerion or update existing account, you will need, <ol>
+      <li> <b>CloudFormation Template URL</b>. Retrieve the template from <a href="#tag/AWS-Integration/operation/getCloudformationTemplate">Get
+    CloudFormation template</a></li>
+      <li> <b>External Id</b> of the tenant. Retrieve the External Id from <a href="#tag/AWS-Integration/operation/getExternalId">Get
+    the external id of the tenant</a></li>
+      <li> <b>Plerion AWS Account Id</b>. The value will always be <code>588158338731</code></li>
+      <li> <b>Temporary Auth Token</b>. Token to be passed to CloudFormation template that auto registers
+    the AWS integration. Retrieve the temporary auth token from <a href="#tag/AWS-Integration/operation/createTemporaryToken">Generate
+    temporary token for creating AWS integration</a></li>
+      <li> <b>Plerion API URL</b>. The value will always be <code>au.api.plerion.com</code></li>
+      <li> Select <b>Capabilities</b>. Select CSPM for CSPM only capability or ALL for both CSPM and CWPP
+    capability.</li>
+      <li> Select <b>KMSKeyAccessMode</b>. When CWPP is enabled, you can choose the KMS Key access mode
+    to facilitate Plerion's access to keys for decrypting volumes, images, and lambda code. In the <b>ALL_KEYS</b>
+    mode, Plerion is granted access to all KMS keys in the account. However, you have the option to restrict
+    access to certain keys by applying the "PlerionAccess: Denied" tag. Alternatively, the <b>SELECTED_KEYS</b>
+    mode allows Plerion access solely to the KMS keys that have been tagged with "PlerionAccess: Granted".</li>
+    </ol> Passing the parameters to the CloudFormation template will create a new AWS integration or update
+    existing integration. <br/><br/>
+
+    <h3><b>Quick Start</b></h3>
+
+    Follow the guide to create a new AWS integration or update existing integration using <code>curl</code>
+    command.  <br/> <b>Note:</b> Replace {$PLERION_API_KEY} with your API key. <br/><br/>
+
+    <h4> <b>Create a new AWS Integration</b></h4>
+
+    <pre>
+      export PLERION_API_URL=au.api.plerion.com
+      export PLERION_API_KEY={$PLERION_API_KEY}
+      export PLERION_AWS_ACCOUNT_ID=588158338731
+      # Fetch the template URL
+      export TEMPLATE_URL=$(curl -s GET  "https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount"
+    -H "Authorization: Bearer $PLERION_API_KEY" | jq -r '.data.templateURL')
+      # Generate the temporary auth token
+      export TEMP_AUTH_TOKEN=$(curl -s -X POST  "https://$PLERION_API_URL/v1/tenant/integrations/token"
+    -H "Authorization: Bearer $PLERION_API_KEY" | jq -r '.data.token')
+      # Fetch the external ID
+      export EXTERNAL_ID=$(curl -s -X GET  "https://$PLERION_API_URL/v1/tenant/external-id" -H "Authorization:
+    Bearer $PLERION_API_KEY" | jq -r '.data.externalId')
+      # Create the stack
+      export PLERION_STACK_NAME=plerion-aws-integration
+      aws cloudformation create-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities
+    CAPABILITY_NAMED_IAM \
+        --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \
+          ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \
+          ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \
+          ParameterKey=Capabilities,ParameterValue=ALL \
+          ParameterKey=KMSKeyAccessMode,ParameterValue="ALL_KEYS" \
+          ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL
+      # Wait for the stack to complete
+      aws cloudformation wait stack-create-complete --stack-name $PLERION_STACK_NAME
+    </pre> <br/><br/> <h4> <b>Update an existing AWS Integration</b></h4>
+
+    <pre>
+      export PLERION_API_URL=au.api.plerion.com
+      export PLERION_API_KEY={$PLERION_API_KEY}
+      export PLERION_AWS_ACCOUNT_ID=588158338731
+      # Fetch the template URL
+      export TEMPLATE_URL=$(curl -s GET  "https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount"
+    -H "Authorization: Bearer $PLERION_API_KEY" | jq -r '.data.templateURL')
+      # Generate the temporary auth token
+      export TEMP_AUTH_TOKEN=$(curl -s -X POST  "https://$PLERION_API_URL/v1/tenant/integrations/token"
+    -H "Authorization: Bearer $PLERION_API_KEY" | jq -r '.data.token')
+      # Fetch the external ID
+      export EXTERNAL_ID=$(curl -s -X GET  "https://$PLERION_API_URL/v1/tenant/external-id" -H "Authorization:
+    Bearer $PLERION_API_KEY" | jq -r '.data.externalId')
+      # Update an existing stack
+      export PLERION_STACK_NAME=plerion-aws-integration
+      aws cloudformation update-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities
+    CAPABILITY_NAMED_IAM \
+        --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \
+          ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \
+          ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \
+          ParameterKey=Capabilities,ParameterValue=ALL \
+          ParameterKey=KMSKeyAccessMode,ParameterValue="ALL_KEYS" \
+          ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL
+      # Wait for the stack to complete
+      aws cloudformation wait stack-update-complete --stack-name $PLERION_STACK_NAME
+    </pre>
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - AWS integration
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-aws-integration-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-code-security-api
+  name: Plerion Code security API
+  description: The Code security API from Plerion — 4 operation(s) for code security.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Code security
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-code-security-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-compliance-frameworks-api
+  name: Plerion Compliance frameworks API
+  description: >-
+    Compliance Frameworks help our customers meet their regulatory and compliance obligations, and reduce
+    compliance risk, enabling them to achieve their strategic objectives.
+
+    Plerion offers customers hundreds of prebuilt detections delivering continuous assurance against industry
+    standards and best practices.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Compliance frameworks
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-compliance-frameworks-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-findings-api
+  name: Plerion Findings API
+  description: >-
+    Findings are the results of the Plerion Detection Engine (PDE) Detection reporting a finding and rating
+    the severity of the finding as it relates to best practices or a relevant compliance standard.
+
+    Plerion Findings enable customers to reduce the risk to their environments by continuously highlighting
+    areas for improvement.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Findings
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-findings-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-integrations-api
+  name: Plerion Integrations API
+  description: >-
+    Integrations enable customers to connect their own cloud environments to the Plerion platform.
+
+    Integrations allow for the collection of data from the integrated environment, e.g. Connecting Plerion
+    to your cloud service provider will facilitate Plerion to collect, analyze, and prioritize the most
+    significant risks across your cloud operating environments.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-integrations-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-risks-api
+  name: Plerion Risks API
+  description: >-
+    In a cloud environment there are usually many hundreds or thousands of misconfigurations, but which
+    of those pose a clear and present danger of a breach? That’s what the Plerion risk is about.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Risks
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-risks-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-tenant-api
+  name: Plerion Tenant API
+  description: >-
+    The Plerion platform caters for multi-tenancy.
+
+    Multi-tenancy within the Plerion platform delivers isolation for the integrations supported by Plerion.
+    Each Tenancy (Tenant) allows for multiple inbound or outbound integrations, like integrating with
+    Cloud Service Providers (AWS, Azure, GCP), and their corresponding Audit log service (AWS: CloudTrail,
+    Azure: AuditLog, GCP: Cloud Audit Log).
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Tenant
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-tenant-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-vulnerabilities-api
+  name: Plerion Vulnerabilities API
+  description: The Vulnerabilities API from Plerion — 3 operation(s) for vulnerabilities.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Vulnerabilities
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-vulnerabilities-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
+- aid: plerion:plerion-well-architected-frameworks-api
+  name: Plerion Well-Architected frameworks API
+  description: >-
+    The AWS Well-Architected Framework helps customers design secure, high-performing, resilient, and
+    efficient  cloud infrastructure.  Plerion continuously assesses your environment against the AWS Well-Architected
+    pillars,  aligning your architecture with AWS best practices and accelerating improvement.
+  humanURL: https://docs.plerion.com/api-reference
+  baseURL: https://au.api.plerion.com
+  tags:
+  - Well-Architected frameworks
+  properties:
+  - type: OpenAPI
+    url: openapi/plerion-well-architected-frameworks-api-openapi.yml
+  - type: Authentication
+    url: authentication/plerion-authentication.yml
+  - type: Conventions
+    url: conventions/plerion-conventions.yml
+  - type: ErrorCatalog
+    url: errors/plerion-problem-types.yml
+  - type: DataModel
+    url: data-model/plerion-data-model.yml
+  - type: Conformance
+    url: conformance/plerion-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,3 +441,64 @@ maintainers:
 common:
 - type: Website
   url: https://plerion.com
+- type: DeveloperPortal
+  url: https://docs.plerion.com
+- type: Documentation
+  url: https://docs.plerion.com
+- type: APIReference
+  url: https://docs.plerion.com/api-reference
+- type: GettingStarted
+  url: https://docs.plerion.com/api-reference/index
+- type: Authentication
+  url: authentication/plerion-authentication.yml
+- type: CLI
+  url: cli/plerion-cli.yml
+- type: Packages
+  url: packages/plerion-packages.yml
+- type: MCPServer
+  url: mcp/plerion-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/plerion-llms.txt
+- type: Conventions
+  url: conventions/plerion-conventions.yml
+- type: ErrorCatalog
+  url: errors/plerion-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/plerion-lifecycle.yml
+- type: Conformance
+  url: conformance/plerion-conformance.yml
+- type: DataModel
+  url: data-model/plerion-data-model.yml
+- type: WellKnown
+  url: well-known/plerion-well-known.yml
+- type: DomainSecurity
+  url: security/plerion-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/plerion-vulnerability-disclosure.yml
+- type: Security
+  url: https://www.plerion.com/company/vulnerability-disclosure-policy
+- type: TrustCenter
+  url: https://trust.plerion.com/
+- type: ChangeLog
+  url: changelog/plerion-changelog.yml
+- type: GitHubOrganization
+  url: https://github.com/plerionhq
+- type: Blog
+  url: https://www.plerion.com/blog
+- type: Pricing
+  url: https://www.plerion.com/pricing
+- type: Login
+  url: https://app.plerion.com/sign-in
+- type: Support
+  url: https://www.plerion.com/contact-us
+- type: TermsOfService
+  url: https://www.plerion.com/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://www.plerion.com/company/privacy-policy
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1

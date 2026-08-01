@@ -1,0 +1,44 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.plerion.com/changelog
+docs: https://docs.plerion.com/changelog
+scheme: dated-updates
+current_version: v1
+notes: >-
+  Plerion publishes a continuously-updated, date-labelled product changelog on the
+  documentation site (Mintlify <Update label="YYYY-MM-DD"> blocks). The API itself is
+  versioned in the URI path (v1). Entries below are the most recent window at capture time.
+entries:
+  - date: '2026-07-19'
+    breaking: false
+    highlights:
+      - A Well-Architected lens for Google Cloud maps GCP posture to Google's six pillars.
+  - date: '2026-07-18'
+    breaking: false
+    highlights:
+      - 32 new GCP resource types plus AI Security Posture Management (AI-SPM).
+      - 38 new posture checks including Model Armor guardrail and Vertex AI checks.
+  - date: '2026-07-13'
+    breaking: false
+    highlights:
+      - Security posture for AI agents on Amazon Bedrock AgentCore (gateways, runtimes, memory, MCP servers).
+  - date: '2026-07-03'
+    breaking: false
+    highlights:
+      - Failed findings now show SLA status (within SLA, nearing breach, breached).
+  - date: '2026-07-01'
+    breaking: false
+    highlights:
+      - MITRE ATT&CK Cloud Matrix refreshed to Enterprise ATT&CK v19.1.
+  - date: '2026-06-27'
+    breaking: false
+    highlights:
+      - Added the MITRE ATT&CK Containers Matrix to threat mapping.
+  - date: '2026-06-26'
+    breaking: false
+    highlights:
+      - AWS Well-Architected Financial Services Industry Lens support.
+  - date: '2026-06-22'
+    breaking: false
+    highlights:
+      - Compliance mapping for Korea's ISMS-P certification.

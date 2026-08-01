@@ -1,0 +1,56 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.plerion.com/cli-reference
+docs: https://docs.plerion.com/cli-reference/introduction
+name: plerion
+description: >-
+  Cross-platform command-line interface for the Plerion cloud security platform,
+  written in Rust. Wraps the Plerion tenant API for terminal-based management of
+  findings, assets, alerts, vulnerabilities, compliance, and IaC scanning.
+repository: https://github.com/plerionhq/plerion-cli
+releases: https://github.com/plerionhq/plerion-cli/releases
+language: rust
+platforms:
+  - macOS (ARM64, Intel)
+  - Linux (x86_64, ARM64)
+  - Windows
+install:
+  - method: script
+    command: curl -fsSL https://raw.githubusercontent.com/plerionhq/plerion-cli/main/install.sh | sh
+  - method: source
+    command: git clone git@github.com:plerionhq/plerion-cli.git && cd plerion-cli && cargo build --release
+auth:
+  method: api-key
+  configure: plerion configure
+  credentials_path: ~/.plerion/credentials
+  config_path: ~/.plerion/config
+  docs: https://docs.plerion.com/cli-reference/configuration
+command_groups:
+  - name: configure
+    description: Configure Plerion CLI credentials and settings.
+  - name: tenant
+    description: Get tenant information and usage details.
+  - name: findings
+    description: List and filter security findings.
+  - name: assets
+    description: Query the asset inventory, get details, and retrieve SBOMs.
+  - name: asset-groups
+    description: Create, update, list, and delete asset groups.
+  - name: alerts
+    description: View risk-based alerts.
+  - name: audit-logs
+    description: View audit logs for tenant operations.
+  - name: integrations
+    description: List cloud integrations.
+  - name: risks
+    description: View security risks identified by Plerion.
+  - name: vulnerabilities
+    description: Query vulnerabilities and manage exemptions.
+  - name: compliance-frameworks
+    description: View compliance framework posture and download reports.
+  - name: well-architected-frameworks
+    description: View Well-Architected Framework assessments and download reports.
+  - name: iac
+    description: Infrastructure as Code scanning for Terraform, CloudFormation, Kubernetes, and more.
+  - name: aws
+    description: AWS integration helpers for external IDs, CloudFormation, and tokens.

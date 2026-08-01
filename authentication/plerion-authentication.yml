@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/plerion-openapi-original.yml
+docs: https://docs.plerion.com/api-reference/index
+key_management: https://app.plerion.com/settings/api-keys
+summary:
+  types:
+  - http
+  model: Tenant API Key sent as an HTTP Bearer token
+  header: 'Authorization: Bearer $PLERION_API_KEY'
+  transport: HTTPS required (plain HTTP requests fail)
+schemes:
+- name: APIKey
+  type: http
+  scheme: bearer
+  bearerFormat: apiKey
+  description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+  docs: https://docs.plerion.com/api-reference/index
+  key_management: https://app.plerion.com/settings/api-keys
+  sources:
+  - openapi/plerion-openapi-original.yml

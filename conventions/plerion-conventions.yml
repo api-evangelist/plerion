@@ -1,0 +1,46 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/plerion-openapi-original.yml
+docs: https://docs.plerion.com/api-reference
+notes: >-
+  Cross-cutting request/response semantics for the Plerion tenant API, searched from the docs
+  and derived from the OpenAPI. The API is tenant-scoped and read-heavy (findings, assets,
+  vulnerabilities, compliance). No idempotency-key contract is documented, so no Idempotency
+  pointer is emitted.
+authentication:
+  style: http-bearer
+  header: 'Authorization: Bearer $PLERION_API_KEY'
+  transport: HTTPS only
+  see: authentication/plerion-authentication.yml
+base_url:
+  pattern: https://{region}.api.plerion.com
+  regions: [au, sg1, in1, us1]
+  default_region: au
+versioning:
+  style: uri-path
+  current: v1
+  see: lifecycle/plerion-lifecycle.yml
+pagination:
+  style: cursor
+  request_params:
+    - cursor   # opaque cursor to fetch the next batch
+    - perPage  # page size (positive integer, bounded maximum)
+  response_fields:
+    - cursor       # cursor for the next page
+    - perPage      # page size echoed back
+    - hasNextPage  # boolean, more results available
+idempotency:
+  supported: false
+  notes: No Idempotency-Key header or idempotent-retry contract is documented for write operations.
+rate_limiting:
+  signalled: true
+  mechanism: HTTP 429 on limit exceeded
+  headers_documented: false
+  notes: A 429 is returned when the tenant rate limit is exceeded; explicit RateLimit-* headers are not documented in the spec.
+error_envelope:
+  media_type: application/json
+  format: json
+  see: errors/plerion-problem-types.yml
+encoding:
+  request: application/json
+  response: application/json

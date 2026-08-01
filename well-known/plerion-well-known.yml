@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: live probes of /.well-known/ on Plerion hosts
+notes: >-
+  No /.well-known/ discovery documents were served at capture time. Absence is valid,
+  recorded data. The API base host au.api.plerion.com is live (401 without a Bearer key).
+hosts:
+  - host: https://www.plerion.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+  - host: https://plerion.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+  - host: https://docs.plerion.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
