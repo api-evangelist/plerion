@@ -1,0 +1,125 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Compliance frameworks API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Compliance frameworks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/compliance-frameworks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "custom",
+                "value": "",
+                "type": "query",
+                "description": "Filter compliance frameworks based on compliance framework type - custom or Plerion managed. The supported values are `true` or `false`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list compliance frameworks API to list compliance frameworks across the tenant along with the compliance posture for each framework as well as the total compliance posture of the tenant."
+        },
+        {
+          "info": {
+            "name": "Download report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/integrations/:integrationId/compliance-frameworks/:complianceId/download",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "c46aa3ee-3d40-4b98-b8ea-e51ed2bf1234",
+                "type": "path",
+                "description": "UUID of the integration to get."
+              },
+              {
+                "name": "complianceId",
+                "value": "CIS-AWSFB-v140",
+                "type": "path",
+                "description": "ID of the Compliance Framework to get. This can be retrieved using the List Compliance Frameworks API."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the download compliance framework API to receive a pre-signed URL to download a compliance framework summary report for an integration within the tenant. This URL will be valid for 1 hour. To download the report, use `curl` or any other tool of your choice. "
+        },
+        {
+          "info": {
+            "name": "Request a framework report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{region}.api.plerion.com/v1/tenant/integrations/:integrationId/frameworks/:complianceFrameworkId/reports",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "004a3706-ff2e-463c-a20b-133994dbfc2e",
+                "type": "path",
+                "description": "UUID of the integration."
+              },
+              {
+                "name": "complianceFrameworkId",
+                "value": "CIS-AWSFB-V150",
+                "type": "path",
+                "description": "Framework ID (see list compliance frameworks)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Starts the generation of a compliance framework report for the specified integration.\nOnce requested, poll using the download report endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

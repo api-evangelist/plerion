@@ -2,47 +2,52 @@ generated: '2026-07-20'
 method: derived
 status: candidate
 source: openapi/plerion-openapi-original.yml
-notes: >-
-  No official hosted/remote Plerion MCP server was found at capture time. This is a DERIVED
-  candidate tool list mapping read-oriented Plerion API operations to MCP tools, one tool per
-  operationId, so an agent can query cloud security posture. Candidate, not published.
+notes: No official hosted/remote Plerion MCP server was found at capture time. This is a DERIVED candidate
+  tool list mapping read-oriented Plerion API operations to MCP tools, one tool per operationId, so an
+  agent can query cloud security posture. Candidate, not published.
 server:
   name: plerion
   transport: http
 tools:
-  - name: list_findings
-    description: List security findings across the tenant.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantFindings
-  - name: list_alerts
-    description: List risk-based alerts.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantAlerts
-  - name: list_risks
-    description: List prioritized security risks.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantRisks
-  - name: list_assets
-    description: List discovered cloud assets.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantAssets
-  - name: get_asset
-    description: Get a specific asset by ID.
-    source_operation: openapi/plerion-openapi-original.yml#getTenantAsset
-  - name: get_asset_sbom
-    description: Get the SBOM download URL for an asset.
-    source_operation: openapi/plerion-openapi-original.yml#getAssetSbom
-  - name: list_vulnerabilities
-    description: List software vulnerabilities across workloads.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantVulnerabilities
-  - name: list_compliance_frameworks
-    description: List compliance framework posture for the tenant.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantComplianceFrameworks
-  - name: list_well_architected_frameworks
-    description: List AWS Well-Architected framework posture.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantWellArchitectedFrameworks
-  - name: get_tenant_details
-    description: Get tenant details including current risk score.
-    source_operation: openapi/plerion-openapi-original.yml#getTenantDetails
-  - name: list_integrations
-    description: List inbound cloud integrations.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantIntegrations
-  - name: list_audit_logs
-    description: List audit-trail entries for tenant operations.
-    source_operation: openapi/plerion-openapi-original.yml#listTenantAuditLogs
+- name: list_findings
+  description: List security findings across the tenant.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantFindings
+- name: list_alerts
+  description: List risk-based alerts.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantAlerts
+- name: list_risks
+  description: List prioritized security risks.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantRisks
+- name: list_assets
+  description: List discovered cloud assets.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantAssets
+- name: get_asset
+  description: Get a specific asset by ID.
+  source_operation: openapi/plerion-openapi-original.yml#getTenantAsset
+- name: get_asset_sbom
+  description: Get the SBOM download URL for an asset.
+  source_operation: openapi/plerion-openapi-original.yml#getAssetSbom
+- name: list_vulnerabilities
+  description: List software vulnerabilities across workloads.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantVulnerabilities
+- name: list_compliance_frameworks
+  description: List compliance framework posture for the tenant.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantComplianceFrameworks
+- name: list_well_architected_frameworks
+  description: List AWS Well-Architected framework posture.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantWellArchitectedFrameworks
+- name: get_tenant_details
+  description: Get tenant details including current risk score.
+  source_operation: openapi/plerion-openapi-original.yml#getTenantDetails
+- name: list_integrations
+  description: List inbound cloud integrations.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantIntegrations
+- name: list_audit_logs
+  description: List audit-trail entries for tenant operations.
+  source_operation: openapi/plerion-openapi-original.yml#listTenantAuditLogs
+deployment:
+  mode: none
+  verified: derived
+  tools: 12
+  checked: '2026-08-12'
+  source: catalog MCP census

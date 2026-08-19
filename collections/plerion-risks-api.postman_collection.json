@@ -1,0 +1,559 @@
+{
+  "item": [
+    {
+      "id": "d4cb2224-4a13-4cf5-9287-e550fe0e919a",
+      "name": "Risks",
+      "description": {
+        "content": "In a cloud environment there are usually many hundreds or thousands of misconfigurations, but which of those pose a clear and present danger of a breach? That’s what the Plerion risk is about.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5490071f-8007-46ef-b693-5b9c0ca7b18b",
+          "name": "List",
+          "request": {
+            "name": "List",
+            "description": {
+              "content": "Use the list risks API to retrieve and filter risks across the tenant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "risks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter by risk IDs. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "Select specific risk fields to include in the response. Only applies to risk properties. Accepts a comma-separated list of risk fields. Example fields: id, name, severityLevel, score"
+                },
+                {
+                  "disabled": false,
+                  "key": "riskTypeIds",
+                  "value": "<string>",
+                  "description": "Filter by risk type IDs. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "environmentIds",
+                  "value": "<string>",
+                  "description": "Filter risks on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+                },
+                {
+                  "disabled": false,
+                  "key": "integrationIds",
+                  "value": "<string>",
+                  "description": "Filter by integration IDs. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "primaryAssetIds",
+                  "value": "<string>",
+                  "description": "Filter by primary asset IDs. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>",
+                  "description": "Filter by severity levels. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "lifecycleStates",
+                  "value": "<string>",
+                  "description": "Filter by lifecycle states. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "resourceTypes",
+                  "value": "<string>",
+                  "description": "Filter by resource types. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "discoveredAtStart",
+                  "value": "<dateTime>",
+                  "description": "Start of the date range for filtering risks based on the discovered date.  Specify the start of the range using a valid ISO 8601 date-time string.  If `discoveredAtStart` is provided and `discoveredAtEnd` is omitted,  results will include risks from this date to the present. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "discoveredAtEnd",
+                  "value": "<dateTime>",
+                  "description": "End of the date range for filtering risks based on the discovered date. Specify the end of the range using a valid ISO 8601 date-time string.  If `discoveredAtEnd` is provided and `discoveredAtStart` is omitted,  results will include risks up to this date. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "This parameter is for loading relationships in the risk response. Available options: - `primaryAsset`: includes the complete primary asset object for each risk - `integration`: includes the complete integration object for each risk"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Order the list by supported field. Can accept `discoveredAt` or `score`. The default is `discoveredAt`."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "The sort order of the list. Can accept `asc` or `desc`. The default is `desc`."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Get the next batch of risks. Used for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "100",
+                  "description": "Number of items per page"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f784d6cd-cb8d-4c0d-b91c-c4a9ca8f9df2",
+              "name": "Risks list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "risks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "id,name,severityLevel"
+                    },
+                    {
+                      "key": "riskTypeIds",
+                      "value": "PLERION-RISK-1,PLERION-RISK-2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "primaryAssetIds",
+                      "value": "asset1,asset2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycleStates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "discoveredAtStart",
+                      "value": "2025-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "discoveredAtEnd",
+                      "value": "2025-02-08T18:09:07Z"
+                    },
+                    {
+                      "key": "include",
+                      "value": "primaryAsset,integration"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "score"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"riskTypeId\": \"string\",\n      \"organizationId\": \"string\",\n      \"tenantId\": \"string\",\n      \"integrationId\": \"string\",\n      \"description\": \"string\",\n      \"primaryAssetId\": \"string\",\n      \"region\": \"string\",\n      \"resolutions\": [\n        {\n          \"key\": \"string\",\n          \"type\": \"string\",\n          \"title\": \"string\"\n        },\n        {\n          \"key\": \"string\",\n          \"type\": \"string\",\n          \"title\": \"string\"\n        }\n      ],\n      \"score\": 6.063074466962609,\n      \"likelihood\": 9.192529575402185,\n      \"impact\": 2.574767753678413,\n      \"severityLevel\": \"HIGH\",\n      \"factors\": [\n        {\n          \"key\": \"string\",\n          \"meta\": {},\n          \"title\": \"string\",\n          \"value\": 9399.574794369739,\n          \"verificationState\": \"string\",\n          \"description\": \"string\"\n        },\n        {\n          \"key\": \"string\",\n          \"meta\": {},\n          \"title\": \"string\",\n          \"value\": 5709.037402648187,\n          \"verificationState\": \"string\",\n          \"description\": \"string\"\n        }\n      ],\n      \"meta\": {\n        \"assetName\": \"string\",\n        \"resourceType\": \"string\",\n        \"fullResourceName\": \"string\"\n      },\n      \"discoveredAt\": \"1965-02-13T00:00:08.215Z\",\n      \"lifecycleState\": \"DISMISSED_ACCEPTED\",\n      \"primaryAsset\": {\n        \"schemaVersion\": \"2022-06-09\",\n        \"id\": \"prn:assets:afeb4e5f-0370-4b43-8e37-7e4efc719358:aws:ec2:instance:ap-southeast-2:i-085a328dba59f229b\",\n        \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n        \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n        \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n        \"executionId\": \"string\",\n        \"provider\": \"AWS\",\n        \"type\": \"AWS::EC2::Instance\",\n        \"name\": \"string\",\n        \"createdAt\": \"string\",\n        \"firstObservedAt\": \"string\",\n        \"lastObservedAt\": \"string\",\n        \"updatedAt\": \"string\",\n        \"tags\": [\n          {\n            \"Key\": \"Department\",\n            \"Value\": \"Finance\"\n          },\n          {\n            \"Key\": \"Department\",\n            \"Value\": \"Finance\"\n          }\n        ],\n        \"isPubliclyExposed\": false,\n        \"isVulnerable\": false,\n        \"numberOfLowVulnerabilities\": 8685.955486090656,\n        \"numberOfMediumVulnerabilities\": 632.2844328215049,\n        \"numberOfHighVulnerabilities\": 9871.932670351329,\n        \"numberOfCriticalVulnerabilities\": 572.185592330251,\n        \"vulnerabilityScore\": \"string\",\n        \"hasKev\": true,\n        \"hasExploit\": false,\n        \"isExploitable\": true,\n        \"isInVpc\": true,\n        \"lastScanId\": \"string\",\n        \"lastScannedAt\": \"string\",\n        \"imageId\": \"string\",\n        \"platform\": \"string\",\n        \"hasAdminPrivileges\": true,\n        \"hasOverlyPermissivePrivileges\": false,\n        \"hasAuthorizer\": true,\n        \"hasTracingEnabled\": true,\n        \"policy\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\"\n        },\n        \"numberOfLowSecrets\": 1723.3876687051875,\n        \"numberOfMediumSecrets\": 9704.549825038934,\n        \"numberOfHighSecrets\": 3430.9625373436447,\n        \"numberOfCriticalSecrets\": 8406.646719875456,\n        \"lowSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"mediumSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"highSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"criticalSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"operatingSystem\": [\n          {\n            \"architecture\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"platform\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"version\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"versionId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"activeKernel\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"buildNumber\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"lcuVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"architecture\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"platform\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"version\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"versionId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"activeKernel\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"buildNumber\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"lcuVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"riskScore\": \"string\",\n        \"operationalState\": \"active\",\n        \"region\": \"us-east-1\",\n        \"service\": \"AWS::EC2\",\n        \"resourceId\": \"i-085a328dba59f229b\",\n        \"resourceName\": \"test-instance\",\n        \"resourceTags\": [\n          {\n            \"Key\": \"Public\",\n            \"Value\": \"string\"\n          },\n          {\n            \"Key\": \"Public\",\n            \"Value\": \"string\"\n          }\n        ],\n        \"resourceType\": \"AWS::EC2::Instance\",\n        \"fullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n        \"providerAccountId\": \"string\",\n        \"resourceURL\": \"https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy\"\n      },\n      \"integration\": {\n        \"integrationId\": \"31497927-86af-4fba-afc6-c0cf2311a55b\",\n        \"name\": \"Integration 001\",\n        \"tenantId\": \"12345678-86af-4fba-afc6-c0cf12345678\",\n        \"organizationId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n        \"schedule\": \"59 6 * * *\",\n        \"scanInterval\": 24,\n        \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n        \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n        \"provider\": \"AWS\",\n        \"type\": \"AWSAccount\",\n        \"detectionSettingId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n        \"status\": \"Delete In Progress\",\n        \"riskScore\": 8.19,\n        \"awsAccountId\": \"123456789012\",\n        \"azureSubscriptionId\": \"12345678-1234-5678-1234-567812345678\",\n        \"azureDirectoryId\": \"87654321-4321-8765-4321-876543218765\",\n        \"gcpProjectId\": \"my-gcp-project\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"riskTypeId\": \"string\",\n      \"organizationId\": \"string\",\n      \"tenantId\": \"string\",\n      \"integrationId\": \"string\",\n      \"description\": \"string\",\n      \"primaryAssetId\": \"string\",\n      \"region\": \"string\",\n      \"resolutions\": [\n        {\n          \"key\": \"string\",\n          \"type\": \"string\",\n          \"title\": \"string\"\n        },\n        {\n          \"key\": \"string\",\n          \"type\": \"string\",\n          \"title\": \"string\"\n        }\n      ],\n      \"score\": 8.734009549630661,\n      \"likelihood\": 6.995109972760205,\n      \"impact\": 3.4896579264861494,\n      \"severityLevel\": \"HIGH\",\n      \"factors\": [\n        {\n          \"key\": \"string\",\n          \"meta\": {},\n          \"title\": \"string\",\n          \"value\": 3133.0823363689906,\n          \"verificationState\": \"string\",\n          \"description\": \"string\"\n        },\n        {\n          \"key\": \"string\",\n          \"meta\": {},\n          \"title\": \"string\",\n          \"value\": 9087.09221138789,\n          \"verificationState\": \"string\",\n          \"description\": \"string\"\n        }\n      ],\n      \"meta\": {\n        \"assetName\": \"string\",\n        \"resourceType\": \"string\",\n        \"fullResourceName\": \"string\"\n      },\n      \"discoveredAt\": \"1962-09-22T05:33:29.134Z\",\n      \"lifecycleState\": \"OPEN\",\n      \"primaryAsset\": {\n        \"schemaVersion\": \"2022-06-09\",\n        \"id\": \"prn:assets:afeb4e5f-0370-4b43-8e37-7e4efc719358:aws:ec2:instance:ap-southeast-2:i-085a328dba59f229b\",\n        \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n        \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n        \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n        \"executionId\": \"string\",\n        \"provider\": \"AWS\",\n        \"type\": \"AWS::EC2::Instance\",\n        \"name\": \"string\",\n        \"createdAt\": \"string\",\n        \"firstObservedAt\": \"string\",\n        \"lastObservedAt\": \"string\",\n        \"updatedAt\": \"string\",\n        \"tags\": [\n          {\n            \"Key\": \"Department\",\n            \"Value\": \"Finance\"\n          },\n          {\n            \"Key\": \"Department\",\n            \"Value\": \"Finance\"\n          }\n        ],\n        \"isPubliclyExposed\": false,\n        \"isVulnerable\": false,\n        \"numberOfLowVulnerabilities\": 779.3674548436813,\n        \"numberOfMediumVulnerabilities\": 2101.3139851002593,\n        \"numberOfHighVulnerabilities\": 5179.087190848265,\n        \"numberOfCriticalVulnerabilities\": 9233.470471066028,\n        \"vulnerabilityScore\": \"string\",\n        \"hasKev\": true,\n        \"hasExploit\": false,\n        \"isExploitable\": true,\n        \"isInVpc\": false,\n        \"lastScanId\": \"string\",\n        \"lastScannedAt\": \"string\",\n        \"imageId\": \"string\",\n        \"platform\": \"string\",\n        \"hasAdminPrivileges\": false,\n        \"hasOverlyPermissivePrivileges\": false,\n        \"hasAuthorizer\": false,\n        \"hasTracingEnabled\": true,\n        \"policy\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"numberOfLowSecrets\": 6355.0043113310485,\n        \"numberOfMediumSecrets\": 1956.5620172766985,\n        \"numberOfHighSecrets\": 9946.291917736346,\n        \"numberOfCriticalSecrets\": 3453.295903875878,\n        \"lowSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"mediumSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"highSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"criticalSecrets\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"operatingSystem\": [\n          {\n            \"architecture\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"platform\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"version\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"versionId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"activeKernel\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"buildNumber\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"lcuVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"architecture\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"platform\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"version\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"versionId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"activeKernel\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"buildNumber\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"lcuVersion\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"riskScore\": \"string\",\n        \"operationalState\": \"active\",\n        \"region\": \"us-east-1\",\n        \"service\": \"AWS::EC2\",\n        \"resourceId\": \"i-085a328dba59f229b\",\n        \"resourceName\": \"test-instance\",\n        \"resourceTags\": [\n          {\n            \"Key\": \"Public\",\n            \"Value\": \"string\"\n          },\n          {\n            \"Key\": \"Public\",\n            \"Value\": \"string\"\n          }\n        ],\n        \"resourceType\": \"AWS::EC2::Instance\",\n        \"fullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n        \"providerAccountId\": \"string\",\n        \"resourceURL\": \"https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy\"\n      },\n      \"integration\": {\n        \"integrationId\": \"31497927-86af-4fba-afc6-c0cf2311a55b\",\n        \"name\": \"Integration 001\",\n        \"tenantId\": \"12345678-86af-4fba-afc6-c0cf12345678\",\n        \"organizationId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n        \"schedule\": \"59 6 * * *\",\n        \"scanInterval\": 24,\n        \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n        \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n        \"provider\": \"AWS\",\n        \"type\": \"AWSAccount\",\n        \"detectionSettingId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n        \"status\": \"Delete Failed\",\n        \"riskScore\": 8.19,\n        \"awsAccountId\": \"123456789012\",\n        \"azureSubscriptionId\": \"12345678-1234-5678-1234-567812345678\",\n        \"azureDirectoryId\": \"87654321-4321-8765-4321-876543218765\",\n        \"gcpProjectId\": \"my-gcp-project\"\n      }\n    }\n  ],\n  \"meta\": {\n    \"perPage\": 100,\n    \"total\": 200,\n    \"cursor\": 100\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8476d02e-d9a6-4beb-807e-bb9477c5e925",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "risks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "id,name,severityLevel"
+                    },
+                    {
+                      "key": "riskTypeIds",
+                      "value": "PLERION-RISK-1,PLERION-RISK-2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "primaryAssetIds",
+                      "value": "asset1,asset2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycleStates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "discoveredAtStart",
+                      "value": "2025-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "discoveredAtEnd",
+                      "value": "2025-02-08T18:09:07Z"
+                    },
+                    {
+                      "key": "include",
+                      "value": "primaryAsset,integration"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "score"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "371d646f-bef0-4275-8f78-d6b0d309e3fa",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "risks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "id,name,severityLevel"
+                    },
+                    {
+                      "key": "riskTypeIds",
+                      "value": "PLERION-RISK-1,PLERION-RISK-2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "primaryAssetIds",
+                      "value": "asset1,asset2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycleStates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "discoveredAtStart",
+                      "value": "2025-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "discoveredAtEnd",
+                      "value": "2025-02-08T18:09:07Z"
+                    },
+                    {
+                      "key": "include",
+                      "value": "primaryAsset,integration"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "score"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3887487b-15df-4b36-af95-29d81c521f42",
+    "name": "Plerion API Documentation Alerts Risks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

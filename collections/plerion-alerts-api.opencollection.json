@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Alerts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/alerts",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on ID of the alert [Plerion Resource Names (prn)]. Accepts a comma-separated list of ids."
+              },
+              {
+                "name": "workflowIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on Plerion Workflow IDs. Accepts a comma-separated list of workflow ids."
+              },
+              {
+                "name": "integrationIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on Plerion integration ids. Accepts a comma-separated list of integration ids."
+              },
+              {
+                "name": "assetGroupIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on asset group ids. Accepts a comma-separated list of asset group ids."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on statuses. Accepts a comma-separated list of statuses."
+              },
+              {
+                "name": "resourceTypes",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on provider resource types. Accepts a comma-separated list of resource types."
+              },
+              {
+                "name": "providers",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on provider. Accepts a comma-separated list of providers."
+              },
+              {
+                "name": "alertTypes",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on alert type. Accepts a comma-separated list of type."
+              },
+              {
+                "name": "flagged",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on flag status. Accepts a single value. The supported values are `true` or `false`."
+              },
+              {
+                "name": "acknowledged",
+                "value": "",
+                "type": "query",
+                "description": "Filter alerts based on acknowledge status. Accepts a single value. The supported values are `true` or `false`."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Order the list by supported field"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of alerts. Used for pagination."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Specify the batch size of the list. Used for pagination"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list alerts API to get alerts for the tenant."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

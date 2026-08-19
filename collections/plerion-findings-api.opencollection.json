@@ -1,0 +1,165 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Findings API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Findings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/findings",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on Plerion Resource Names (prn) or ids. Accepts a comma-separated list of ids."
+              },
+              {
+                "name": "detectionIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on Plerion Detection IDs. Accepts a comma-separated list of detection ids."
+              },
+              {
+                "name": "regions",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on Provider regions. Accepts a comma-separated list of regions."
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on Asset Plerion Resource Names (prn) or asset ids. Accepts a comma-separated list of asset ids."
+              },
+              {
+                "name": "integrationIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on Plerion integration ids. Accepts a comma-separated list of integration ids."
+              },
+              {
+                "name": "assetGroupIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on asset group ids. Accepts a comma-separated list of asset group ids."
+              },
+              {
+                "name": "environmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on severity levels. Accepts a comma-separated list of severity levels."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on statuses. Accepts a comma-separated list of statuses."
+              },
+              {
+                "name": "slaStatuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on SLA status. Only applies to FAILED findings that are tracked against an SLA. Accepts a comma-separated list of SLA statuses: breached (past the resolution deadline), nearBreach (inside the warning window but not yet breached), and withinSla (still ahead of the warning window)."
+              },
+              {
+                "name": "resourceTypes",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on provider resource types. Accepts a comma-separated list of resource types."
+              },
+              {
+                "name": "providers",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on provider. Accepts a comma-separated list of providers."
+              },
+              {
+                "name": "services",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on cloud provider services. Accepts a comma-separated list of service names. Each service can be specified either by its name alone (e.g., `S3`, `Lambda`, `EC2`) or prefixed with its provider in the format `Provider::Service` (e.g., `AWS::S3`, `GCP::Compute`, `Azure::VirtualMachine`).\n"
+              },
+              {
+                "name": "isExempted",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on whether the finding is exempted. Accepts `true` or `false`."
+              },
+              {
+                "name": "firstObservedAtStart",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range for filtering findings based on the first observed time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include findings from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "firstObservedAtEnd",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range for filtering findings based on the first observed time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include findings up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Order the list by supported field"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Specify the batch size of the list. Used for pagination"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of findings. Used for pagination. When cursor is provided, the response will not include total count."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list findings API to filter findings across the tenant with many\noptions from Provider, Service, Detection, Severity, Integration, etc. By\ndefault all `PASSED` and `FAILED` findings are returned. To list\nonly failed findings filter by `statuses=FAILED`\n\nDate range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:\n- `firstObservedAtStart` alone: Includes findings with a first observed time from the specified date to the present.\n- `firstObservedA"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

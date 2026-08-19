@@ -1,0 +1,397 @@
+{
+  "item": [
+    {
+      "id": "eddd0479-d6af-491d-a479-ce5bda774cb6",
+      "name": "Audit logs",
+      "description": {
+        "content": "Audit logs provide a comprehensive trail of user activities and system operations within a tenant.\nThese logs capture important events such as user logins, API calls, configuration changes, and other security-relevant activities. Audit logs help with compliance, security monitoring, and troubleshooting.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5ec90ac7-fa0a-4481-9402-a4837a8401d1",
+          "name": "List",
+          "request": {
+            "name": "List",
+            "description": {
+              "content": "Use the list audit logs API to retrieve audit trail information for a tenant with filtering options.\nBy default, all audit logs are returned with a page size of 100. You can filter by date range, user, and operation type.\n\nDate range filtering is supported using the `operationTimeStart` and `operationTimeEnd` parameters:\n- `operationTimeStart` alone: Includes audit logs from the specified date to the present.\n- `operationTimeEnd` alone: Includes audit logs up to the specified date.\n- Both provided: Includes audit logs within the specified date range.\n\nDate strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "audit-logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "operationTimeStart",
+                  "value": "<dateTime>",
+                  "description": "Start of the date range for filtering audit logs based on operation time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `operationTimeStart` is provided and `operationTimeEnd` is omitted, \nresults will include audit logs from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "operationTimeEnd",
+                  "value": "<dateTime>",
+                  "description": "End of the date range for filtering audit logs based on operation time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `operationTimeEnd` is provided and `operationTimeStart` is omitted, \nresults will include audit logs up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "userId",
+                  "value": "<string>",
+                  "description": "Filter audit logs based on operator user ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "operation",
+                  "value": "<string>",
+                  "description": "Filter audit logs based on operation type."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "100",
+                  "description": "Specify the batch size of the list. Used for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Get the next batch of audit logs. Used for pagination. When cursor is provided, the response will not include total count."
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2b3b5c3e-b104-4957-ac43-53b6cc5907c0",
+              "name": "Audit logs list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "audit-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "operationTimeStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "operationTimeEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "userId",
+                      "value": "b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b"
+                    },
+                    {
+                      "key": "operation",
+                      "value": "UserLogin"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"audit-log-12345\",\n      \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"operation\": \"UserLogin\",\n      \"operationTime\": \"2023-02-04T06:02:40.594Z\",\n      \"operatorUserId\": \"b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b\",\n      \"operatorEmail\": \"user@example.com\",\n      \"userAgent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\",\n      \"ip\": \"192.168.1.1\",\n      \"location\": {\n        \"country\": \"United States\",\n        \"city\": \"New York\",\n        \"region\": \"NY\"\n      }\n    },\n    {\n      \"id\": \"audit-log-12345\",\n      \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"operation\": \"UserLogin\",\n      \"operationTime\": \"2023-02-04T06:02:40.594Z\",\n      \"operatorUserId\": \"b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b\",\n      \"operatorEmail\": \"user@example.com\",\n      \"userAgent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\",\n      \"ip\": \"192.168.1.1\",\n      \"location\": {\n        \"country\": \"United States\",\n        \"city\": \"New York\",\n        \"region\": \"NY\"\n      }\n    }\n  ],\n  \"meta\": {\n    \"cursor\": \"k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6\",\n    \"perPage\": 10\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4f463ef-8c4d-4cfc-a1b7-2f5760eb5950",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "audit-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "operationTimeStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "operationTimeEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "userId",
+                      "value": "b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b"
+                    },
+                    {
+                      "key": "operation",
+                      "value": "UserLogin"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ead096b6-fdab-468c-8073-38ffc61f8a74",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "audit-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "operationTimeStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "operationTimeEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "userId",
+                      "value": "b3b6a8e2-1c2d-4e5f-9a7b-2c3d4e5f6a7b"
+                    },
+                    {
+                      "key": "operation",
+                      "value": "UserLogin"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4118000d-a376-4200-87d9-3f36f7d0f0f6",
+    "name": "Plerion API Documentation Alerts Audit logs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

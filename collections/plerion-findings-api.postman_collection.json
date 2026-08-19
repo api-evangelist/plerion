@@ -1,0 +1,649 @@
+{
+  "item": [
+    {
+      "id": "098a73f5-2769-4a5c-9a11-ec56d5f69e2b",
+      "name": "Findings",
+      "description": {
+        "content": "Findings are the results of the Plerion Detection Engine (PDE) Detection reporting a finding and rating the severity of the finding as it relates to best practices or a relevant compliance standard.\nPlerion Findings enable customers to reduce the risk to their environments by continuously highlighting areas for improvement.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dce8ffca-6789-472c-99f8-b12c94623589",
+          "name": "List",
+          "request": {
+            "name": "List",
+            "description": {
+              "content": "Use the list findings API to filter findings across the tenant with many\noptions from Provider, Service, Detection, Severity, Integration, etc. By\ndefault all `PASSED` and `FAILED` findings are returned. To list\nonly failed findings filter by `statuses=FAILED`\n\nDate range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:\n- `firstObservedAtStart` alone: Includes findings with a first observed time from the specified date to the present.\n- `firstObservedAtEnd` alone: Includes findings with a first observed time up to the specified date.\n- Both provided: Includes findings with a first observed time within the specified date range.\n\nDate strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "findings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter findings based on Plerion Resource Names (prn) or ids. Accepts a comma-separated list of ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "detectionIds",
+                  "value": "<string>",
+                  "description": "Filter findings based on Plerion Detection IDs. Accepts a comma-separated list of detection ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "regions",
+                  "value": "<string>",
+                  "description": "Filter findings based on Provider regions. Accepts a comma-separated list of regions."
+                },
+                {
+                  "disabled": false,
+                  "key": "assetIds",
+                  "value": "<string>",
+                  "description": "Filter findings based on Asset Plerion Resource Names (prn) or asset ids. Accepts a comma-separated list of asset ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "integrationIds",
+                  "value": "<string>",
+                  "description": "Filter findings based on Plerion integration ids. Accepts a comma-separated list of integration ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "assetGroupIds",
+                  "value": "<string>",
+                  "description": "Filter findings based on asset group ids. Accepts a comma-separated list of asset group ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "environmentIds",
+                  "value": "<string>",
+                  "description": "Filter findings on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>",
+                  "description": "Filter findings based on severity levels. Accepts a comma-separated list of severity levels."
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>",
+                  "description": "Filter findings based on statuses. Accepts a comma-separated list of statuses."
+                },
+                {
+                  "disabled": false,
+                  "key": "slaStatuses",
+                  "value": "<string>",
+                  "description": "Filter findings based on SLA status. Only applies to FAILED findings that are tracked against an SLA. Accepts a comma-separated list of SLA statuses: breached (past the resolution deadline), nearBreach (inside the warning window but not yet breached), and withinSla (still ahead of the warning window)."
+                },
+                {
+                  "disabled": false,
+                  "key": "resourceTypes",
+                  "value": "<string>",
+                  "description": "Filter findings based on provider resource types. Accepts a comma-separated list of resource types."
+                },
+                {
+                  "disabled": false,
+                  "key": "providers",
+                  "value": "<string>",
+                  "description": "Filter findings based on provider. Accepts a comma-separated list of providers."
+                },
+                {
+                  "disabled": false,
+                  "key": "services",
+                  "value": "<string>",
+                  "description": "Filter findings based on cloud provider services. Accepts a comma-separated list of service names. Each service can be specified either by its name alone (e.g., `S3`, `Lambda`, `EC2`) or prefixed with its provider in the format `Provider::Service` (e.g., `AWS::S3`, `GCP::Compute`, `Azure::VirtualMachine`).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "isExempted",
+                  "value": "<boolean>",
+                  "description": "Filter findings based on whether the finding is exempted. Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "firstObservedAtStart",
+                  "value": "<dateTime>",
+                  "description": "Start of the date range for filtering findings based on the first observed time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include findings from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "firstObservedAtEnd",
+                  "value": "<dateTime>",
+                  "description": "End of the date range for filtering findings based on the first observed time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include findings up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Order the list by supported field"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`"
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Specify the batch size of the list. Used for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Get the next batch of findings. Used for pagination. When cursor is provided, the response will not include total count."
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3de64c3f-4b56-4ea4-998f-0d6e9186a913",
+              "name": "Findings list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "assetId1,assetId2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "FAILED"
+                    },
+                    {
+                      "key": "slaStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "services",
+                      "value": "AWS::S3,GCP::Compute,Azure::VirtualMachine"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "provider"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"schemaVersion\": \"2022-06-09\",\n      \"id\": \"prn:findings:458511a1-9bc2-4fce-97a0-0e3139588e6e:plerion-aws-16:arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n      \"provider\": \"AWS\",\n      \"executionId\": \"string\",\n      \"assetId\": \"prn:assets:458511a1-9bc2-4fce-97a0-0e3139588e6e:aws:iam:policy:us-east-1:arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"providerAccountId\": \"string\",\n      \"resourceType\": \"AWS::IAM::Policy\",\n      \"detectionId\": \"PLERION-AWS-16\",\n      \"status\": \"FAILED\",\n      \"severityLevel\": \"HIGH\",\n      \"message\": \"Policy allows full administrative privileges is attached\",\n      \"firstObservedAt\": \"2023-02-04T06:02:40.594Z\",\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"lastObservedAt\": \"2023-02-05T06:02:40.384Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"slaDueAt\": \"2023-02-11T06:02:40.594Z\",\n      \"slaWarnAt\": \"2023-02-09T06:02:40.594Z\",\n      \"slaId\": \"8f2c1b9a-4d3e-4a6b-9c8d-1e2f3a4b5c6d\",\n      \"parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"fullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"resourceId\": \"test-policy\",\n      \"providerFullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"region\": \"us-east-1\",\n      \"service\": \"IAM\",\n      \"likelihood\": \"string\",\n      \"impact\": \"string\",\n      \"calculatedSeverity\": \"string\",\n      \"modifiedSeverityLevel\": \"CRITICAL\",\n      \"attackPaths\": {},\n      \"isExempted\": false,\n      \"meta\": {},\n      \"resourceTags\": [\n        {\n          \"Key\": \"Public\",\n          \"Value\": \"string\"\n        },\n        {\n          \"Key\": \"Public\",\n          \"Value\": \"string\"\n        }\n      ],\n      \"resourceURL\": \"https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy\"\n    },\n    {\n      \"schemaVersion\": \"2022-06-09\",\n      \"id\": \"prn:findings:458511a1-9bc2-4fce-97a0-0e3139588e6e:plerion-aws-16:arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"organizationId\": \"dc16d897-7f52-4b73-be57-96c7c9a853da\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n      \"provider\": \"AWS\",\n      \"executionId\": \"string\",\n      \"assetId\": \"prn:assets:458511a1-9bc2-4fce-97a0-0e3139588e6e:aws:iam:policy:us-east-1:arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"providerAccountId\": \"string\",\n      \"resourceType\": \"AWS::IAM::Policy\",\n      \"detectionId\": \"PLERION-AWS-16\",\n      \"status\": \"FAILED\",\n      \"severityLevel\": \"HIGH\",\n      \"message\": \"Policy allows full administrative privileges is attached\",\n      \"firstObservedAt\": \"2023-02-04T06:02:40.594Z\",\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"lastObservedAt\": \"2023-02-05T06:02:40.384Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"slaDueAt\": \"2023-02-11T06:02:40.594Z\",\n      \"slaWarnAt\": \"2023-02-09T06:02:40.594Z\",\n      \"slaId\": \"8f2c1b9a-4d3e-4a6b-9c8d-1e2f3a4b5c6d\",\n      \"parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"fullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"resourceId\": \"test-policy\",\n      \"providerFullResourceName\": \"arn:aws:iam::1111222233334444:policy/test-policy\",\n      \"region\": \"us-east-1\",\n      \"service\": \"IAM\",\n      \"likelihood\": \"string\",\n      \"impact\": \"string\",\n      \"calculatedSeverity\": \"string\",\n      \"modifiedSeverityLevel\": \"CRITICAL\",\n      \"attackPaths\": {},\n      \"isExempted\": false,\n      \"meta\": {},\n      \"resourceTags\": [\n        {\n          \"Key\": \"Public\",\n          \"Value\": \"string\"\n        },\n        {\n          \"Key\": \"Public\",\n          \"Value\": \"string\"\n        }\n      ],\n      \"resourceURL\": \"https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy\"\n    }\n  ],\n  \"meta\": {\n    \"cursor\": \"k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6\",\n    \"perPage\": 10,\n    \"total\": 42,\n    \"page\": 1,\n    \"hasNextPage\": true,\n    \"hasPreviousPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4f76a2b-7a07-449e-a81f-0a7efc0a9973",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "assetId1,assetId2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "FAILED"
+                    },
+                    {
+                      "key": "slaStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "services",
+                      "value": "AWS::S3,GCP::Compute,Azure::VirtualMachine"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "provider"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9cd58e7-9c65-45d0-8431-5e54b606dadb",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "assetId1,assetId2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "FAILED"
+                    },
+                    {
+                      "key": "slaStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "services",
+                      "value": "AWS::S3,GCP::Compute,Azure::VirtualMachine"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "provider"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0555ed05-acf5-4fe3-8e73-2f80aeaa5118",
+    "name": "Plerion API Documentation Alerts Findings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

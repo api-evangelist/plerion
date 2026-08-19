@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts AWS integration API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AWS integration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get external id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/external-id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the API to get the external ID of the tenant. The external ID is fixed for a tenant and used for cross-account access to AWS role. Read more about <a href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html#external-id-purpose\">External Id purpose</a>.\n```bash\ncurl \"https://au.api.plerion.com/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\"\n```"
+        },
+        {
+          "info": {
+            "name": "Generate temporary token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{region}.api.plerion.com/v1/tenant/integrations/token",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the API to generate a temporary token required for creating AWS integration using CloudFormation template provided by Plerion.\n```bash\n  curl -X POST https://au.api.plerion.com/v1/tenant/integrations/token -H \"Authorization: Bearer $PLERION_API_KEY\"\n```"
+        },
+        {
+          "info": {
+            "name": "Get CloudFormation template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/cloudformation-templates",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "The type of integration for which the CloudFormation template is required"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the API to get the CloudFormation template required for creating / updating AWS integrations in Plerion. \n```bash\n  curl https://au.api.plerion.com/v1/tenant/cloudformation-templates?type=AWSAccount -H \"Authorization: Bearer $PLERION_API_KEY\"\n```"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Well-Architected frameworks API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Well-Architected frameworks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/well-architected-frameworks",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all AWS Well-Architected Frameworks for the tenant, along with individual framework postures and the tenant’s overall Well-Architected posture."
+        },
+        {
+          "info": {
+            "name": "Download report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/integrations/:integrationId/well-architected-frameworks/:wellArchitectedFrameworkId/download",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "c46aa3ee-3d40-4b98-b8ea-e51ed2bf1234",
+                "type": "path",
+                "description": "UUID of the integration to get."
+              },
+              {
+                "name": "wellArchitectedFrameworkId",
+                "value": "AWS-FTR-LENS",
+                "type": "path",
+                "description": "ID of the Well-Architected framework to get. This can be retrieved using the List Well-Architected frameworks API."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the download well-architected framework API to obtain a pre-signed URL for downloading a well-architected framework summary report for an integration within the tenant. This URL will be valid for 1 hour. To download the report, use `curl` or any other tool of your choice. "
+        },
+        {
+          "info": {
+            "name": "Request framework report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{region}.api.plerion.com/v1/tenant/integrations/:integrationId/frameworks/:wellArchitectedFrameworkId/reports",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "004a3706-ff2e-463c-a20b-133994dbfc2e",
+                "type": "path",
+                "description": "UUID of the integration."
+              },
+              {
+                "name": "wellArchitectedFrameworkId",
+                "value": "AWS-WA-FRAMEWORK",
+                "type": "path",
+                "description": "Framework ID (see list Well-Architected frameworks)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Starts the generation of a Well-Architected framework report for the specified integration.\nOnce requested, poll using the download report endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

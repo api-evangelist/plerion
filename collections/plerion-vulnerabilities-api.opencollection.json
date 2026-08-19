@@ -1,0 +1,392 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Vulnerabilities API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vulnerabilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/vulnerabilities",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "vulnerabilityIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on vulnerability ids. Accepts a comma-separated list with a maximum length of 100"
+              },
+              {
+                "name": "assetIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on asset ids. Accepts a comma-separated list with a maximum length of 10"
+              },
+              {
+                "name": "providers",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on provider. Accepts a comma-separated list of providers."
+              },
+              {
+                "name": "executionIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on execution ids. Accepts a comma-separated list with a maximum length of 10"
+              },
+              {
+                "name": "integrationIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on integration ids. Accepts a comma-separated list with a maximum length of 10"
+              },
+              {
+                "name": "assetGroupIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on asset group ids. Accepts a comma-separated list of asset group ids."
+              },
+              {
+                "name": "environmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+              },
+              {
+                "name": "packageName",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on a package name."
+              },
+              {
+                "name": "regions",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on asset regions."
+              },
+              {
+                "name": "targetName",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on a target name. For ECS Task Definitions this will be `{TaskDefinition}:{revision} > {containerImage}`"
+              },
+              {
+                "name": "targetType",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on a target type."
+              },
+              {
+                "name": "targetClass",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on a target class."
+              },
+              {
+                "name": "hasKev",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on hasKev. Accepts `true` or `false`."
+              },
+              {
+                "name": "isExempted",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on exemptions. Returns exempted vulnerabilities if set true. Accepts `true` or `false`."
+              },
+              {
+                "name": "isExploitable",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on exploitability under the Common Vulnerability Scoring System (CVSS). Accepts `true` or `false`."
+              },
+              {
+                "name": "hasExploit",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on hasExploit. Accepts `true` or `false`."
+              },
+              {
+                "name": "hasVendorFix",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities where the affected packages have a fixed version. Is true if any affected package has a fixed version. Accepts `true` or `false`."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities on severity. Accepts a comma-separated list."
+              },
+              {
+                "name": "firstObservedAtStart",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include vulnerabilities observed from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "firstObservedAtEnd",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include vulnerabilities observed up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by the specified field."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for the results. Accepts a positive integer."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Accepts a positive integer."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of vulnerabilities. Used for pagination. When cursor is provided, the response will not include total count."
+              },
+              {
+                "name": "includeTotal",
+                "value": "",
+                "type": "query",
+                "description": "Include the total count of available vulnerabilities. Defaults to true. Set to false to improve response times for large datasets."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list vulnerabilities API to filter vulnerabilities across the tenant with many options\nfrom Organization, Tenant, Integration, Asset, Severity, etc. By default all vulnerabilities\nare returned.\n\nDate range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:\n- `firstObservedAtStart` alone: Includes vulnerabilities observed from the specified date to the present.\n- `firstObservedAtEnd` alone: Includes vulnerabilities observed up to the specified dat"
+        },
+        {
+          "info": {
+            "name": "List vulnerability exemptions in a profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/profiles/:profileId/vulnerability/exemptions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "Profile ID (UUID) or the literal string \"default\" for the default profile."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of exemptions to return per page"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination. Get the next batch of exemptions."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all vulnerability exemptions scoped to the given profile with pagination support."
+        },
+        {
+          "info": {
+            "name": "Create a vulnerability exemption in a profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{region}.api.plerion.com/v1/tenant/profiles/:profileId/vulnerability/exemptions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "Profile ID (UUID) or the literal string \"default\" for the default profile."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates an exemption definition scoped to the given profile. Use it to suppress specific vulnerabilities."
+        },
+        {
+          "info": {
+            "name": "Get a vulnerability exemption by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/profiles/:profileId/vulnerability/exemptions/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Exemption ID (UUID)"
+              },
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "Profile ID (UUID) or the literal string \"default\" for the default profile."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a specific vulnerability exemption by its ID."
+        },
+        {
+          "info": {
+            "name": "Update a vulnerability exemption by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{region}.api.plerion.com/v1/tenant/profiles/:profileId/vulnerability/exemptions/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Exemption ID (UUID)"
+              },
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "Profile ID (UUID) or the literal string \"default\" for the default profile."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a specific vulnerability exemption by its ID. All fields are optional for partial updates."
+        },
+        {
+          "info": {
+            "name": "Delete a vulnerability exemption by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{region}.api.plerion.com/v1/tenant/profiles/:profileId/vulnerability/exemptions/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Exemption ID (UUID)"
+              },
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "Profile ID (UUID) or the literal string \"default\" for the default profile."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a specific vulnerability exemption by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

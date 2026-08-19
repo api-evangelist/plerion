@@ -1,0 +1,291 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Assets API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/assets",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on Asset IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "executionIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on Integration Execution IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "regions",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on Provider regions. Accepts a comma-separated list of regions."
+              },
+              {
+                "name": "integrationIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on Plerion Integration IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "assetGroupIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on asset group ids. Accepts a comma-separated list of asset group ids."
+              },
+              {
+                "name": "environmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on environment IDs. This parameter accepts both environment IDs (UUIDs) and environment names.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment\n\nYou can provide either environment IDs, environment names, or a combination of both."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on vulnerability severity levels. Accepts a comma-separated list of severity levels."
+              },
+              {
+                "name": "secretsLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on exposed secrets severity levels. Accepts a comma-separated list of severity levels."
+              },
+              {
+                "name": "resourceTypes",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on provider resource types. Accepts a comma-separated list of resource types."
+              },
+              {
+                "name": "providers",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on provider. Accepts a comma-separated list of providers."
+              },
+              {
+                "name": "services",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on cloud provider services. Accepts a comma-separated list of service names. Each service can be specified either by its name alone (e.g., `S3`, `Lambda`, `EC2`) or prefixed with its provider in the format `Provider::Service` (e.g., `AWS::S3`, `GCP::Compute`, `Azure::VirtualMachine`).\n"
+              },
+              {
+                "name": "firstObservedAtStart",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range for filtering assets based on the first observed time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include assets from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "firstObservedAtEnd",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range for filtering assets based on the first observed time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include assets up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "hasAdminPrivileges",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has Admin Privileges. The supported values are `true` or `false`"
+              },
+              {
+                "name": "hasOverlyPermissivePrivileges",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has Overly Permissive Privileges. The supported values are `true` or `false`"
+              },
+              {
+                "name": "isSusceptibleToPrivilegeEscalation",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset is susceptible to privilege escalation. The supported values are `true` or `false`"
+              },
+              {
+                "name": "hasKev",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has any unresolved vulnerability that is found on the CISA's Known Exploited Vulnerabilities Catalog. The supported values are `true` or `false`"
+              },
+              {
+                "name": "hasExploit",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has any unresolved vulnerability that is referenced on the MITRE Exploit-DB reference map. The supported values are `true` or `false`"
+              },
+              {
+                "name": "isExploitable",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has any unresolved vulnerability that has a CVSS v3 exploitability score greater than 1. The supported values are `true` or `false`"
+              },
+              {
+                "name": "isPubliclyExposed",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset is Publicly Accessible. The supported values are `true` or `false`"
+              },
+              {
+                "name": "isVulnerable",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on whether the asset has any unresolved vulnerability regardless of severity, source, or status. The supported values are `true` or `false`"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on the Asset's name matching the provided value"
+              },
+              {
+                "name": "metadata",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on the asset's metadata matching the provided value. The search performs a case-insensitive substring match against all metadata keys and values, including nested fields."
+              },
+              {
+                "name": "riskScoreGte",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on the risk score calculated by Plerion for the asset. The supported values are numbers from 0 to 10."
+              },
+              {
+                "name": "operationalStates",
+                "value": "",
+                "type": "query",
+                "description": "Filter assets based on their operational state. Accepts a comma-separated list of operational states.\n\nSupported values:\n  - `active` — running workloads\n  - `inactive` — not running workloads\n\nSupported resource types:\n  - AWS EC2 Instance — `active` indicates the instance is in a `running` state; `inactive` indicates it is `stopped` or `terminated`.\n\nWhen this filter is applied, only assets belonging to resource types that support operational state are returned.\n"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Order the list by supported field"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of assets. Used for pagination"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Specify the batch size of the list. Used for pagination"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list assets API to filter assets across the tenant with many options from Provider, Service, Severity, Integration, etc. By default all assets are returned."
+        },
+        {
+          "info": {
+            "name": "Get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/assets/:assetId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The PRN (asset ID) to retrieve"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional data to include in the response. Use 'rawData' to include the raw asset data."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a specific asset by its ID within a tenant. This endpoint allows you to get detailed information about a particular asset, including optional raw data if requested."
+        },
+        {
+          "info": {
+            "name": "Get SBOM",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/assets/:assetId/sbom",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The asset ID to retrieve the SBOM for"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the Software Bill of Materials (SBOM) for a specific asset identified by its ID within a tenant. This endpoint returns a URL that allows you to download the SBOM file."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

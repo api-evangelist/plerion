@@ -1,0 +1,1898 @@
+{
+  "item": [
+    {
+      "id": "bb91b312-e743-42f1-88a6-0448d489bb52",
+      "name": "Code security",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "289b04e0-1549-4438-9691-3f56d2f52676",
+          "name": "Upload IaC",
+          "request": {
+            "name": "Upload IaC",
+            "description": {
+              "content": "Use Plerion Code security IaC to scan for security vulnerabilities and compliance issues.\n\nUse the following command to upload your IaC files to the Plerion Code security IaC scanning queue:\n\n```bash\nexport PLERION_API_KEY=YOUR_API_KEY\ncurl --request POST \\\n  --location 'https://au.api.plerion.com/v1/tenant/shiftleft/iac/scan?artifactName=YOUR-ARTIFACT-NAME.zip' \\\n  --header \"Authorization: Bearer $PLERION_API_KEY\" \\\n  --header 'Content-Type: application/zip' \\\n  --data-binary '@/Users/example.user/examples-iac/terraform.zip'\n```\nReplace `YOUR_API_KEY` with your actual API key and `/Users/example.user/examples-iac/terraform.zip` with the actual path to your zip file.\n\nAfter receiving a 202 message, retrieve the scanId and proceed to check the results by repeatedly polling [the findings endpoint](/api-reference/code-security/list-findings) with exponential backoff until the data field is not empty.\n\n**This endpoint supports the following public cloud platforms and IaC templates:**\n\n1. Amazon Web Services (AWS)\n2. Microsoft Azure\n3. Google Cloud Platform (GCP)\n4. Kubernetes manifests\n5. Helm charts\n6. Dockerfile definitions\n7. Terraform configurations\n8. Bicep configurations\n9.  Azure Resource Manager (ARM) templates\n10.  CloudFormation templates\n\n**Please note that this API endpoint has following limitations:**\n\n1. Maximum file size that can be uploaded is **4.4MB.**\n\n**To work around these limitations, please consider the following:**\n\n1. Split your IaC zip archive into smaller zip files and upload them individually.\n2. If you are unable to work within these limitations, please contact support for assistance.\n\nNote: If you encounter the error code \"x422Z\" while using cURL, it's possible that the error is related to missing the \"@\" symbol when specifying the file path in the --data or --data-binary option. To resolve this error, you should double-check that you have included the \"@\" symbol before the file path when uploading files with cURL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "shiftleft",
+                "iac",
+                "scan"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "artifactName",
+                  "value": "<string>",
+                  "description": "(Required) Name of the artifact being scanned (e.g. my-iac.zip)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/zip"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<binary>"
+            }
+          },
+          "response": [
+            {
+              "id": "3426439b-edb8-42ef-b757-c006361fa8d9",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": \"File uploaded successfully\",\n  \"meta\": {\n    \"organizationId\": \"ec17a309-6b0a-4911-8d1d-8a5aa0ac4742\",\n    \"tenantId\": \"7934cf6d-fb34-4bda-adde-173a1fa30d9c\",\n    \"scanId\": \"6ddde0c3-690a-aeb3-b237-9724b3e4403c\",\n    \"artifactName\": \"my-iac.zip\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "837865dd-b8d8-4637-8f6d-8ebc6b0ec7b8",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a8c787d-2847-4c01-b865-e010627709a0",
+              "name": "Request Entity Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request Entity Too Large\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e028df7-6416-4087-a6b2-642515d146b5",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": \"x415C\",\n      \"message\": \"Unsupported File Type. The file you are trying to upload contains content type headers that are not supported by our system.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fa6826c-b92f-4468-9608-9557cc478d52",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": \"x422D\",\n      \"message\": \"The uploaded file is corrupted and cannot be processed. Please ensure that the file is not damaged or truncated and try again. Reason: File is empty.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5764f969-dff0-4ef7-a247-ab8a83c3a16e",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "artifactName",
+                      "value": "my-iac.zip"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) application/zip",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": \"x500F\",\n      \"message\": \"We're sorry, but there was an error processing your request. We were unable to scan the input file. Please try again later or contact our support team for further assistance.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b843ce16-0209-4978-8f9f-908a4f2e21f3",
+          "name": "List scans",
+          "request": {
+            "name": "List scans",
+            "description": {
+              "content": "Retrieve all the scans for the tenant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "shiftleft",
+                "iac",
+                "scans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter scans based on ids. Accepts a comma-separated list of ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "artifactNames",
+                  "value": "<string>",
+                  "description": "Filter scans based on artifact name. Accepts a comma-separated list of artifact names."
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>",
+                  "description": "Filter scans based on status. Accepts a comma-separated list of statuses."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort results by the specified field."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order for the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for the results. Accepts a positive integer."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<integer>",
+                  "description": "Number of results per page. Accepts a positive integer."
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "40daea69-6b73-4424-ad6b-e02c1183f6b3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "artifactNames",
+                      "value": "my-iac.zip,my-iac2.zip"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "SUCCESS"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"c056d03d-3f7a-4232-ace0-45403fe28340\",\n      \"createdAt\": \"2023-05-05T11:06:19.859Z\",\n      \"updatedAt\": \"2023-05-05T11:06:19.859Z\",\n      \"organizationId\": \"ec17a309-6b0a-4911-8d1d-8a5aa0ac4742\",\n      \"tenantId\": \"7934cf6d-fb34-4bda-adde-173a1fa30d9c\",\n      \"summary\": {\n        \"startedAt\": 1683284776221,\n        \"stoppedAt\": 1683284779523,\n        \"totalFileSize\": 15187,\n        \"totalFindings\": 232,\n        \"totalResources\": 65,\n        \"totalParsingErrors\": 0,\n        \"totalFailedFindings\": 131,\n        \"totalPassedFindings\": 101,\n        \"totalSkippedFindings\": 0,\n        \"totalVulnerabilities\": 123\n      },\n      \"artifactName\": \"artifact.zip\",\n      \"status\": \"SUCCESS\",\n      \"types\": [\n        \"terraform\",\n        \"dockerfile\"\n      ]\n    },\n    {\n      \"id\": \"702de801-5f54-4bab-a504-0990f7b56830\",\n      \"createdAt\": \"2023-05-05T11:06:19.500Z\",\n      \"updatedAt\": \"2023-05-05T11:06:19.500Z\",\n      \"organizationId\": \"ec17a309-6b0a-4911-8d1d-8a5aa0ac4742\",\n      \"tenantId\": \"7934cf6d-fb34-4bda-adde-173a1fa30d9c\",\n      \"summary\": {\n        \"startedAt\": 1683284775925,\n        \"stoppedAt\": 1683284779187,\n        \"totalFileSize\": 15187,\n        \"totalFindings\": 232,\n        \"totalResources\": 65,\n        \"totalParsingErrors\": 0,\n        \"totalFailedFindings\": 131,\n        \"totalPassedFindings\": 101,\n        \"totalSkippedFindings\": 0\n      },\n      \"artifactName\": \"artifact.zip\",\n      \"status\": \"SUCCESS\",\n      \"types\": [\n        \"terraform\",\n        \"dockerfile\"\n      ]\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"perPage\": 10,\n    \"total\": 74964,\n    \"hasNextPage\": true,\n    \"hasPreviousPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7cc8f0e8-783a-449a-b833-7870fdaa74f6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "artifactNames",
+                      "value": "my-iac.zip,my-iac2.zip"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "SUCCESS"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"sortBy must be one of the following: id, createdAt, updatedAt, artifactName, status\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "441a2682-1c6d-4c2e-8dea-da57cbf4edce",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "artifactNames",
+                      "value": "my-iac.zip,my-iac2.zip"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "SUCCESS"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5665717-99dc-4d40-bfe8-6f7e4e37cc01",
+          "name": "List findings",
+          "request": {
+            "name": "List findings",
+            "description": {
+              "content": "Retrieve all the findings for a scanId",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "shiftleft",
+                "iac",
+                "scans",
+                ":scanId",
+                "findings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter findings based on ids. Accepts a comma-separated list of ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "results",
+                  "value": "<string>",
+                  "description": "Filter findings based on result. Accepts a comma-separated list of result."
+                },
+                {
+                  "disabled": false,
+                  "key": "detectionIds",
+                  "value": "<string>",
+                  "description": "Filter findings based on detection id. Accepts a comma-separated list of detection id."
+                },
+                {
+                  "disabled": false,
+                  "key": "types",
+                  "value": "<string>",
+                  "description": "Filter findings based on type. Accepts a comma-separated list of type."
+                },
+                {
+                  "disabled": false,
+                  "key": "files",
+                  "value": "<string>",
+                  "description": "Filter findings based on file. Accepts a comma-separated list of file."
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>",
+                  "description": "Filter findings based on severity. Accepts a comma-separated list of severity."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort results by the specified field."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order for the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for the results. Accepts a positive integer."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<integer>",
+                  "description": "Number of results per page. Accepts a positive integer."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scanId",
+                  "description": "(Required) Scan ID"
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "62c1fb5d-bae7-43bc-9ca2-39d306cccd63",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "results",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "types",
+                      "value": "helm,kubernetes"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"3b79e265-090c-48e7-bbaa-fa96c4317530\",\n      \"createdAt\": \"2023-05-08T04:31:30.785Z\",\n      \"updatedAt\": \"2023-05-08T04:31:30.785Z\",\n      \"tenantId\": \"7934cf6d-fb34-4bda-adde-173a1fa30d9c\",\n      \"organizationId\": \"ec17a309-6b0a-4911-8d1d-8a5aa0ac4742\",\n      \"scanId\": \"6ddde0c3-690a-aeb3-b237-9724b3e4403c\",\n      \"detectionId\": \"PLERION-K8S-108\",\n      \"detectionTitle\": \"Ensure that the --allow-privileged argument is set to false\",\n      \"type\": \"helm\",\n      \"result\": \"FAILED\",\n      \"evaluatedKeys\": [],\n      \"codeBlock\": [\n        [\n          3,\n          \"apiVersion: apps/v1\\n\"\n        ],\n        [\n          4,\n          \"kind: DaemonSet\\n\"\n        ],\n        [\n          5,\n          \"metadata:\\n\"\n        ],\n        [\n          6,\n          \"  name: release-prometheus-exporter\\n\"\n        ],\n        [\n          7,\n          \"  namespace: default\\n\"\n        ],\n        [\n          8,\n          \"  labels:\\n\"\n        ],\n        [\n          9,\n          \"    app: prometheus-exporter\\n\"\n        ],\n        [\n          10,\n          \"    heritage: Helm\\n\"\n        ],\n        [\n          11,\n          \"    release: prometheus-exporter\\n\"\n        ],\n        [\n          12,\n          \"    chart: prometheus-exporter-9.1.4\\n\"\n        ],\n        [\n          13,\n          \"    jobLabel: prometheus-exporter\\n\"\n        ]\n      ],\n      \"file\": \"/prometheus-exporter/templates/daemonset.yaml\",\n      \"repositoryPath\": \"/prometheus-exporter/templates/daemonset.yaml\",\n      \"lineRange\": [\n        3,\n        94\n      ],\n      \"resource\": \"DaemonSet.default.release-name-prometheus-exporter\",\n      \"resourceTags\": null,\n      \"severityLevel\": \"LOW\",\n      \"dashboardURL\": \"https://au.api.plerion.com/shift-left/scans/6ddde0c3-690a-aeb3-b237-9724b3e4403c/finding/3b79e265-090c-48e7-bbaa-fa96c4317530\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"perPage\": 10,\n    \"total\": 3225,\n    \"hasNextPage\": true,\n    \"hasPreviousPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6998a95d-9440-47bf-9d5e-459b74c2fce6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "results",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "types",
+                      "value": "helm,kubernetes"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"sortBy must be one of the following: id, detectionId, type, result, file, severityLevel, createdAt, updatedAt\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81ec5cca-6447-4317-9857-a593291b2b4f",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "findings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "results",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "detectionIds",
+                      "value": "PLERION-AWS-1,PLERION-AWS-2"
+                    },
+                    {
+                      "key": "types",
+                      "value": "helm,kubernetes"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9dc14d52-93cc-491f-9a8f-f939d65fa8df",
+          "name": "List Vulnerabilities",
+          "request": {
+            "name": "List Vulnerabilities",
+            "description": {
+              "content": "Retrieve all the Vulnerabilities for a scanId",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "shiftleft",
+                "iac",
+                "scans",
+                ":scanId",
+                "vulnerabilities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on ids. Accepts a comma-separated list of ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "vulnerabilityIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on vulnerability id. Accepts a comma-separated list of vulnerability id."
+                },
+                {
+                  "disabled": false,
+                  "key": "severitySources",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on severitySource. Accepts a comma-separated list of severitySource."
+                },
+                {
+                  "disabled": false,
+                  "key": "files",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on file. Accepts a comma-separated list of file."
+                },
+                {
+                  "disabled": false,
+                  "key": "hasKevs",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities based on hasKev. Accepts a comma-separated list of boolean value."
+                },
+                {
+                  "disabled": false,
+                  "key": "hasExploits",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities based on hasExploit. Accepts a comma-separated list of boolean value."
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on severity. Accepts a comma-separated list of severity."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort results by the specified field."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order for the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for the results. Accepts a positive integer."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<integer>",
+                  "description": "Number of results per page. Accepts a positive integer."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "scanId",
+                  "description": "(Required) Scan ID"
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8827a595-0b78-4716-8b2d-46710d41cf08",
+              "name": "Successful response with the list of vulnerabilities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "severitySources",
+                      "value": "nvd,github,debian"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "hasKevs",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "hasExploits",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"1\",\n      \"createdAt\": \"2023-06-30T06:07:18.797Z\",\n      \"updatedAt\": \"2023-06-30T06:07:18.797Z\",\n      \"tenantId\": \"tenant-123\",\n      \"organizationId\": \"org-456\",\n      \"vulnerabilityId\": \"CVE-2023-12345\",\n      \"description\": \"This is a sample vulnerability description.\",\n      \"severityLevel\": \"HIGH\",\n      \"title\": \"Sample Vulnerability Title\",\n      \"primaryUrl\": \"https://example.com/cve/CVE-2023-12345\",\n      \"packages\": [\n        {\n          \"name\": \"sample-package\",\n          \"type\": \"npm\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        },\n        {\n          \"name\": \"sample-package\",\n          \"type\": \"npm\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        }\n      ],\n      \"publishedDate\": \"2023-06-15\",\n      \"cwes\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        },\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        }\n      ],\n      \"hasKev\": true,\n      \"hasExploit\": false,\n      \"knownExploit\": null,\n      \"exploits\": [\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        },\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        }\n      ],\n      \"severityLevelValue\": 4,\n      \"file\": \"/node/CVE-2023-12345/package-lock.json\"\n    },\n    {\n      \"id\": \"1\",\n      \"createdAt\": \"2023-06-30T06:07:18.797Z\",\n      \"updatedAt\": \"2023-06-30T06:07:18.797Z\",\n      \"tenantId\": \"tenant-123\",\n      \"organizationId\": \"org-456\",\n      \"vulnerabilityId\": \"CVE-2023-12345\",\n      \"description\": \"This is a sample vulnerability description.\",\n      \"severityLevel\": \"HIGH\",\n      \"title\": \"Sample Vulnerability Title\",\n      \"primaryUrl\": \"https://example.com/cve/CVE-2023-12345\",\n      \"packages\": [\n        {\n          \"name\": \"sample-package\",\n          \"type\": \"npm\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        },\n        {\n          \"name\": \"sample-package\",\n          \"type\": \"npm\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        }\n      ],\n      \"publishedDate\": \"2023-06-15\",\n      \"cwes\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        },\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        }\n      ],\n      \"hasKev\": true,\n      \"hasExploit\": false,\n      \"knownExploit\": null,\n      \"exploits\": [\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        },\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        }\n      ],\n      \"severityLevelValue\": 4,\n      \"file\": \"/node/CVE-2023-12345/package-lock.json\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 2709.5582019925023,\n    \"perPage\": 3270.292793646747,\n    \"total\": 6004.798958787251,\n    \"hasNextPage\": false,\n    \"hasPreviousPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3b25f7c-3530-4dd9-87fd-7f4e30fe3ee0",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "severitySources",
+                      "value": "nvd,github,debian"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "hasKevs",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "hasExploits",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"sortBy must be one of the following: id, vulnerabilityId, severityLevel, severitySource, hasKev, hasExploit, file, createdAt, updatedAt\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ab9c9f4-0711-4be2-8dd3-7e440c4db35d",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "shiftleft",
+                    "iac",
+                    "scans",
+                    ":scanId",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "severitySources",
+                      "value": "nvd,github,debian"
+                    },
+                    {
+                      "key": "files",
+                      "value": "file1,file2"
+                    },
+                    {
+                      "key": "hasKevs",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "hasExploits",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "scanId",
+                      "description": "(Required) Scan ID"
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "149f9556-bb68-4b7f-bf11-4be65142fff4",
+    "name": "Plerion API Documentation Alerts Code security API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Audit logs API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audit logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/audit-logs",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "operationTimeStart",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range for filtering audit logs based on operation time. \nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `operationTimeStart` is provided and `operationTimeEnd` is omitted, \nresults will include audit logs from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "operationTimeEnd",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range for filtering audit logs based on operation time. \nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `operationTimeEnd` is provided and `operationTimeStart` is omitted, \nresults will include audit logs up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "Filter audit logs based on operator user ID."
+              },
+              {
+                "name": "operation",
+                "value": "",
+                "type": "query",
+                "description": "Filter audit logs based on operation type."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Specify the batch size of the list. Used for pagination"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of audit logs. Used for pagination. When cursor is provided, the response will not include total count."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list audit logs API to retrieve audit trail information for a tenant with filtering options.\nBy default, all audit logs are returned with a page size of 100. You can filter by date range, user, and operation type.\n\nDate range filtering is supported using the `operationTimeStart` and `operationTimeEnd` parameters:\n- `operationTimeStart` alone: Includes audit logs from the specified date to the present.\n- `operationTimeEnd` alone: Includes audit logs up to the specified date.\n- Both provid"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

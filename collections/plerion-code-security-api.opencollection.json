@@ -1,0 +1,312 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Code security API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Code security",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload IaC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{region}.api.plerion.com/v1/tenant/shiftleft/iac/scan",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "artifactName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the artifact being scanned (e.g. my-iac.zip)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use Plerion Code security IaC to scan for security vulnerabilities and compliance issues.\n\nUse the following command to upload your IaC files to the Plerion Code security IaC scanning queue:\n\n```bash\nexport PLERION_API_KEY=YOUR_API_KEY\ncurl --request POST \\\n  --location 'https://au.api.plerion.com/v1/tenant/shiftleft/iac/scan?artifactName=YOUR-ARTIFACT-NAME.zip' \\\n  --header \"Authorization: Bearer $PLERION_API_KEY\" \\\n  --header 'Content-Type: application/zip' \\\n  --data-binary '@/Users/example.u"
+        },
+        {
+          "info": {
+            "name": "List scans",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/shiftleft/iac/scans",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter scans based on ids. Accepts a comma-separated list of ids."
+              },
+              {
+                "name": "artifactNames",
+                "value": "",
+                "type": "query",
+                "description": "Filter scans based on artifact name. Accepts a comma-separated list of artifact names."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter scans based on status. Accepts a comma-separated list of statuses."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by the specified field."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for the results. Accepts a positive integer."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Accepts a positive integer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve all the scans for the tenant."
+        },
+        {
+          "info": {
+            "name": "List findings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/shiftleft/iac/scans/:scanId/findings",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "scanId",
+                "value": "",
+                "type": "path",
+                "description": "Scan ID"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on ids. Accepts a comma-separated list of ids."
+              },
+              {
+                "name": "results",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on result. Accepts a comma-separated list of result."
+              },
+              {
+                "name": "detectionIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on detection id. Accepts a comma-separated list of detection id."
+              },
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on type. Accepts a comma-separated list of type."
+              },
+              {
+                "name": "files",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on file. Accepts a comma-separated list of file."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter findings based on severity. Accepts a comma-separated list of severity."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by the specified field."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for the results. Accepts a positive integer."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Accepts a positive integer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve all the findings for a scanId"
+        },
+        {
+          "info": {
+            "name": "List Vulnerabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/shiftleft/iac/scans/:scanId/vulnerabilities",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "scanId",
+                "value": "",
+                "type": "path",
+                "description": "Scan ID"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on ids. Accepts a comma-separated list of ids."
+              },
+              {
+                "name": "vulnerabilityIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on vulnerability id. Accepts a comma-separated list of vulnerability id."
+              },
+              {
+                "name": "severitySources",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on severitySource. Accepts a comma-separated list of severitySource."
+              },
+              {
+                "name": "files",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on file. Accepts a comma-separated list of file."
+              },
+              {
+                "name": "hasKevs",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on hasKev. Accepts a comma-separated list of boolean value."
+              },
+              {
+                "name": "hasExploits",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on hasExploit. Accepts a comma-separated list of boolean value."
+              },
+              {
+                "name": "severityLevels",
+                "value": "",
+                "type": "query",
+                "description": "Filter vulnerabilities based on severity. Accepts a comma-separated list of severity."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by the specified field."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for the results. Accepts a positive integer."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Accepts a positive integer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve all the Vulnerabilities for a scanId"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

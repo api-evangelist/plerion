@@ -1,0 +1,343 @@
+{
+  "item": [
+    {
+      "id": "84274df3-c37f-4713-8173-e113100886df",
+      "name": "Integrations",
+      "description": {
+        "content": "Integrations enable customers to connect their own cloud environments to the Plerion platform.\nIntegrations allow for the collection of data from the integrated environment, e.g. Connecting Plerion to your cloud service provider will facilitate Plerion to collect, analyze, and prioritize the most significant risks across your cloud operating environments.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fdc01b7e-cf78-469d-9fe1-3f86341a4459",
+          "name": "List inbound integrations",
+          "request": {
+            "name": "List inbound integrations",
+            "description": {
+              "content": "Use the list integrations API to list all inbound integrations that have been added across the tenant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Specify the batch size of the list. Used for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Cursor to get next batch of result. Used for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeTotal",
+                  "value": "<boolean>",
+                  "description": "Include the total count of available integrations"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4f254af4-f4c8-4706-ac86-442cab452949",
+              "name": "Integrations list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "2"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"integrationId\": \"31497927-86af-4fba-afc6-c0cf2311a55b\",\n      \"name\": \"AWS Production Account\",\n      \"tenantId\": \"12345678-86af-4fba-afc6-c0cf12345678\",\n      \"organizationId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n      \"schedule\": \"59 6 * * *\",\n      \"scanInterval\": 24,\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"provider\": \"AWS\",\n      \"type\": \"AWSAccount\",\n      \"detectionSettingId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n      \"status\": \"Active\",\n      \"riskScore\": 8.19,\n      \"awsAccountId\": \"123456789012\"\n    },\n    {\n      \"integrationId\": \"31497927-86af-4fba-afc6-c0cf2311a55b\",\n      \"name\": \"AWS Production Account\",\n      \"tenantId\": \"12345678-86af-4fba-afc6-c0cf12345678\",\n      \"organizationId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n      \"schedule\": \"59 6 * * *\",\n      \"scanInterval\": 24,\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"provider\": \"AWS\",\n      \"type\": \"AWSAccount\",\n      \"detectionSettingId\": \"12345678-86af-4fba-afc6-c0cf87654321\",\n      \"status\": \"Active\",\n      \"riskScore\": 8.19,\n      \"awsAccountId\": \"123456789012\"\n    }\n  ],\n  \"meta\": {\n    \"perPage\": 1,\n    \"cursor\": \"ODcwMWUxOWYtYzg2OC00Mjc3LWE5ZTQtZWE5MWEzZTg1MGUz\",\n    \"total\": 42\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62922d12-e6c9-4f34-a34a-ef21e32ffd5f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "2"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b53967d-7eb5-412d-9d58-d76be9bfb781",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "2"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ed5da043-1b12-4c12-8ca4-d0296ba40a5d",
+    "name": "Plerion API Documentation Alerts Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

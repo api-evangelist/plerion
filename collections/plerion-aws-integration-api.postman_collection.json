@@ -1,0 +1,667 @@
+{
+  "item": [
+    {
+      "id": "4937f335-e024-45be-b528-efe9353affc6",
+      "name": "AWS integration",
+      "description": {
+        "content": "In order to connect your AWS account to Plerion or update existing account, you will need, <ol>\n  <li> <b>CloudFormation Template URL</b>. Retrieve the template from <a href=\"#tag/AWS-Integration/operation/getCloudformationTemplate\">Get CloudFormation template</a></li>\n  <li> <b>External Id</b> of the tenant. Retrieve the External Id from <a href=\"#tag/AWS-Integration/operation/getExternalId\">Get the external id of the tenant</a></li>\n  <li> <b>Plerion AWS Account Id</b>. The value will always be <code>588158338731</code></li>\n  <li> <b>Temporary Auth Token</b>. Token to be passed to CloudFormation template that auto registers the AWS integration. Retrieve the temporary auth token from <a href=\"#tag/AWS-Integration/operation/createTemporaryToken\">Generate temporary token for creating AWS integration</a></li>\n  <li> <b>Plerion API URL</b>. The value will always be <code>au.api.plerion.com</code></li>\n  <li> Select <b>Capabilities</b>. Select CSPM for CSPM only capability or ALL for both CSPM and CWPP capability.</li>\n  <li> Select <b>KMSKeyAccessMode</b>. When CWPP is enabled, you can choose the KMS Key access mode to facilitate Plerion's access to keys for decrypting volumes, images, and lambda code. In the <b>ALL_KEYS</b> mode, Plerion is granted access to all KMS keys in the account. However, you have the option to restrict access to certain keys by applying the \"PlerionAccess: Denied\" tag. Alternatively, the <b>SELECTED_KEYS</b> mode allows Plerion access solely to the KMS keys that have been tagged with \"PlerionAccess: Granted\".</li>\n</ol> Passing the parameters to the CloudFormation template will create a new AWS integration or update existing integration. <br/><br/>\n<h3><b>Quick Start</b></h3>\nFollow the guide to create a new AWS integration or update existing integration using <code>curl</code> command.  <br/> <b>Note:</b> Replace {$PLERION_API_KEY} with your API key. <br/><br/>\n<h4> <b>Create a new AWS Integration</b></h4>\n<pre>\n  export PLERION_API_URL=au.api.plerion.com\n  export PLERION_API_KEY={$PLERION_API_KEY}\n  export PLERION_AWS_ACCOUNT_ID=588158338731\n  # Fetch the template URL\n  export TEMPLATE_URL=$(curl -s GET  \"https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.templateURL')\n  # Generate the temporary auth token\n  export TEMP_AUTH_TOKEN=$(curl -s -X POST  \"https://$PLERION_API_URL/v1/tenant/integrations/token\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.token')\n  # Fetch the external ID\n  export EXTERNAL_ID=$(curl -s -X GET  \"https://$PLERION_API_URL/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.externalId')\n  # Create the stack\n  export PLERION_STACK_NAME=plerion-aws-integration\n  aws cloudformation create-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities CAPABILITY_NAMED_IAM \\\n    --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \\\n      ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \\\n      ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \\\n      ParameterKey=Capabilities,ParameterValue=ALL \\\n      ParameterKey=KMSKeyAccessMode,ParameterValue=\"ALL_KEYS\" \\\n      ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL\n  # Wait for the stack to complete\n  aws cloudformation wait stack-create-complete --stack-name $PLERION_STACK_NAME\n</pre> <br/><br/> <h4> <b>Update an existing AWS Integration</b></h4>\n<pre>\n  export PLERION_API_URL=au.api.plerion.com\n  export PLERION_API_KEY={$PLERION_API_KEY}\n  export PLERION_AWS_ACCOUNT_ID=588158338731\n  # Fetch the template URL\n  export TEMPLATE_URL=$(curl -s GET  \"https://$PLERION_API_URL/v1/tenant/cloudformation-templates?type=AWSAccount\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.templateURL')\n  # Generate the temporary auth token\n  export TEMP_AUTH_TOKEN=$(curl -s -X POST  \"https://$PLERION_API_URL/v1/tenant/integrations/token\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.token')\n  # Fetch the external ID\n  export EXTERNAL_ID=$(curl -s -X GET  \"https://$PLERION_API_URL/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\" | jq -r '.data.externalId')\n  # Update an existing stack\n  export PLERION_STACK_NAME=plerion-aws-integration\n  aws cloudformation update-stack --stack-name $PLERION_STACK_NAME --template-url $TEMPLATE_URL --capabilities CAPABILITY_NAMED_IAM \\\n    --parameters ParameterKey=ExternalId,ParameterValue=$EXTERNAL_ID \\\n      ParameterKey=PlerionAccountId,ParameterValue=$PLERION_AWS_ACCOUNT_ID  \\\n      ParameterKey=AuthToken,ParameterValue=$TEMP_AUTH_TOKEN \\\n      ParameterKey=Capabilities,ParameterValue=ALL \\\n      ParameterKey=KMSKeyAccessMode,ParameterValue=\"ALL_KEYS\" \\\n      ParameterKey=PlerionURL,ParameterValue=$PLERION_API_URL\n  # Wait for the stack to complete\n  aws cloudformation wait stack-update-complete --stack-name $PLERION_STACK_NAME\n</pre>",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2b7bf231-48a3-45ff-a561-d5d237380642",
+          "name": "Get external id",
+          "request": {
+            "name": "Get external id",
+            "description": {
+              "content": "Use the API to get the external ID of the tenant. The external ID is fixed for a tenant and used for cross-account access to AWS role. Read more about <a href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html#external-id-purpose\">External Id purpose</a>.\n```bash\ncurl \"https://au.api.plerion.com/v1/tenant/external-id\" -H \"Authorization: Bearer $PLERION_API_KEY\"\n```",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "external-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "51f75a56-318a-487f-b1b4-58c804910335",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "external-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"externalId\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5dc5d5c5-228f-4161-902f-b54fb3b1897d",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "external-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a6a294d-9b01-44c5-b812-24b936d3e46a",
+          "name": "Generate temporary token",
+          "request": {
+            "name": "Generate temporary token",
+            "description": {
+              "content": "Use the API to generate a temporary token required for creating AWS integration using CloudFormation template provided by Plerion.\n```bash\n  curl -X POST https://au.api.plerion.com/v1/tenant/integrations/token -H \"Authorization: Bearer $PLERION_API_KEY\"\n```",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "integrations",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fb85d586-5bab-4649-bbcf-51c4760eae89",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "integrations",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"token\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f9e972d-0ddf-4d59-8694-62170a4f541a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "integrations",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa1bb8d0-f519-40ce-b76c-ee4f66c9bcc5",
+          "name": "Get CloudFormation template",
+          "request": {
+            "name": "Get CloudFormation template",
+            "description": {
+              "content": "Use the API to get the CloudFormation template required for creating / updating AWS integrations in Plerion. \n```bash\n  curl https://au.api.plerion.com/v1/tenant/cloudformation-templates?type=AWSAccount -H \"Authorization: Bearer $PLERION_API_KEY\"\n```",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "cloudformation-templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "The type of integration for which the CloudFormation template is required"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f0c7cc86-0777-4623-947c-f4176d9f2560",
+              "name": "CloudFormation Template",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "cloudformation-templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "AWSAccount"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"templateURL\": \"https://pl-ap-southeast-2-prod-static-policy-bucket.s3.ap-southeast-2.amazonaws.com/templates/aws-account-automated/v12/cloudformation.yaml\",\n    \"templateVersion\": \"v12\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a9ddace-e095-4d8c-b84e-fdd4285232fe",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "cloudformation-templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "AWSAccount"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c708d639-ca4a-4178-b336-ddae63614828",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "cloudformation-templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "AWSAccount"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7a70fcb-b488-4c15-a74b-ed9b618fb3d5",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "cloudformation-templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "AWSAccount"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "282c92d7-6193-4be2-8027-7c22ed01ba10",
+    "name": "Plerion API Documentation Alerts AWS integration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

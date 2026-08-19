@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Tenant API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tenant",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the get tenant details API to retrieve information about the tenant including tenant ID, organization ID, name, creation date, last updated date, and current risk score."
+        },
+        {
+          "info": {
+            "name": "Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/usage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "Specify the date to get usage for the billing interval that falls on that date. If you don't include a date parameter, the API will default to using the current date. Accepts date time in the format `yyyy-MM-dd`, for example `2023-03-12`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the get tenant usage API to get the usage details of the tenant. The API retrieves the total consumed Plerion units for the tenant for the specified period and additional information regarding whether the limit has been exceeded."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

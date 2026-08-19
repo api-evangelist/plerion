@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Plerion API Documentation Alerts Risks API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Risks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{region}.api.plerion.com/v1/tenant/risks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "id1,id2",
+                "type": "query",
+                "description": "Filter by risk IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "fields",
+                "value": "id,name,severityLevel",
+                "type": "query",
+                "description": "Select specific risk fields to include in the response. Only applies to risk properties. Accepts a comma-separated list of risk fields. Example fields: id, name, severityLevel, score"
+              },
+              {
+                "name": "riskTypeIds",
+                "value": "PLERION-RISK-1,PLERION-RISK-2",
+                "type": "query",
+                "description": "Filter by risk type IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "environmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter risks on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+              },
+              {
+                "name": "integrationIds",
+                "value": "integration1,integration2",
+                "type": "query",
+                "description": "Filter by integration IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "primaryAssetIds",
+                "value": "asset1,asset2",
+                "type": "query",
+                "description": "Filter by primary asset IDs. Accepts a comma-separated list."
+              },
+              {
+                "name": "severityLevels",
+                "value": "CRITICAL,HIGH,MEDIUM,LOW",
+                "type": "query",
+                "description": "Filter by severity levels. Accepts a comma-separated list."
+              },
+              {
+                "name": "lifecycleStates",
+                "value": "DISMISSED_ACCEPTED,DISMISSED_NOT_A_RISK,OPEN",
+                "type": "query",
+                "description": "Filter by lifecycle states. Accepts a comma-separated list."
+              },
+              {
+                "name": "resourceTypes",
+                "value": "AWS::S3::Bucket,AWS::Lambda::Function",
+                "type": "query",
+                "description": "Filter by resource types. Accepts a comma-separated list."
+              },
+              {
+                "name": "discoveredAtStart",
+                "value": "2025-02-01T18:09:07Z",
+                "type": "query",
+                "description": "Start of the date range for filtering risks based on the discovered date.  Specify the start of the range using a valid ISO 8601 date-time string.  If `discoveredAtStart` is provided and `discoveredAtEnd` is omitted,  results will include risks from this date to the present. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "discoveredAtEnd",
+                "value": "2025-02-08T18:09:07Z",
+                "type": "query",
+                "description": "End of the date range for filtering risks based on the discovered date. Specify the end of the range using a valid ISO 8601 date-time string.  If `discoveredAtEnd` is provided and `discoveredAtStart` is omitted,  results will include risks up to this date. Supported formats include: - `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2025-02-18T08:00:00Z`) - `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2025-02-18T08:00:00.000Z`)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "This parameter is for loading relationships in the risk response. Available options: - `primaryAsset`: includes the complete primary asset object for each risk - `integration`: includes the complete integration object for each risk"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Order the list by supported field. Can accept `discoveredAt` or `score`. The default is `discoveredAt`."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the list. Can accept `asc` or `desc`. The default is `desc`."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Get the next batch of risks. Used for pagination."
+              },
+              {
+                "name": "perPage",
+                "value": "50",
+                "type": "query",
+                "description": "Number of items per page"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Use the list risks API to retrieve and filter risks across the tenant."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

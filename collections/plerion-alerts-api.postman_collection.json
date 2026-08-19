@@ -1,0 +1,541 @@
+{
+  "item": [
+    {
+      "id": "1aaefc02-9d8d-4065-b61a-e4d2f0efbb25",
+      "name": "Alerts",
+      "description": {
+        "content": "The Plerion Risk Score (PRS) Engine has calculated Alerts that are the highest priority items based on the available information across Identity, Configuration, and Vulnerability Management. \nAlerts offer the highest value CONTEXT from across the Plerion Platform. Alerts are accompanied by a narrative to guide customers on the overall risk and the recommended remediation steps to take to improve, reduce, or eradicate the identified risk.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6a1e5dfe-f064-4508-9fe3-755363e36b3b",
+          "name": "List",
+          "request": {
+            "name": "List",
+            "description": {
+              "content": "Use the list alerts API to get alerts for the tenant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "Filter alerts based on ID of the alert [Plerion Resource Names (prn)]. Accepts a comma-separated list of ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "workflowIds",
+                  "value": "<string>",
+                  "description": "Filter alerts based on Plerion Workflow IDs. Accepts a comma-separated list of workflow ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "integrationIds",
+                  "value": "<string>",
+                  "description": "Filter alerts based on Plerion integration ids. Accepts a comma-separated list of integration ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "assetGroupIds",
+                  "value": "<string>",
+                  "description": "Filter alerts based on asset group ids. Accepts a comma-separated list of asset group ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>",
+                  "description": "Filter alerts based on statuses. Accepts a comma-separated list of statuses."
+                },
+                {
+                  "disabled": false,
+                  "key": "resourceTypes",
+                  "value": "<string>",
+                  "description": "Filter alerts based on provider resource types. Accepts a comma-separated list of resource types."
+                },
+                {
+                  "disabled": false,
+                  "key": "providers",
+                  "value": "<string>",
+                  "description": "Filter alerts based on provider. Accepts a comma-separated list of providers."
+                },
+                {
+                  "disabled": false,
+                  "key": "alertTypes",
+                  "value": "<string>",
+                  "description": "Filter alerts based on alert type. Accepts a comma-separated list of type."
+                },
+                {
+                  "disabled": false,
+                  "key": "flagged",
+                  "value": "<string>",
+                  "description": "Filter alerts based on flag status. Accepts a single value. The supported values are `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "acknowledged",
+                  "value": "<string>",
+                  "description": "Filter alerts based on acknowledge status. Accepts a single value. The supported values are `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Order the list by supported field"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "The sort order of the list. The parameter sortBy has to be provided to use sortOrder. If sortOrder is not provided the default order is `ASC`."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Get the next batch of alerts. Used for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Specify the batch size of the list. Used for pagination"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "32e9f065-a445-4256-a2ea-bf0599979def",
+              "name": "Alerts list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "workflowIds",
+                      "value": "workflow1,workflow2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "alertTypes",
+                      "value": "ASSET"
+                    },
+                    {
+                      "key": "flagged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "acknowledged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "riskScore"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"prn:assets:12345678-fd05-414f-a367-b1ea84d345f1:aws:s3:bucket:ap-southeast-2:bucket-acl\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n      \"status\": \"OPEN\",\n      \"flagged\": false,\n      \"acknowledged\": false,\n      \"workflowId\": \"451ba59f-8599-4bf4-81f6-618df7f79301\",\n      \"title\": \"Asset with risk score greater than or equal to 9\",\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"summary\": [\n        \"Publicly Exposed\"\n      ],\n      \"alertType\": \"ASSET\",\n      \"riskScore\": 6.38,\n      \"discoveredDate\": \"string\",\n      \"lastScannedAtTimestamp\": \"string\",\n      \"rulesChangedAtTimestamp\": \"string\",\n      \"closedAtTimestamp\": \"string\",\n      \"meta\": {\n        \"region\": \"ap-southeast-2\",\n        \"service\": \"AWS::EC2\",\n        \"provider\": \"AWS\",\n        \"resourceId\": \"https://ap-southeast-2.console.aws.amazon.com/ec2/home?region=ap-southeast-2#ImageDetails:imageId=ami-24234234234\",\n        \"resourceName\": \"string\",\n        \"resourceType\": \"AWS::EC2::AMI\",\n        \"firstObservedAt\": \"2025-02-10T10:26:55.842Z\",\n        \"providerAccountId\": \"string\"\n      }\n    },\n    {\n      \"id\": \"prn:assets:12345678-fd05-414f-a367-b1ea84d345f1:aws:s3:bucket:ap-southeast-2:bucket-acl\",\n      \"tenantId\": \"42749bc1-c99b-4c2c-a081-a6cda9370081\",\n      \"integrationId\": \"458511a1-9bc2-4fce-97a0-0e3139588e6e\",\n      \"status\": \"OPEN\",\n      \"flagged\": false,\n      \"acknowledged\": false,\n      \"workflowId\": \"451ba59f-8599-4bf4-81f6-618df7f79301\",\n      \"title\": \"Asset with risk score greater than or equal to 9\",\n      \"createdAt\": \"2023-02-04T06:07:09.092Z\",\n      \"updatedAt\": \"2023-02-05T06:07:02.959Z\",\n      \"summary\": [\n        \"Publicly Exposed\"\n      ],\n      \"alertType\": \"ASSET\",\n      \"riskScore\": 6.38,\n      \"discoveredDate\": \"string\",\n      \"lastScannedAtTimestamp\": \"string\",\n      \"rulesChangedAtTimestamp\": \"string\",\n      \"closedAtTimestamp\": \"string\",\n      \"meta\": {\n        \"region\": \"ap-southeast-2\",\n        \"service\": \"AWS::EC2\",\n        \"provider\": \"AWS\",\n        \"resourceId\": \"https://ap-southeast-2.console.aws.amazon.com/ec2/home?region=ap-southeast-2#ImageDetails:imageId=ami-24234234234\",\n        \"resourceName\": \"string\",\n        \"resourceType\": \"AWS::EC2::AMI\",\n        \"firstObservedAt\": \"2025-02-10T10:26:55.842Z\",\n        \"providerAccountId\": \"string\"\n      }\n    }\n  ],\n  \"meta\": {\n    \"cursor\": \"k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6\",\n    \"perPage\": 10\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "643293f0-bc7e-4051-a0a3-025adce5d844",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "workflowIds",
+                      "value": "workflow1,workflow2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "alertTypes",
+                      "value": "ASSET"
+                    },
+                    {
+                      "key": "flagged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "acknowledged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "riskScore"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82c7b485-6357-45e4-afa7-96c5d04c7d62",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "id1,id2"
+                    },
+                    {
+                      "key": "workflowIds",
+                      "value": "workflow1,workflow2"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "integration1,integration2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "assetGroupId1,assetGroupId2"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "resourceTypes",
+                      "value": "AWS::S3::Bucket,AWS::Lambda::Function"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "alertTypes",
+                      "value": "ASSET"
+                    },
+                    {
+                      "key": "flagged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "acknowledged",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "riskScore"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "804322bb-7717-40db-874e-bc0cc346c922",
+    "name": "Plerion API Documentation Alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}

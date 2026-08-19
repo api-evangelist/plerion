@@ -1,0 +1,2575 @@
+{
+  "item": [
+    {
+      "id": "e88e285c-fc77-4cc0-b5ea-110abd7fb150",
+      "name": "Vulnerabilities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7a8cab6f-3277-4e4d-85f3-0dd713acad22",
+          "name": "List",
+          "request": {
+            "name": "List",
+            "description": {
+              "content": "Use the list vulnerabilities API to filter vulnerabilities across the tenant with many options\nfrom Organization, Tenant, Integration, Asset, Severity, etc. By default all vulnerabilities\nare returned.\n\nDate range filtering is supported using the `firstObservedAtStart` and `firstObservedAtEnd` parameters:\n- `firstObservedAtStart` alone: Includes vulnerabilities observed from the specified date to the present.\n- `firstObservedAtEnd` alone: Includes vulnerabilities observed up to the specified date.\n- Both provided: Includes vulnerabilities observed within the specified date range.\n\nDate strings must follow ISO 8601 format (e.g., `2023-02-01T18:09:07Z`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "vulnerabilities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "vulnerabilityIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on vulnerability ids. Accepts a comma-separated list with a maximum length of 100"
+                },
+                {
+                  "disabled": false,
+                  "key": "assetIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on asset ids. Accepts a comma-separated list with a maximum length of 10"
+                },
+                {
+                  "disabled": false,
+                  "key": "providers",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities based on provider. Accepts a comma-separated list of providers."
+                },
+                {
+                  "disabled": false,
+                  "key": "executionIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on execution ids. Accepts a comma-separated list with a maximum length of 10"
+                },
+                {
+                  "disabled": false,
+                  "key": "integrationIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on integration ids. Accepts a comma-separated list with a maximum length of 10"
+                },
+                {
+                  "disabled": false,
+                  "key": "assetGroupIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on asset group ids. Accepts a comma-separated list of asset group ids."
+                },
+                {
+                  "disabled": false,
+                  "key": "environmentIds",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on the environment. This parameter accepts any combination of environment name or environment IDs (UUIDs) in a comma-separated list.\n\n**Supported environment names:**\n- `production` - Production environment\n- `non-production` - Non-production environment"
+                },
+                {
+                  "disabled": false,
+                  "key": "packageName",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on a package name."
+                },
+                {
+                  "disabled": false,
+                  "key": "regions",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on asset regions."
+                },
+                {
+                  "disabled": false,
+                  "key": "targetName",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on a target name. For ECS Task Definitions this will be `{TaskDefinition}:{revision} > {containerImage}`"
+                },
+                {
+                  "disabled": false,
+                  "key": "targetType",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on a target type."
+                },
+                {
+                  "disabled": false,
+                  "key": "targetClass",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on a target class."
+                },
+                {
+                  "disabled": false,
+                  "key": "hasKev",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities on hasKev. Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "isExempted",
+                  "value": "false",
+                  "description": "Filter vulnerabilities based on exemptions. Returns exempted vulnerabilities if set true. Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "isExploitable",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities based on exploitability under the Common Vulnerability Scoring System (CVSS). Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "hasExploit",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities on hasExploit. Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "hasVendorFix",
+                  "value": "<boolean>",
+                  "description": "Filter vulnerabilities where the affected packages have a fixed version. Is true if any affected package has a fixed version. Accepts `true` or `false`."
+                },
+                {
+                  "disabled": false,
+                  "key": "severityLevels",
+                  "value": "<string>",
+                  "description": "Filter vulnerabilities on severity. Accepts a comma-separated list."
+                },
+                {
+                  "disabled": false,
+                  "key": "firstObservedAtStart",
+                  "value": "<dateTime>",
+                  "description": "Start of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the start of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtStart` is provided and `firstObservedAtEnd` is omitted, \nresults will include vulnerabilities observed from this date to the present.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "firstObservedAtEnd",
+                  "value": "<dateTime>",
+                  "description": "End of the date range for filtering vulnerabilities based on the first observed time.\nSpecify the end of the range using a valid ISO 8601 date-time string. \nIf `firstObservedAtEnd` is provided and `firstObservedAtStart` is omitted, \nresults will include vulnerabilities observed up to this date.\nSupported formats include:\n- `yyyy-MM-ddTHH:mm:ssZ` (e.g., `2020-12-18T08:00:00Z`)\n- `yyyy-MM-ddTHH:mm:ss.SSSZ` (e.g., `2020-12-18T08:00:00.000Z`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort results by the specified field."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order for the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for the results. Accepts a positive integer."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "100",
+                  "description": "Number of results per page. Accepts a positive integer."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Get the next batch of vulnerabilities. Used for pagination. When cursor is provided, the response will not include total count."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeTotal",
+                  "value": "true",
+                  "description": "Include the total count of available vulnerabilities. Defaults to true. Set to false to improve response times for large datasets."
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dc169817-0c1d-46f1-be10-d5d5a8e95eba",
+              "name": "Successful response with the list of vulnerabilities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "executionIds",
+                      "value": "1678607803935,1778607801234"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "packageName",
+                      "value": "lodash"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "targetName",
+                      "value": "EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl"
+                    },
+                    {
+                      "key": "targetType",
+                      "value": "targetType"
+                    },
+                    {
+                      "key": "targetClass",
+                      "value": "lang-pkgs,os-pkgs"
+                    },
+                    {
+                      "key": "hasKev",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExploitable",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasExploit",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasVendorFix",
+                      "value": "true"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "hasExploit"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"schemaVersion\": \"2022-06-09\",\n      \"assetId\": \"prn:assets:a\",\n      \"organizationId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"tenantId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"integrationId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"vulnerabilityId\": \"CVE-2022-22965\",\n      \"provider\": \"AWS\",\n      \"assetType\": \"AWS::EC2::Instance\",\n      \"description\": \"A flaw was found in shadow-utils.\",\n      \"severityLevel\": \"HIGH\",\n      \"firstObservedAt\": \"2023-10-27T04:54:37.830Z\",\n      \"lastObservedAt\": \"2023-10-27T04:54:37.830Z\",\n      \"publishedDate\": \"2023-10-27T04:54:37.830Z\",\n      \"executionId\": \"1678607803935\",\n      \"title\": \"Sample Vulnerability Title\",\n      \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n      \"severitySource\": \"redhat\",\n      \"primaryUrl\": \"https://nvd.nist.gov/vuln/detail/CVE-2022-22965\",\n      \"packages\": [\n        {\n          \"packageName\": \"sample-package\",\n          \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n          \"targetType\": \"sample-target-type\",\n          \"targetPath\": \"ip-172-31-29-14.ap-southeast-2.compute.internal\",\n          \"targetClass\": \"os-pkgs\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        },\n        {\n          \"packageName\": \"sample-package\",\n          \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n          \"targetType\": \"sample-target-type\",\n          \"targetPath\": \"ip-172-31-29-14.ap-southeast-2.compute.internal\",\n          \"targetClass\": \"os-pkgs\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        }\n      ],\n      \"cwes\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        },\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        }\n      ],\n      \"hasKev\": true,\n      \"hasExploit\": false,\n      \"hasVendorFix\": true,\n      \"knownExploit\": null,\n      \"exploits\": [\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        },\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        }\n      ],\n      \"exemptions\": null,\n      \"severityLevelValue\": 4\n    },\n    {\n      \"schemaVersion\": \"2022-06-09\",\n      \"assetId\": \"prn:assets:a\",\n      \"organizationId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"tenantId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"integrationId\": \"98ca8825-a65a-4b50-a6f0-4851c406aedc\",\n      \"vulnerabilityId\": \"CVE-2022-22965\",\n      \"provider\": \"AWS\",\n      \"assetType\": \"AWS::EC2::Instance\",\n      \"description\": \"A flaw was found in shadow-utils.\",\n      \"severityLevel\": \"HIGH\",\n      \"firstObservedAt\": \"2023-10-27T04:54:37.830Z\",\n      \"lastObservedAt\": \"2023-10-27T04:54:37.830Z\",\n      \"publishedDate\": \"2023-10-27T04:54:37.830Z\",\n      \"executionId\": \"1678607803935\",\n      \"title\": \"Sample Vulnerability Title\",\n      \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n      \"severitySource\": \"redhat\",\n      \"primaryUrl\": \"https://nvd.nist.gov/vuln/detail/CVE-2022-22965\",\n      \"packages\": [\n        {\n          \"packageName\": \"sample-package\",\n          \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n          \"targetType\": \"sample-target-type\",\n          \"targetPath\": \"ip-172-31-29-14.ap-southeast-2.compute.internal\",\n          \"targetClass\": \"os-pkgs\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        },\n        {\n          \"packageName\": \"sample-package\",\n          \"targetName\": \"EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl\",\n          \"targetType\": \"sample-target-type\",\n          \"targetPath\": \"ip-172-31-29-14.ap-southeast-2.compute.internal\",\n          \"targetClass\": \"os-pkgs\",\n          \"fixedVersion\": \"1.0.1\",\n          \"installedVersion\": \"1.0.0\"\n        }\n      ],\n      \"cwes\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        },\n        {\n          \"id\": \"1\",\n          \"name\": \"CWE-123\",\n          \"cweId\": \"CWE-123\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/cwe/CWE-123\",\n          \"description\": \"This is a sample CWE description.\"\n        }\n      ],\n      \"hasKev\": true,\n      \"hasExploit\": false,\n      \"hasVendorFix\": true,\n      \"knownExploit\": null,\n      \"exploits\": [\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        },\n        {\n          \"id\": \"1\",\n          \"title\": \"Sample Exploit Title\",\n          \"description\": \"This is a sample exploit description.\",\n          \"source\": \"MITRE\",\n          \"sourceUrl\": \"https://example.com/exploit/CVE-2023-12345\"\n        }\n      ],\n      \"exemptions\": null,\n      \"severityLevelValue\": 4\n    }\n  ],\n  \"meta\": {\n    \"perPage\": 8745.023548510113,\n    \"cursor\": \"string\",\n    \"page\": 2405.623306462814,\n    \"total\": 3240.550799770979,\n    \"hasNextPage\": false,\n    \"hasPreviousPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99167f1b-21a8-480c-a950-c83e735ecd40",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "executionIds",
+                      "value": "1678607803935,1778607801234"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "packageName",
+                      "value": "lodash"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "targetName",
+                      "value": "EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl"
+                    },
+                    {
+                      "key": "targetType",
+                      "value": "targetType"
+                    },
+                    {
+                      "key": "targetClass",
+                      "value": "lang-pkgs,os-pkgs"
+                    },
+                    {
+                      "key": "hasKev",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExploitable",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasExploit",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasVendorFix",
+                      "value": "true"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "hasExploit"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"sortBy must be one of the following: id, vulnerabilityId, severityLevel, severitySource, hasKev, hasExploit, file, createdAt, updatedAt\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7480ecb-8a0d-4aae-993f-57bebf27d4e4",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "vulnerabilities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "vulnerabilityIds",
+                      "value": "CVE-2022-22965,CVE-2022-22966,CVE-2022-22967"
+                    },
+                    {
+                      "key": "assetIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "providers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "executionIds",
+                      "value": "1678607803935,1778607801234"
+                    },
+                    {
+                      "key": "integrationIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "assetGroupIds",
+                      "value": "UUID1,UUID2"
+                    },
+                    {
+                      "key": "environmentIds",
+                      "value": "production,550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "packageName",
+                      "value": "lodash"
+                    },
+                    {
+                      "key": "regions",
+                      "value": "us-east-1,us-west-2"
+                    },
+                    {
+                      "key": "targetName",
+                      "value": "EcsTaskDefinition:15 > nginx:1.19.1-alpine-perl"
+                    },
+                    {
+                      "key": "targetType",
+                      "value": "targetType"
+                    },
+                    {
+                      "key": "targetClass",
+                      "value": "lang-pkgs,os-pkgs"
+                    },
+                    {
+                      "key": "hasKev",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExempted",
+                      "value": "true"
+                    },
+                    {
+                      "key": "isExploitable",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasExploit",
+                      "value": "true"
+                    },
+                    {
+                      "key": "hasVendorFix",
+                      "value": "true"
+                    },
+                    {
+                      "key": "severityLevels",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "firstObservedAtStart",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "firstObservedAtEnd",
+                      "value": "2023-02-01T18:09:07Z"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "hasExploit"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "ASC"
+                    },
+                    {
+                      "key": "page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeTotal",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d3cf6626-8b8e-4e31-8b03-e75fac85bf30",
+          "name": "Create a vulnerability exemption in a profile",
+          "request": {
+            "name": "Create a vulnerability exemption in a profile",
+            "description": {
+              "content": "Creates an exemption definition scoped to the given profile. Use it to suppress specific vulnerabilities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "profiles",
+                ":profileId",
+                "vulnerability",
+                "exemptions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"name\": \"<string>\",\n  \"conditions\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1ee6362d-0346-41ab-b93e-b732230a3129",
+              "name": "Exemption created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"name\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"exemptionId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"profileId\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"name\": \"Critical Patch Exemption\",\n    \"auditNote\": \"Accepted risk due to compensating controls.\",\n    \"reason\": \"COMPENSATING_CONTROL\",\n    \"conditions\": {},\n    \"createdAt\": \"2023-10-01T12:00:00Z\",\n    \"updatedAt\": \"2023-10-02T14:30:00Z\",\n    \"createdBy\": \"user@example.com\",\n    \"updatedBy\": \"user@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6a0b8dc-3551-41de-90ec-9fa752cb57d3",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"name\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2daa405a-e3ea-454a-8907-773d10246e53",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"name\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ebdbd39-b940-4e6d-a993-7c6bc244f3ff",
+          "name": "List vulnerability exemptions in a profile",
+          "request": {
+            "name": "List vulnerability exemptions in a profile",
+            "description": {
+              "content": "Lists all vulnerability exemptions scoped to the given profile with pagination support.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "profiles",
+                ":profileId",
+                "vulnerability",
+                "exemptions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of exemptions to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Cursor for pagination. Get the next batch of exemptions."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e84fd87b-b7ee-4b12-a907-e8e0366b6d35",
+              "name": "Exemptions list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"exemptionId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"profileId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"name\": \"Critical Patch Exemption\",\n      \"auditNote\": \"Accepted risk due to compensating controls.\",\n      \"reason\": \"COMPENSATING_CONTROL\",\n      \"conditions\": {},\n      \"createdAt\": \"2023-10-01T12:00:00Z\",\n      \"updatedAt\": \"2023-10-02T14:30:00Z\",\n      \"createdBy\": \"user@example.com\",\n      \"updatedBy\": \"user@example.com\"\n    },\n    {\n      \"exemptionId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"profileId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"name\": \"Critical Patch Exemption\",\n      \"auditNote\": \"Accepted risk due to compensating controls.\",\n      \"reason\": \"COMPENSATING_CONTROL\",\n      \"conditions\": {},\n      \"createdAt\": \"2023-10-01T12:00:00Z\",\n      \"updatedAt\": \"2023-10-02T14:30:00Z\",\n      \"createdBy\": \"user@example.com\",\n      \"updatedBy\": \"user@example.com\"\n    }\n  ],\n  \"meta\": {\n    \"hasNext\": true,\n    \"nextCursor\": \"k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6\",\n    \"total\": 42\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e06c3f6-7c50-4bbf-b7ec-d8c9239edff6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2a44949-f9b9-432e-8806-087446fcb096",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "k3d83a9b-k3dk-5lkd-2ldk-9kd77c1beb6"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c90ba739-3801-49cc-9ad8-40c1ccbae045",
+          "name": "Get a vulnerability exemption by ID",
+          "request": {
+            "name": "Get a vulnerability exemption by ID",
+            "description": {
+              "content": "Retrieves a specific vulnerability exemption by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "profiles",
+                ":profileId",
+                "vulnerability",
+                "exemptions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Exemption ID (UUID)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ced2a610-74b9-4a51-bc52-c21d4aa6096e",
+              "name": "Exemption retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"exemptionId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"profileId\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"name\": \"Critical Patch Exemption\",\n    \"auditNote\": \"Accepted risk due to compensating controls.\",\n    \"reason\": \"COMPENSATING_CONTROL\",\n    \"conditions\": {},\n    \"createdAt\": \"2023-10-01T12:00:00Z\",\n    \"updatedAt\": \"2023-10-02T14:30:00Z\",\n    \"createdBy\": \"user@example.com\",\n    \"updatedBy\": \"user@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "625bd5a4-3d01-4234-b1b5-10b570745837",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aed57f6f-7ed8-4316-b8cf-da23f71867bf",
+              "name": "Exemption not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f43842e-17ad-4195-9474-032d9f6de2cd",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6486c6fa-ac3c-4e3d-a3db-7f522d3cf2d9",
+          "name": "Delete a vulnerability exemption by ID",
+          "request": {
+            "name": "Delete a vulnerability exemption by ID",
+            "description": {
+              "content": "Deletes a specific vulnerability exemption by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "profiles",
+                ":profileId",
+                "vulnerability",
+                "exemptions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Exemption ID (UUID)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ef33b325-fba2-4666-bb85-b24a838007a7",
+              "name": "Exemption deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Exemption deleted\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9d0fca4-a835-49c6-a3b0-06418a698681",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85a2ea67-0f1d-4aa1-8d69-1e0bf56839ad",
+              "name": "Exemption not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f51fa1e-23ef-4b12-a245-7218ea92f679",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d013428-5d69-43f5-bfb9-80124f67b970",
+          "name": "Update a vulnerability exemption by ID",
+          "request": {
+            "name": "Update a vulnerability exemption by ID",
+            "description": {
+              "content": "Updates a specific vulnerability exemption by its ID. All fields are optional for partial updates.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tenant",
+                "profiles",
+                ":profileId",
+                "vulnerability",
+                "exemptions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Exemption ID (UUID)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                },
+                {
+                  "description": " (This can only be one of au,sg1,in1,us1)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"conditions\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bafd28bf-5ad6-4495-b0d1-0611f74297f3",
+              "name": "Exemption updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"exemptionId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"profileId\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"name\": \"Critical Patch Exemption\",\n    \"auditNote\": \"Accepted risk due to compensating controls.\",\n    \"reason\": \"COMPENSATING_CONTROL\",\n    \"conditions\": {},\n    \"createdAt\": \"2023-10-01T12:00:00Z\",\n    \"updatedAt\": \"2023-10-02T14:30:00Z\",\n    \"createdBy\": \"user@example.com\",\n    \"updatedBy\": \"user@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "412e3252-ae2e-44a7-bad9-dfbeca1eb275",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9526214-b691-4827-9a28-043e1a31ec9d",
+              "name": "Exemption not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4e58c6c-ccb3-461d-9fa8-a4b8d3fed32e",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tenant",
+                    "profiles",
+                    ":profileId",
+                    "vulnerability",
+                    "exemptions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Exemption ID (UUID)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) Profile ID (UUID) or the literal string \"default\" for the default profile."
+                    },
+                    {
+                      "description": " (This can only be one of au,sg1,in1,us1)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer API Key. For example, \"Bearer {Tenant API Key}\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "application/json",
+                    "key": "Content-Type",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"auditNote\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"conditions\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of au,sg1,in1,us1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "au",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://{{region}}.api.plerion.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a685d778-13ef-4a09-b6bf-07cf65780551",
+    "name": "Plerion API Documentation Alerts Vulnerabilities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>\n\nContact Support:\n Name: Plerion Pty Ltd\n Email: support@plerion.com",
+      "type": "text/plain"
+    }
+  }
+}
