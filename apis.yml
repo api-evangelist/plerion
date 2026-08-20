@@ -43,6 +43,16 @@ tags:
 - Compliance
 - AI Security
 - DevSecOps
+tags_raw:
+- Company
+- Security
+- Cloud Security
+- CSPM
+- Cloud Workload Protection
+- Vulnerability Management
+- Compliance
+- AI Security
+- DevSecOps
 - API
 apis:
 - aid: plerion:plerion-alerts-api
@@ -133,6 +143,8 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
+  - Audit Logs
+  tags_raw:
   - Audit logs
   properties:
   - type: OpenAPI
@@ -253,6 +265,8 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
+  - Code Security
+  tags_raw:
   - Code security
   properties:
   - type: OpenAPI
@@ -278,6 +292,8 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
+  - Compliance Frameworks
+  tags_raw:
   - Compliance frameworks
   properties:
   - type: OpenAPI
@@ -328,6 +344,8 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
