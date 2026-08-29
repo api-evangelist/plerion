@@ -11,6 +11,18 @@ description: >-
   (Bearer API key, regional hosts) plus a cross-platform CLI so teams can query findings, assets,
   risks, vulnerabilities, and compliance posture programmatically.
 url: https://raw.githubusercontent.com/api-evangelist/plerion/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
