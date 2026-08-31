@@ -277,7 +277,7 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
-  - Code Security
+  - Code security
   tags_raw:
   - Code security
   properties:
@@ -304,7 +304,7 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
-  - Compliance Frameworks
+  - Compliance frameworks
   tags_raw:
   - Compliance frameworks
   properties:
