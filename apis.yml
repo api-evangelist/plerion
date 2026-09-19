@@ -407,6 +407,8 @@ apis:
   humanURL: https://docs.plerion.com/api-reference
   baseURL: https://au.api.plerion.com
   tags:
+  - Tenants
+  tags_raw:
   - Tenant
   properties:
   - type: OpenAPI
