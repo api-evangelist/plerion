@@ -1,26 +1,14 @@
 {
   "provider": "plerion",
   "sources": [
-    "plerion-alerts-api-openapi.yml",
-    "plerion-asset-groups-api-openapi.yml",
-    "plerion-assets-api-openapi.yml",
-    "plerion-audit-logs-api-openapi.yml",
-    "plerion-aws-integration-api-openapi.yml",
-    "plerion-code-security-api-openapi.yml",
-    "plerion-compliance-frameworks-api-openapi.yml",
-    "plerion-findings-api-openapi.yml",
-    "plerion-integrations-api-openapi.yml",
-    "plerion-risks-api-openapi.yml",
-    "plerion-tenant-api-openapi.yml",
-    "plerion-vulnerabilities-api-openapi.yml",
-    "plerion-well-architected-frameworks-api-openapi.yml"
+    "_original/plerion-openapi-original.yml"
   ],
   "outputs": [
+    "plerion-aws-integration-api-openapi.yml",
     "plerion-alerts-api-openapi.yml",
     "plerion-asset-groups-api-openapi.yml",
     "plerion-assets-api-openapi.yml",
     "plerion-audit-logs-api-openapi.yml",
-    "plerion-aws-integration-api-openapi.yml",
     "plerion-code-security-api-openapi.yml",
     "plerion-compliance-frameworks-api-openapi.yml",
     "plerion-findings-api-openapi.yml",
@@ -32,9 +20,29 @@
   ],
   "archived": [],
   "errors": [
-    "plerion-vulnerabilities-api-openapi.yml: dangling $ref: #/components/schemas/NotFoundErrorResponse"
+    "plerion-openapi-original.yml: dangling $ref: #/components/schemas/NotFoundErrorResponse"
   ],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "plerion-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "plerion-openapi-original.yml: declared missing tag: Code security",
+    "plerion-openapi-original.yml: declared missing tag: Vulnerabilities",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "plerion-alerts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-asset-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-audit-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-aws-integration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-code-security-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-compliance-frameworks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-findings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-integrations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-risks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-tenant-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-vulnerabilities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "plerion-well-architected-frameworks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

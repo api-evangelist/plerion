@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Plerion API Documentation Alerts Code security API
+  title: Plerion API Documentation Code security API
   version: v1
   termsOfService: https://www.plerion.com/terms-and-conditions
   contact:
@@ -10,7 +10,10 @@ info:
   license:
     name: Plerion Use License
     url: https://www.plerion.com/terms-and-conditions
-  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+  description: 'The Plerion API allows you to programmatically interact with Plerion.
+
+
+    Base URL: https://{region}.api.plerion.com'
 servers:
 - url: https://{region}.api.plerion.com
   description: Production API server - Select your preferred region
@@ -34,7 +37,73 @@ paths:
       x-mint:
         metadata:
           title: Upload Infrastructure as Code for Scanning
-      description: "Use Plerion Code security IaC to scan for security vulnerabilities and compliance issues.\n\nUse the following command to upload your IaC files to the Plerion Code security IaC scanning queue:\n\n```bash\nexport PLERION_API_KEY=YOUR_API_KEY\ncurl --request POST \\\n  --location 'https://au.api.plerion.com/v1/tenant/shiftleft/iac/scan?artifactName=YOUR-ARTIFACT-NAME.zip' \\\n  --header \"Authorization: Bearer $PLERION_API_KEY\" \\\n  --header 'Content-Type: application/zip' \\\n  --data-binary '@/Users/example.user/examples-iac/terraform.zip'\n```\nReplace `YOUR_API_KEY` with your actual API key and `/Users/example.user/examples-iac/terraform.zip` with the actual path to your zip file.\n\nAfter receiving a 202 message, retrieve the scanId and proceed to check the results by repeatedly polling [the findings endpoint](/api-reference/code-security/list-findings) with exponential backoff until the data field is not empty.\n\n**This endpoint supports the following public cloud platforms and IaC templates:**\n\n1. Amazon Web Services (AWS)\n2. Microsoft Azure\n3. Google Cloud Platform (GCP)\n4. Kubernetes manifests\n5. Helm charts\n6. Dockerfile definitions\n7. Terraform configurations\n8. Bicep configurations\n9.  Azure Resource Manager (ARM) templates\n10.  CloudFormation templates\n\n**Please note that this API endpoint has following limitations:**\n\n1. Maximum file size that can be uploaded is **4.4MB.**\n\n**To work around these limitations, please consider the following:**\n\n1. Split your IaC zip archive into smaller zip files and upload them individually.\n2. If you are unable to work within these limitations, please contact support for assistance.\n\nNote: If you encounter the error code \"x422Z\" while using cURL, it's possible that the error is related to missing the \"@\" symbol when specifying the file path in the --data or --data-binary option. To resolve this error, you should double-check that you have included the \"@\" symbol before the file path when uploading files with cURL."
+      description: 'Use Plerion Code security IaC to scan for security vulnerabilities and compliance issues.
+
+
+        Use the following command to upload your IaC files to the Plerion Code security IaC scanning queue:
+
+
+        ```bash
+
+        export PLERION_API_KEY=YOUR_API_KEY
+
+        curl --request POST \
+
+        --location ''https://au.api.plerion.com/v1/tenant/shiftleft/iac/scan?artifactName=YOUR-ARTIFACT-NAME.zip'' \
+
+        --header "Authorization: Bearer $PLERION_API_KEY" \
+
+        --header ''Content-Type: application/zip'' \
+
+        --data-binary ''@/Users/example.user/examples-iac/terraform.zip''
+
+        ```
+
+        Replace `YOUR_API_KEY` with your actual API key and `/Users/example.user/examples-iac/terraform.zip` with the actual path to your zip file.
+
+
+        After receiving a 202 message, retrieve the scanId and proceed to check the results by repeatedly polling the findings endpoint with exponential backoff until the data field is not empty.
+
+
+        **This endpoint supports the following public cloud platforms and IaC templates:**
+
+
+        1. Amazon Web Services (AWS)
+
+        2. Microsoft Azure
+
+        3. Google Cloud Platform (GCP)
+
+        4. Kubernetes manifests
+
+        5. Helm charts
+
+        6. Dockerfile definitions
+
+        7. Terraform configurations
+
+        8. Bicep configurations
+
+        9. Azure Resource Manager (ARM) templates
+
+        10. CloudFormation templates
+
+
+        **Please note that this API endpoint has following limitations:**
+
+
+        1. Maximum file size that can be uploaded is **4.4MB.**
+
+
+        **To work around these limitations, please consider the following:**
+
+
+        1. Split your IaC zip archive into smaller zip files and upload them individually.
+
+        2. If you are unable to work within these limitations, please contact support for assistance.
+
+
+        Note: If you encounter the error code "x422Z" while using cURL, it''s possible that the error is related to missing the "@" symbol when specifying the file path in the --data or --data-binary option. To resolve this error, you should double-check that you have included the "@" symbol before the file path when uploading files with cURL.'
       requestBody:
         required: true
         content:
@@ -1178,13 +1247,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerErrorResponse'
 components:
-  schemas:
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
   parameters:
     paramAuthHeader:
       name: Authorization
@@ -1193,6 +1255,13 @@ components:
       required: true
       schema:
         type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   securitySchemes:
     APIKey:
       type: http

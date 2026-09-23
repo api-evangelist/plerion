@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Plerion API Documentation Alerts Audit logs API
+  title: Plerion API Documentation Audit logs API
   version: v1
   termsOfService: https://www.plerion.com/terms-and-conditions
   contact:
@@ -10,7 +10,10 @@ info:
   license:
     name: Plerion Use License
     url: https://www.plerion.com/terms-and-conditions
-  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+  description: 'The Plerion API allows you to programmatically interact with Plerion.
+
+
+    Base URL: https://{region}.api.plerion.com'
 servers:
 - url: https://{region}.api.plerion.com
   description: Production API server - Select your preferred region
@@ -23,7 +26,7 @@ servers:
       - in1
       - us1
 tags:
-- name: Audit logs
+- name: Audit Logs
   x-displayName: Audit Logs
   description: 'Audit logs provide a comprehensive trail of user activities and system operations within a tenant.
 
@@ -33,7 +36,7 @@ paths:
     get:
       operationId: listTenantAuditLogs
       tags:
-      - Audit logs
+      - Audit Logs
       summary: List
       x-mint:
         metadata:
@@ -220,6 +223,14 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   responses:
     '500':
       description: Internal Server Error
@@ -290,14 +301,6 @@ components:
         message:
           type: string
           example: Internal server error
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   securitySchemes:
     APIKey:
       type: http

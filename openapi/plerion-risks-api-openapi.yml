@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Plerion API Documentation Alerts Risks API
+  title: Plerion API Documentation Risks API
   version: v1
   termsOfService: https://www.plerion.com/terms-and-conditions
   contact:
@@ -10,7 +10,10 @@ info:
   license:
     name: Plerion Use License
     url: https://www.plerion.com/terms-and-conditions
-  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+  description: 'The Plerion API allows you to programmatically interact with Plerion.
+
+
+    Base URL: https://{region}.api.plerion.com'
 servers:
 - url: https://{region}.api.plerion.com
   description: Production API server - Select your preferred region
@@ -201,97 +204,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   schemas:
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-    DynamicObject:
-      type: object
-      additionalProperties:
-        type: string
-    Integration:
-      type: object
-      properties:
-        integrationId:
-          type: string
-          example: 31497927-86af-4fba-afc6-c0cf2311a55b
-        name:
-          type: string
-          example: Integration 001
-        tenantId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf12345678
-        organizationId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        schedule:
-          type: string
-          description: String representing a cron expression for scan schedule
-          example: 59 6 * * *
-        scanInterval:
-          type: number
-          enum:
-          - 6
-          - 8
-          - 12
-          - 24
-          description: Represents the scan interval.
-          example: 24
-        createdAt:
-          type: string
-          format: date-time
-          example: '2023-02-04T06:07:09.092Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2023-02-05T06:07:02.959Z'
-        provider:
-          type: string
-          example: AWS
-        type:
-          type: string
-          enum:
-          - AWSAccount
-          - AzureAccount
-          - AzureActiveDirectory
-          - AzureSubscription
-          - GCPProject
-          - CdrAws
-          - Kubernetes
-          - CASM
-          description: Type of integration.
-          example: AWSAccount
-        detectionSettingId:
-          type: string
-          description: Available if Integration is attached to any custom Detection Setting.
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        status:
-          type: string
-          enum:
-          - Active
-          - Delete Failed
-          - Delete In Progress
-        riskScore:
-          type: number
-          format: float
-          description: Risk score of the integration (if available)
-          example: 8.19
-        awsAccountId:
-          type: string
-          description: AWS account ID. Only returned for AWS integrations.
-          example: '123456789012'
-        azureSubscriptionId:
-          type: string
-          description: Azure Subscription ID. Only returned for Azure integrations.
-          example: 12345678-1234-5678-1234-567812345678
-        azureDirectoryId:
-          type: string
-          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
-          example: 87654321-4321-8765-4321-876543218765
-        gcpProjectId:
-          type: string
-          description: GCP Project ID. Only returned for GCP integrations.
-          example: my-gcp-project
     Asset:
       type: object
       properties:
@@ -552,47 +464,6 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
-    OperatingSystem:
-      type: object
-      properties:
-        architecture:
-          type: string
-          description: The architecture of the operating system.
-          example: x86_64
-        name:
-          type: string
-          description: The name of the operating system.
-          example: Ubuntu
-        platform:
-          type: string
-          description: The OS platform.
-          example: Linux/UNIX
-        version:
-          type: string
-          description: The version of the operating system including version name.
-          example: 24.04.2 LTS (Noble Numbat)
-        versionId:
-          type: string
-          description: The version of the operating system.
-          example: 24.04
-        activeKernel:
-          type: string
-          description: The kernel version of the operating system.
-          example: 4.14.246-197.484.amzn2.x86_64
-        buildNumber:
-          type: string
-          description: The build number of the windows operating system.
-          example: 20348.fe_release.210507-1500
-        lcuVersion:
-          type: string
-          description: The latest cumulative update version of the windows operating.
-          example: 10.0.20348.2762
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     Risk:
       type: object
       additionalProperties: false
@@ -715,6 +586,146 @@ components:
           - DISMISSED_ACCEPTED
           - DISMISSED_NOT_A_RISK
           - OPEN
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    Integration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Integration 001
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          enum:
+          - AWSAccount
+          - AzureAccount
+          - AzureActiveDirectory
+          - AzureSubscription
+          - GCPProject
+          - CdrAws
+          - Kubernetes
+          - CASM
+          description: Type of integration.
+          example: AWSAccount
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        awsAccountId:
+          type: string
+          description: AWS account ID. Only returned for AWS integrations.
+          example: '123456789012'
+        azureSubscriptionId:
+          type: string
+          description: Azure Subscription ID. Only returned for Azure integrations.
+          example: 12345678-1234-5678-1234-567812345678
+        azureDirectoryId:
+          type: string
+          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
+          example: 87654321-4321-8765-4321-876543218765
+        gcpProjectId:
+          type: string
+          description: GCP Project ID. Only returned for GCP integrations.
+          example: my-gcp-project
+    OperatingSystem:
+      type: object
+      properties:
+        architecture:
+          type: string
+          description: The architecture of the operating system.
+          example: x86_64
+        name:
+          type: string
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
+          type: string
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
+          type: string
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
+          type: string
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
+          type: string
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
+          type: string
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
+          type: string
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   responses:
     '500':
       description: Internal Server Error
@@ -739,14 +750,6 @@ components:
                       type: string
                     message:
                       type: string
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   securitySchemes:
     APIKey:
       type: http

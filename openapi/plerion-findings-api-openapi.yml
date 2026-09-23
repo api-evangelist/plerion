@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Plerion API Documentation Alerts Findings API
+  title: Plerion API Documentation Findings API
   version: v1
   termsOfService: https://www.plerion.com/terms-and-conditions
   contact:
@@ -10,7 +10,10 @@ info:
   license:
     name: Plerion Use License
     url: https://www.plerion.com/terms-and-conditions
-  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+  description: 'The Plerion API allows you to programmatically interact with Plerion.
+
+
+    Base URL: https://{region}.api.plerion.com'
 servers:
 - url: https://{region}.api.plerion.com
   description: Production API server - Select your preferred region
@@ -271,6 +274,14 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   responses:
     '500':
       description: Internal Server Error
@@ -295,14 +306,6 @@ components:
                       type: string
                     message:
                       type: string
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   schemas:
     Finding:
       type: object

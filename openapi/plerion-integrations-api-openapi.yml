@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Plerion API Documentation Alerts Integrations API
+  title: Plerion API Documentation Integrations API
   version: v1
   termsOfService: https://www.plerion.com/terms-and-conditions
   contact:
@@ -10,7 +10,10 @@ info:
   license:
     name: Plerion Use License
     url: https://www.plerion.com/terms-and-conditions
-  description: "<br/>\nThe Plerion API allows you to programmatically interact with Plerion.<br/>\n      <b>Base URL</b>: <code>https://{region}.api.plerion.com</code>"
+  description: 'The Plerion API allows you to programmatically interact with Plerion.
+
+
+    Base URL: https://{region}.api.plerion.com'
 servers:
 - url: https://{region}.api.plerion.com
   description: Production API server - Select your preferred region
@@ -182,139 +185,6 @@ components:
           type: string
           description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
           example: 87654321-4321-8765-4321-876543218765
-    GCPIntegration:
-      type: object
-      properties:
-        integrationId:
-          type: string
-          example: 31497927-86af-4fba-afc6-c0cf2311a55b
-        name:
-          type: string
-          example: GCP Production Project
-        tenantId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf12345678
-        organizationId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        schedule:
-          type: string
-          description: String representing a cron expression for scan schedule
-          example: 59 6 * * *
-        scanInterval:
-          type: number
-          enum:
-          - 6
-          - 8
-          - 12
-          - 24
-          description: Represents the scan interval.
-          example: 24
-        createdAt:
-          type: string
-          format: date-time
-          example: '2023-02-04T06:07:09.092Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2023-02-05T06:07:02.959Z'
-        provider:
-          type: string
-          example: GCP
-        type:
-          type: string
-          enum:
-          - GCPProject
-          description: Type of integration.
-          example: GCPProject
-        detectionSettingId:
-          type: string
-          description: Available if Integration is attached to any custom Detection Setting.
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        status:
-          type: string
-          enum:
-          - Active
-          - Delete Failed
-          - Delete In Progress
-          example: Active
-        riskScore:
-          type: number
-          format: float
-          description: Risk score of the integration (if available)
-          example: 8.19
-        gcpProjectId:
-          type: string
-          description: GCP Project ID. Only returned for GCP integrations.
-          example: my-gcp-project
-    OtherIntegration:
-      type: object
-      properties:
-        integrationId:
-          type: string
-          example: 31497927-86af-4fba-afc6-c0cf2311a55b
-        name:
-          type: string
-          example: Kubernetes Cluster
-        tenantId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf12345678
-        organizationId:
-          type: string
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        schedule:
-          type: string
-          description: String representing a cron expression for scan schedule
-          example: 59 6 * * *
-        scanInterval:
-          type: number
-          enum:
-          - 6
-          - 8
-          - 12
-          - 24
-          description: Represents the scan interval.
-          example: 24
-        createdAt:
-          type: string
-          format: date-time
-          example: '2023-02-04T06:07:09.092Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2023-02-05T06:07:02.959Z'
-        provider:
-          type: string
-          example: Kubernetes
-        type:
-          type: string
-          enum:
-          - Kubernetes
-          - CASM
-          description: Type of integration.
-          example: Kubernetes
-        detectionSettingId:
-          type: string
-          description: Available if Integration is attached to any custom Detection Setting.
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        status:
-          type: string
-          enum:
-          - Active
-          - Delete Failed
-          - Delete In Progress
-          example: Active
-        riskScore:
-          type: number
-          format: float
-          description: Risk score of the integration (if available)
-          example: 8.19
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     AWSIntegration:
       type: object
       properties:
@@ -381,6 +251,139 @@ components:
           type: string
           description: AWS account ID. Only returned for AWS integrations.
           example: '123456789012'
+    OtherIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Kubernetes Cluster
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: Kubernetes
+        type:
+          type: string
+          enum:
+          - Kubernetes
+          - CASM
+          description: Type of integration.
+          example: Kubernetes
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+    GCPIntegration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: GCP Production Project
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: GCP
+        type:
+          type: string
+          enum:
+          - GCPProject
+          description: Type of integration.
+          example: GCPProject
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+          example: Active
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        gcpProjectId:
+          type: string
+          description: GCP Project ID. Only returned for GCP integrations.
+          example: my-gcp-project
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   parameters:
     paramAuthHeader:
       name: Authorization
