@@ -140,38 +140,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
-  schemas:
-    TemporaryAuthToken:
-      type: object
-      properties:
-        token:
-          type: string
-    ExternalId:
-      type: object
-      properties:
-        externalId:
-          type: string
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
     '403':
       description: Forbidden
       content:
@@ -198,6 +167,37 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    TemporaryAuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+    ExternalId:
+      type: object
+      properties:
+        externalId:
+          type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   securitySchemes:
     APIKey:
       type: http

@@ -441,6 +441,63 @@ paths:
           $ref: '#/components/responses/500'
 components:
   schemas:
+    OperatingSystem:
+      type: object
+      properties:
+        architecture:
+          type: string
+          description: The architecture of the operating system.
+          example: x86_64
+        name:
+          type: string
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
+          type: string
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
+          type: string
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
+          type: string
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
+          type: string
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
+          type: string
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
+          type: string
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
+    ListMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 100
+        total:
+          type: integer
+          example: 200
+        hasNextPage:
+          type: boolean
+          example: true
+        hasPreviousPage:
+          type: boolean
+          example: false
     Asset:
       type: object
       properties:
@@ -701,88 +758,17 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
-    DynamicObject:
-      type: object
-      additionalProperties:
-        type: string
-    ListMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-          example: 1
-        perPage:
-          type: integer
-          example: 100
-        total:
-          type: integer
-          example: 200
-        hasNextPage:
-          type: boolean
-          example: true
-        hasPreviousPage:
-          type: boolean
-          example: false
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-    OperatingSystem:
-      type: object
-      properties:
-        architecture:
-          type: string
-          description: The architecture of the operating system.
-          example: x86_64
-        name:
-          type: string
-          description: The name of the operating system.
-          example: Ubuntu
-        platform:
-          type: string
-          description: The OS platform.
-          example: Linux/UNIX
-        version:
-          type: string
-          description: The version of the operating system including version name.
-          example: 24.04.2 LTS (Noble Numbat)
-        versionId:
-          type: string
-          description: The version of the operating system.
-          example: 24.04
-        activeKernel:
-          type: string
-          description: The kernel version of the operating system.
-          example: 4.14.246-197.484.amzn2.x86_64
-        buildNumber:
-          type: string
-          description: The build number of the windows operating system.
-          example: 20348.fe_release.210507-1500
-        lcuVersion:
-          type: string
-          description: The latest cumulative update version of the windows operating.
-          example: 10.0.20348.2762
     InternalServerErrorResponse:
       type: object
       properties:
         message:
           type: string
           example: Internal server error
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
     '403':
       description: Forbidden
       content:
@@ -809,6 +795,20 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   securitySchemes:
     APIKey:
       type: http

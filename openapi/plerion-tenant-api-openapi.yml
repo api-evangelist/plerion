@@ -189,14 +189,6 @@ components:
         message:
           type: string
           example: Internal server error
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   responses:
     '400':
       description: Bad Request
@@ -215,6 +207,14 @@ components:
                       type: string
                     message:
                       type: string
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   securitySchemes:
     APIKey:
       type: http

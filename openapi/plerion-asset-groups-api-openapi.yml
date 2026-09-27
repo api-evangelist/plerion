@@ -438,39 +438,48 @@ paths:
         '404':
           description: Not found
 components:
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
-  responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            properties:
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    code:
-                      type: string
-                    message:
-                      type: string
   schemas:
+    AssetGroup:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
+        organizationId:
+          type: string
+          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
+        assetGroupId:
+          type: string
+          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
+        riskScore:
+          type: number
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:23.388Z'
+        name:
+          type: string
+          example: Asset group name
+        totalAssets:
+          type: number
+          example: 7
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:46.308Z'
+        status:
+          type: string
+          enum:
+          - completed
+          - syncInProgress
+          example: completed
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
     AssetGroupDetail:
       type: object
       properties:
@@ -526,47 +535,38 @@ components:
           - completed
           - syncInProgress
           example: completed
-    AssetGroup:
-      type: object
-      properties:
-        tenantId:
-          type: string
-          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
-        organizationId:
-          type: string
-          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
-        assetGroupId:
-          type: string
-          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
-        riskScore:
-          type: number
-          example: null
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-01-07T13:37:23.388Z'
-        name:
-          type: string
-          example: Asset group name
-        totalAssets:
-          type: number
-          example: 7
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-01-07T13:37:46.308Z'
-        status:
-          type: string
-          enum:
-          - completed
-          - syncInProgress
-          example: completed
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   securitySchemes:
     APIKey:
       type: http
