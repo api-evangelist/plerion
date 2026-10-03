@@ -241,7 +241,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerErrorResponse'
 components:
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
     ComplianceFrameworkSummary:
       type: object
       properties:
@@ -289,20 +303,6 @@ components:
           example: compliance_framework
         link:
           type: string
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   responses:
     '400':
       description: Bad Request

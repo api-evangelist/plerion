@@ -275,12 +275,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   schemas:
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     Finding:
       type: object
       properties:
@@ -417,6 +411,12 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   responses:
     '400':
       description: Bad Request

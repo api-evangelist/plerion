@@ -271,6 +271,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerErrorResponse'
 components:
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   schemas:
     InternalServerErrorResponse:
       type: object
@@ -326,14 +334,6 @@ components:
         link:
           type: string
           example: https://docs.aws.amazon.com/wellarchitected/latest/framework/
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   responses:
     '400':
       description: Bad Request

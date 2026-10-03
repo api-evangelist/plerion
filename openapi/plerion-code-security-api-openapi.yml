@@ -1247,13 +1247,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerErrorResponse'
 components:
-  schemas:
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
   parameters:
     paramAuthHeader:
       name: Authorization
@@ -1262,6 +1255,13 @@ components:
       required: true
       schema:
         type: string
+  schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   securitySchemes:
     APIKey:
       type: http

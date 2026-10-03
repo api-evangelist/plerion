@@ -204,45 +204,16 @@ paths:
           $ref: '#/components/responses/500'
 components:
   schemas:
-    OperatingSystem:
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    InternalServerErrorResponse:
       type: object
       properties:
-        architecture:
+        message:
           type: string
-          description: The architecture of the operating system.
-          example: x86_64
-        name:
-          type: string
-          description: The name of the operating system.
-          example: Ubuntu
-        platform:
-          type: string
-          description: The OS platform.
-          example: Linux/UNIX
-        version:
-          type: string
-          description: The version of the operating system including version name.
-          example: 24.04.2 LTS (Noble Numbat)
-        versionId:
-          type: string
-          description: The version of the operating system.
-          example: 24.04
-        activeKernel:
-          type: string
-          description: The kernel version of the operating system.
-          example: 4.14.246-197.484.amzn2.x86_64
-        buildNumber:
-          type: string
-          description: The build number of the windows operating system.
-          example: 20348.fe_release.210507-1500
-        lcuVersion:
-          type: string
-          description: The latest cumulative update version of the windows operating.
-          example: 10.0.20348.2762
-    DynamicObject:
-      type: object
-      additionalProperties:
-        type: string
+          example: Internal server error
     Asset:
       type: object
       properties:
@@ -503,99 +474,41 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
-    InternalServerErrorResponse:
+    OperatingSystem:
       type: object
       properties:
-        message:
+        architecture:
           type: string
-          example: Internal server error
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-    Integration:
-      type: object
-      properties:
-        integrationId:
-          type: string
-          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+          description: The architecture of the operating system.
+          example: x86_64
         name:
           type: string
-          example: Integration 001
-        tenantId:
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
           type: string
-          example: 12345678-86af-4fba-afc6-c0cf12345678
-        organizationId:
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
           type: string
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        schedule:
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
           type: string
-          description: String representing a cron expression for scan schedule
-          example: 59 6 * * *
-        scanInterval:
-          type: number
-          enum:
-          - 6
-          - 8
-          - 12
-          - 24
-          description: Represents the scan interval.
-          example: 24
-        createdAt:
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
           type: string
-          format: date-time
-          example: '2023-02-04T06:07:09.092Z'
-        updatedAt:
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
           type: string
-          format: date-time
-          example: '2023-02-05T06:07:02.959Z'
-        provider:
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
           type: string
-          example: AWS
-        type:
-          type: string
-          enum:
-          - AWSAccount
-          - AzureAccount
-          - AzureActiveDirectory
-          - AzureSubscription
-          - GCPProject
-          - CdrAws
-          - Kubernetes
-          - CASM
-          description: Type of integration.
-          example: AWSAccount
-        detectionSettingId:
-          type: string
-          description: Available if Integration is attached to any custom Detection Setting.
-          example: 12345678-86af-4fba-afc6-c0cf87654321
-        status:
-          type: string
-          enum:
-          - Active
-          - Delete Failed
-          - Delete In Progress
-        riskScore:
-          type: number
-          format: float
-          description: Risk score of the integration (if available)
-          example: 8.19
-        awsAccountId:
-          type: string
-          description: AWS account ID. Only returned for AWS integrations.
-          example: '123456789012'
-        azureSubscriptionId:
-          type: string
-          description: Azure Subscription ID. Only returned for Azure integrations.
-          example: 12345678-1234-5678-1234-567812345678
-        azureDirectoryId:
-          type: string
-          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
-          example: 87654321-4321-8765-4321-876543218765
-        gcpProjectId:
-          type: string
-          description: GCP Project ID. Only returned for GCP integrations.
-          example: my-gcp-project
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
     Risk:
       type: object
       additionalProperties: false
@@ -718,6 +631,93 @@ components:
           - DISMISSED_ACCEPTED
           - DISMISSED_NOT_A_RISK
           - OPEN
+    Integration:
+      type: object
+      properties:
+        integrationId:
+          type: string
+          example: 31497927-86af-4fba-afc6-c0cf2311a55b
+        name:
+          type: string
+          example: Integration 001
+        tenantId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf12345678
+        organizationId:
+          type: string
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        schedule:
+          type: string
+          description: String representing a cron expression for scan schedule
+          example: 59 6 * * *
+        scanInterval:
+          type: number
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          description: Represents the scan interval.
+          example: 24
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-02-04T06:07:09.092Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-02-05T06:07:02.959Z'
+        provider:
+          type: string
+          example: AWS
+        type:
+          type: string
+          enum:
+          - AWSAccount
+          - AzureAccount
+          - AzureActiveDirectory
+          - AzureSubscription
+          - GCPProject
+          - CdrAws
+          - Kubernetes
+          - CASM
+          description: Type of integration.
+          example: AWSAccount
+        detectionSettingId:
+          type: string
+          description: Available if Integration is attached to any custom Detection Setting.
+          example: 12345678-86af-4fba-afc6-c0cf87654321
+        status:
+          type: string
+          enum:
+          - Active
+          - Delete Failed
+          - Delete In Progress
+        riskScore:
+          type: number
+          format: float
+          description: Risk score of the integration (if available)
+          example: 8.19
+        awsAccountId:
+          type: string
+          description: AWS account ID. Only returned for AWS integrations.
+          example: '123456789012'
+        azureSubscriptionId:
+          type: string
+          description: Azure Subscription ID. Only returned for Azure integrations.
+          example: 12345678-1234-5678-1234-567812345678
+        azureDirectoryId:
+          type: string
+          description: Azure Directory (Tenant) ID. Only returned for Azure integrations.
+          example: 87654321-4321-8765-4321-876543218765
+        gcpProjectId:
+          type: string
+          description: GCP Project ID. Only returned for GCP integrations.
+          example: my-gcp-project
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
   responses:
     '400':
       description: Bad Request

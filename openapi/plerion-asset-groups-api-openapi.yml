@@ -439,41 +439,6 @@ paths:
           description: Not found
 components:
   schemas:
-    AssetGroup:
-      type: object
-      properties:
-        tenantId:
-          type: string
-          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
-        organizationId:
-          type: string
-          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
-        assetGroupId:
-          type: string
-          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
-        riskScore:
-          type: number
-          example: null
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-01-07T13:37:23.388Z'
-        name:
-          type: string
-          example: Asset group name
-        totalAssets:
-          type: number
-          example: 7
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-01-07T13:37:46.308Z'
-        status:
-          type: string
-          enum:
-          - completed
-          - syncInProgress
-          example: completed
     InternalServerErrorResponse:
       type: object
       properties:
@@ -522,6 +487,41 @@ components:
                   type: array
                   items:
                     type: string
+        totalAssets:
+          type: number
+          example: 7
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:46.308Z'
+        status:
+          type: string
+          enum:
+          - completed
+          - syncInProgress
+          example: completed
+    AssetGroup:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          example: 2422764d-dc5a-44eb-a0da-576baa2cfc22
+        organizationId:
+          type: string
+          example: a4d83a9b-906f-4dc8-883b-fb43b7c1beb6
+        assetGroupId:
+          type: string
+          example: 3e508e7a-65b8-4787-9c7e-2b42c2b45565
+        riskScore:
+          type: number
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-07T13:37:23.388Z'
+        name:
+          type: string
+          example: Asset group name
         totalAssets:
           type: number
           example: 7

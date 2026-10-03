@@ -224,6 +224,12 @@ paths:
           $ref: '#/components/responses/500'
 components:
   schemas:
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
     AuditLog:
       type: object
       properties:
@@ -263,12 +269,6 @@ components:
             country: United States
             city: New York
             region: NY
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
   responses:
     '400':
       description: Bad Request

@@ -1007,30 +1007,6 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
-  responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            properties:
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    code:
-                      type: string
-                    message:
-                      type: string
   schemas:
     InternalServerErrorResponse:
       type: object
@@ -1124,6 +1100,30 @@ components:
         updatedBy:
           type: string
           example: user@example.com
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
   parameters:
     paramAuthHeader:
       name: Authorization

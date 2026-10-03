@@ -440,64 +440,50 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
+  responses:
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Forbidden
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
   schemas:
-    OperatingSystem:
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    InternalServerErrorResponse:
       type: object
       properties:
-        architecture:
+        message:
           type: string
-          description: The architecture of the operating system.
-          example: x86_64
-        name:
-          type: string
-          description: The name of the operating system.
-          example: Ubuntu
-        platform:
-          type: string
-          description: The OS platform.
-          example: Linux/UNIX
-        version:
-          type: string
-          description: The version of the operating system including version name.
-          example: 24.04.2 LTS (Noble Numbat)
-        versionId:
-          type: string
-          description: The version of the operating system.
-          example: 24.04
-        activeKernel:
-          type: string
-          description: The kernel version of the operating system.
-          example: 4.14.246-197.484.amzn2.x86_64
-        buildNumber:
-          type: string
-          description: The build number of the windows operating system.
-          example: 20348.fe_release.210507-1500
-        lcuVersion:
-          type: string
-          description: The latest cumulative update version of the windows operating.
-          example: 10.0.20348.2762
-    DynamicObject:
-      type: object
-      additionalProperties:
-        type: string
-    ListMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-          example: 1
-        perPage:
-          type: integer
-          example: 100
-        total:
-          type: integer
-          example: 200
-        hasNextPage:
-          type: boolean
-          example: true
-        hasPreviousPage:
-          type: boolean
-          example: false
+          example: Internal server error
     Asset:
       type: object
       properties:
@@ -758,49 +744,63 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
-    InternalServerErrorResponse:
+    ListMeta:
       type: object
       properties:
-        message:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 100
+        total:
+          type: integer
+          example: 200
+        hasNextPage:
+          type: boolean
+          example: true
+        hasPreviousPage:
+          type: boolean
+          example: false
+    OperatingSystem:
+      type: object
+      properties:
+        architecture:
           type: string
-          example: Internal server error
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-  responses:
-    '403':
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            properties:
-              message:
-                type: string
-                example: Forbidden
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            properties:
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    code:
-                      type: string
-                    message:
-                      type: string
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
+          description: The architecture of the operating system.
+          example: x86_64
+        name:
+          type: string
+          description: The name of the operating system.
+          example: Ubuntu
+        platform:
+          type: string
+          description: The OS platform.
+          example: Linux/UNIX
+        version:
+          type: string
+          description: The version of the operating system including version name.
+          example: 24.04.2 LTS (Noble Numbat)
+        versionId:
+          type: string
+          description: The version of the operating system.
+          example: 24.04
+        activeKernel:
+          type: string
+          description: The kernel version of the operating system.
+          example: 4.14.246-197.484.amzn2.x86_64
+        buildNumber:
+          type: string
+          description: The build number of the windows operating system.
+          example: 20348.fe_release.210507-1500
+        lcuVersion:
+          type: string
+          description: The latest cumulative update version of the windows operating.
+          example: 10.0.20348.2762
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
   parameters:
     paramAuthHeader:
       name: Authorization
