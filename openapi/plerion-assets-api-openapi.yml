@@ -441,6 +441,12 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
     '403':
       description: Forbidden
       content:
@@ -467,23 +473,7 @@ components:
                       type: string
                     message:
                       type: string
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
   schemas:
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     Asset:
       type: object
       properties:
@@ -762,6 +752,16 @@ components:
         hasPreviousPage:
           type: boolean
           example: false
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
     OperatingSystem:
       type: object
       properties:

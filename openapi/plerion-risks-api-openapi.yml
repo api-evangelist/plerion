@@ -203,17 +203,153 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 components:
+  responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
   schemas:
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
-    InternalServerErrorResponse:
+    Risk:
       type: object
+      additionalProperties: false
       properties:
-        message:
+        id:
           type: string
-          example: Internal server error
+          description: Unique identifier of the risk
+        riskTypeId:
+          type: string
+          description: ID of the risk type
+        organizationId:
+          type: string
+          description: ID of the organization
+        tenantId:
+          type: string
+          description: ID of the tenant
+        integrationId:
+          type: string
+          description: ID of the integration that the risk is a part of
+        description:
+          type: string
+          description: Description of the risk
+        primaryAssetId:
+          type: string
+          description: ID of the primary asset affected by the risk
+        region:
+          type:
+          - string
+          - 'null'
+          description: AWS/Azure/GCP region of the primary asset affected by the risk (e.g., ap-southeast-2), null when unknown
+        resolutions:
+          type: array
+          description: List of possible resolutions for the risk
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+                description: Unique key for the resolution
+              type:
+                type: string
+                description: Type of resolution
+              title:
+                type: string
+                description: Title of the resolution
+        score:
+          type: number
+          description: Overall risk score
+          format: float
+          minimum: 0
+          maximum: 10
+        likelihood:
+          type: number
+          description: Likelihood score of the risk
+          format: float
+          minimum: 0
+          maximum: 10
+        impact:
+          type: number
+          description: Impact score of the risk
+          format: float
+          minimum: 0
+          maximum: 10
+        severityLevel:
+          type: string
+          description: Severity level of the risk
+          enum:
+          - CRITICAL
+          - HIGH
+          - MEDIUM
+          - LOW
+        factors:
+          type: array
+          description: Contributing factors to the risk
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+                description: Unique key for the factor
+              meta:
+                type: object
+                description: Additional metadata for the factor
+              title:
+                type: string
+                description: Title of the factor
+              value:
+                type: number
+                description: Numerical value of the factor
+              verificationState:
+                type: string
+                description: Current verification state
+              description:
+                type: string
+                description: Detailed description of the factor
+        meta:
+          type: object
+          additionalProperties: false
+          description: Additional metadata about the risk
+          properties:
+            assetName:
+              type: string
+              description: Name of the associated asset
+            resourceType:
+              type: string
+              description: Type of the resource
+            fullResourceName:
+              type: string
+              description: Full resource name/path
+        discoveredAt:
+          type: string
+          description: Timestamp when the risk was discovered
+          format: date-time
+        lifecycleState:
+          type: string
+          description: Current state in the risk lifecycle
+          enum:
+          - DISMISSED_ACCEPTED
+          - DISMISSED_NOT_A_RISK
+          - OPEN
     Asset:
       type: object
       properties:
@@ -474,6 +610,16 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
     OperatingSystem:
       type: object
       properties:
@@ -509,128 +655,10 @@ components:
           type: string
           description: The latest cumulative update version of the windows operating.
           example: 10.0.20348.2762
-    Risk:
+    DynamicObject:
       type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the risk
-        riskTypeId:
-          type: string
-          description: ID of the risk type
-        organizationId:
-          type: string
-          description: ID of the organization
-        tenantId:
-          type: string
-          description: ID of the tenant
-        integrationId:
-          type: string
-          description: ID of the integration that the risk is a part of
-        description:
-          type: string
-          description: Description of the risk
-        primaryAssetId:
-          type: string
-          description: ID of the primary asset affected by the risk
-        region:
-          type:
-          - string
-          - 'null'
-          description: AWS/Azure/GCP region of the primary asset affected by the risk (e.g., ap-southeast-2), null when unknown
-        resolutions:
-          type: array
-          description: List of possible resolutions for the risk
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              key:
-                type: string
-                description: Unique key for the resolution
-              type:
-                type: string
-                description: Type of resolution
-              title:
-                type: string
-                description: Title of the resolution
-        score:
-          type: number
-          description: Overall risk score
-          format: float
-          minimum: 0
-          maximum: 10
-        likelihood:
-          type: number
-          description: Likelihood score of the risk
-          format: float
-          minimum: 0
-          maximum: 10
-        impact:
-          type: number
-          description: Impact score of the risk
-          format: float
-          minimum: 0
-          maximum: 10
-        severityLevel:
-          type: string
-          description: Severity level of the risk
-          enum:
-          - CRITICAL
-          - HIGH
-          - MEDIUM
-          - LOW
-        factors:
-          type: array
-          description: Contributing factors to the risk
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              key:
-                type: string
-                description: Unique key for the factor
-              meta:
-                type: object
-                description: Additional metadata for the factor
-              title:
-                type: string
-                description: Title of the factor
-              value:
-                type: number
-                description: Numerical value of the factor
-              verificationState:
-                type: string
-                description: Current verification state
-              description:
-                type: string
-                description: Detailed description of the factor
-        meta:
-          type: object
-          additionalProperties: false
-          description: Additional metadata about the risk
-          properties:
-            assetName:
-              type: string
-              description: Name of the associated asset
-            resourceType:
-              type: string
-              description: Type of the resource
-            fullResourceName:
-              type: string
-              description: Full resource name/path
-        discoveredAt:
-          type: string
-          description: Timestamp when the risk was discovered
-          format: date-time
-        lifecycleState:
-          type: string
-          description: Current state in the risk lifecycle
-          enum:
-          - DISMISSED_ACCEPTED
-          - DISMISSED_NOT_A_RISK
-          - OPEN
+      additionalProperties:
+        type: string
     Integration:
       type: object
       properties:
@@ -714,34 +742,6 @@ components:
           type: string
           description: GCP Project ID. Only returned for GCP integrations.
           example: my-gcp-project
-    DynamicObject:
-      type: object
-      additionalProperties:
-        type: string
-  responses:
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            properties:
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    code:
-                      type: string
-                    message:
-                      type: string
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
   parameters:
     paramAuthHeader:
       name: Authorization

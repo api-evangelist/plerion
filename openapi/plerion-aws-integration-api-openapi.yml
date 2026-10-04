@@ -141,6 +141,12 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
     '403':
       description: Forbidden
       content:
@@ -167,17 +173,11 @@ components:
                       type: string
                     message:
                       type: string
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
   schemas:
-    ExternalId:
+    TemporaryAuthToken:
       type: object
       properties:
-        externalId:
+        token:
           type: string
     InternalServerErrorResponse:
       type: object
@@ -185,10 +185,10 @@ components:
         message:
           type: string
           example: Internal server error
-    TemporaryAuthToken:
+    ExternalId:
       type: object
       properties:
-        token:
+        externalId:
           type: string
   parameters:
     paramAuthHeader:
