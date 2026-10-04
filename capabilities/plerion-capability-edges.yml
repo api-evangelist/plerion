@@ -1,0 +1,36 @@
+slug: plerion
+provider: Plerion
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Vulnerabilities
+  spec_file: plerion-vulnerabilities-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.93
+  evidence: listTenantVulnerabilities; createVulnerabilityExemptionInProfile 'Create a vulnerability exemption
+    in a profile'; schema VulnerabilityExemption
+  reason: Operations enumerate detected vulnerabilities and manage exemptions/waivers against them — the
+    core of vulnerability scanning and remediation governance.
+- tag: Code security
+  spec_file: plerion-code-security-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.75
+  evidence: POST /v1/tenant/shiftleft/iac/scan  postIaCScan  Upload IaC; GET /v1/tenant/shiftleft/iac/scans/{scanId}/vulnerabilities  getIaCVulnerabilitiesByScanId  List
+    Vulnerabilities
+  reason: Operations submit infrastructure-as-code for scanning and return findings and vulnerabilities
+    — security scanning and remediation input, i.e. Vulnerability Management. Slight ambiguity versus
+    engineering quality practice, but the surface is explicitly vulnerability scanning.
