@@ -1,0 +1,44 @@
+generated: '2026-10-14'
+method: searched
+checked:
+- https://github.com/marketplace?type=apps
+- https://marketplace.atlassian.com/
+marketplace_apps: []
+edges:
+- partner_name: GitHub Marketplace (apps)
+  partner: github
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-apps
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/plerion-code-security
+  listing_count: 1
+  apps:
+  - Plerion Code Security
+  publisher_name: Plerion
+  badges:
+  - Verified creator
+  - Verified domain
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: Atlassian Marketplace
+  partner: atlassian
+  partner_match: aggregator
+  type: marketplace
+  marketplace: atlassian
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://marketplace.atlassian.com/vendors/1225044/plerion
+  listing_count: 2
+  apps:
+  - Plerion
+  - 'Plerion Cloud Security: OAuth 2.0 Integration'
+  publisher_name: Plerion
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+source:
+- https://github.com/marketplace?type=apps
+- https://marketplace.atlassian.com/
