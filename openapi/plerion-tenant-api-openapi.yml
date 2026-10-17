@@ -125,38 +125,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerErrorResponse'
 components:
+  responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    code:
+                      type: string
+                    message:
+                      type: string
   schemas:
-    TenantUsage:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-          description: Start date of time period.
-          example: '2022-01-18T08:37:30Z'
-        endDate:
-          type: string
-          format: date-time
-          description: End date of time period.
-          example: '2022-01-18T08:37:30Z'
-        consumedPlerionUnits:
-          type: number
-          description: Total Consumed Plerion units by the tenant.
-          example: 89057
-        tenantCap:
-          type: number
-          description: Maximum number of Plerion units allocated to the tenant.
-          example: 600000
-        remainingPlerionUnits:
-          type: number
-          description: Remaining Plerion units by the tenant.
-          example: 558911
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     TenantDetails:
       type: object
       properties:
@@ -189,6 +176,37 @@ components:
           format: float
           description: Risk score of the tenant (if available)
           example: 8.19
+    TenantUsage:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+          description: Start date of time period.
+          example: '2022-01-18T08:37:30Z'
+        endDate:
+          type: string
+          format: date-time
+          description: End date of time period.
+          example: '2022-01-18T08:37:30Z'
+        consumedPlerionUnits:
+          type: number
+          description: Total Consumed Plerion units by the tenant.
+          example: 89057
+        tenantCap:
+          type: number
+          description: Maximum number of Plerion units allocated to the tenant.
+          example: 600000
+        remainingPlerionUnits:
+          type: number
+          description: Remaining Plerion units by the tenant.
+          example: 558911
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   parameters:
     paramAuthHeader:
       name: Authorization
@@ -197,24 +215,6 @@ components:
       required: true
       schema:
         type: string
-  responses:
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            properties:
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    field:
-                      type: string
-                    code:
-                      type: string
-                    message:
-                      type: string
   securitySchemes:
     APIKey:
       type: http

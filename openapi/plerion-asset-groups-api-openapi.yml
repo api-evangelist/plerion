@@ -439,12 +439,6 @@ paths:
           description: Not found
 components:
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
     '400':
       description: Bad Request
       content:
@@ -462,6 +456,20 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   schemas:
     AssetGroup:
       type: object
@@ -559,14 +567,6 @@ components:
           - completed
           - syncInProgress
           example: completed
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
   securitySchemes:
     APIKey:
       type: http

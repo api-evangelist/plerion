@@ -141,21 +141,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
-    '403':
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            properties:
-              message:
-                type: string
-                example: Forbidden
     '400':
       description: Bad Request
       content:
@@ -173,23 +158,21 @@ components:
                       type: string
                     message:
                       type: string
-  schemas:
-    TemporaryAuthToken:
-      type: object
-      properties:
-        token:
-          type: string
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
-    ExternalId:
-      type: object
-      properties:
-        externalId:
-          type: string
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Forbidden
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
   parameters:
     paramAuthHeader:
       name: Authorization
@@ -198,6 +181,23 @@ components:
       required: true
       schema:
         type: string
+  schemas:
+    TemporaryAuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+    ExternalId:
+      type: object
+      properties:
+        externalId:
+          type: string
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   securitySchemes:
     APIKey:
       type: http

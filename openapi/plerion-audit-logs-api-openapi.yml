@@ -224,12 +224,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
     '400':
       description: Bad Request
       content:
@@ -247,6 +241,12 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
   parameters:
     paramAuthHeader:
       name: Authorization

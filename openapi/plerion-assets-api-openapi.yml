@@ -441,21 +441,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
-    '403':
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            properties:
-              message:
-                type: string
-                example: Forbidden
     '400':
       description: Bad Request
       content:
@@ -473,7 +458,38 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Forbidden
+  parameters:
+    paramAuthHeader:
+      name: Authorization
+      in: header
+      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
+      required: true
+      schema:
+        type: string
   schemas:
+    DynamicObjectArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/DynamicObject'
+    DynamicObject:
+      type: object
+      additionalProperties:
+        type: string
     Asset:
       type: object
       properties:
@@ -734,34 +750,6 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
-    ListMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-          example: 1
-        perPage:
-          type: integer
-          example: 100
-        total:
-          type: integer
-          example: 200
-        hasNextPage:
-          type: boolean
-          example: true
-        hasPreviousPage:
-          type: boolean
-          example: false
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
-    DynamicObjectArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/DynamicObject'
     OperatingSystem:
       type: object
       properties:
@@ -797,18 +785,30 @@ components:
           type: string
           description: The latest cumulative update version of the windows operating.
           example: 10.0.20348.2762
-    DynamicObject:
+    InternalServerErrorResponse:
       type: object
-      additionalProperties:
-        type: string
-  parameters:
-    paramAuthHeader:
-      name: Authorization
-      in: header
-      description: Bearer API Key. For example, "Bearer {Tenant API Key}"
-      required: true
-      schema:
-        type: string
+      properties:
+        message:
+          type: string
+          example: Internal server error
+    ListMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 100
+        total:
+          type: integer
+          example: 200
+        hasNextPage:
+          type: boolean
+          example: true
+        hasPreviousPage:
+          type: boolean
+          example: false
   securitySchemes:
     APIKey:
       type: http

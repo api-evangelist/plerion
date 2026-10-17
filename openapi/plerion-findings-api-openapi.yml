@@ -275,12 +275,6 @@ paths:
           $ref: '#/components/responses/500'
 components:
   responses:
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerErrorResponse'
     '400':
       description: Bad Request
       content:
@@ -298,6 +292,12 @@ components:
                       type: string
                     message:
                       type: string
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerErrorResponse'
   parameters:
     paramAuthHeader:
       name: Authorization
@@ -307,12 +307,6 @@ components:
       schema:
         type: string
   schemas:
-    InternalServerErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal server error
     Finding:
       type: object
       properties:
@@ -449,6 +443,12 @@ components:
         resourceURL:
           type: string
           example: https://us-east-1.console.aws.amazon.com/iam/home#/policies/arn:aws:iam::1111222233334444:policy/test-policy
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
   securitySchemes:
     APIKey:
       type: http
